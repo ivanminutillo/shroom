@@ -9,10 +9,10 @@ import { withFormik, Form, Field } from "formik";
 import Alert from "../../components/alert";
 import * as Yup from "yup";
 import { compose, withHandlers, withState } from "recompose";
-import axios from "axios";
 import media from "styled-media-query";
-import BoxHeader from '../smartSentence/boxHeader'
-const url = "http://fairchains.xicnet.com:3197/wallet/v1/transactions/new"
+import BoxHeader from "../smartSentence/boxHeader";
+import postTx, { newTx } from "../../xhr/socialwallet";
+import axios from 'axios'
 
 const customStyles = {
   control: base => ({
@@ -20,14 +20,14 @@ const customStyles = {
     width: "380px",
     float: "left",
     marginRight: "10px",
-    background: '#4F576C',
-    border: '1px solid #7D849A50',
-    color: '#f0f0f0'
+    background: "#4F576C",
+    border: "1px solid #7D849A50",
+    color: "#f0f0f0"
   }),
   placeholder: base => ({
     ...base,
-    color: '#f0f0f0',
-    fontSize: '14px'
+    color: "#f0f0f0",
+    fontSize: "14px"
   })
 };
 
@@ -40,8 +40,8 @@ const tagStyles = {
   }),
   placeholder: base => ({
     ...base,
-    color: '#f0f0f0',
-    fontSize: '14px'
+    color: "#f0f0f0",
+    fontSize: "14px"
   })
 };
 
@@ -78,14 +78,13 @@ const Qty = styled.div`
     margin: 0;
     padding: 0 8px;
     border: none;
-    background: #4F576C;
+    background: #4f576c;
     color: #f0f0f0;
-    border: 1px solid #7D849A50;
+    border: 1px solid #7d849a50;
     ${placeholder({ color: "#f0f0f0" })};
   }
 `;
 const Second = styled.div``;
-
 
 const Transfer = ({
   handleMenuSelection,
@@ -93,7 +92,10 @@ const Transfer = ({
   touched,
   errors,
   id,
+  isWallet,
   setFieldValue,
+  txs,
+  addTx,
   menuSelected
 }) => {
   let options = [];
@@ -103,11 +105,14 @@ const Transfer = ({
       label: agent.subject.name
     })
   );
-  console.log(menuSelected)
   return (
     <Form>
       <Log.Module>
-        <BoxHeader menuSelected={menuSelected} handleMenuSelection={handleMenuSelection} />
+        <BoxHeader
+          isWallet={isWallet}
+          menuSelected={menuSelected}
+          handleMenuSelection={handleMenuSelection}
+        />
         <First>
           <Field
             name="username"
@@ -131,6 +136,7 @@ const Transfer = ({
                   name={field.name}
                   onChange={field.onChange}
                   placeholder="00.00"
+                  type="number"
                 />
               )}
             />
@@ -141,15 +147,25 @@ const Transfer = ({
           <Textarea placeholder={"Add a more detailed description..."} />
         </Log.Note>
         <Second>
-          <CreatableSelect
-            isClearable
-            styles={tagStyles}
-            isMulti
-            placeholder="Select one or more tags"
+          <Field
+            name="tag"
+            render={({ field }) => (
+              <CreatableSelect
+                isClearable
+                styles={tagStyles}
+                onChange={value => {
+                  let newarr = value.map(val => val.value);
+                  return setFieldValue("tag", newarr);
+                }}
+                isMulti
+                placeholder="Select one or more tags"
+              />
+            )}
           />
+          {touched.tag && errors.tag && <Alert>{errors.tag}</Alert>}
         </Second>
         <Log.PublishActions>
-          <Button>Publish</Button>
+          <Button type="submit">Publish</Button>
         </Log.PublishActions>
       </Log.Module>
     </Form>
@@ -158,41 +174,30 @@ const Transfer = ({
 
 export default compose(
   withFormik({
-    mapPropsToValues: () => ({ username: "", amount: "00.00" }),
+    mapPropsToValues: () => ({ username: "", amount: "00.00", tag: [] }),
     validationSchema: Yup.object().shape({
-      username: Yup.string(),
-      amount: Yup.number()
+      username: Yup.string().required(),
+      amount: Yup.number().required(),
+      tag: Yup.array()
     }),
     handleSubmit: (values, { props, resetForm, setErrors, setSubmitting }) => {
-      //   var request = new Request(url, {
-      //     method: 'POST',
-      //     headers: new Headers({
-      //       'Content-Type': 'application/json',
-      //       "Accept": "application/json"
-      //     }),
-      //     body: JSON.stringify({
-      //       "blockchain": "mongo"
-      //     })
-      //   });
-      //   return fetch(request)
-      // .then(data => data.json()).then(res => console.log(res))
-      // .catch(function (error) {
-      //   console.log( error);
-      //   console.table(error);
-      // });
       axios({
         method: "POST",
-        url: url,
+        url: 'http://fairchains.xicnet.com:3197/wallet/v1/transactions/new',
         headers: { "content-type": "application/json" },
         data: JSON.stringify({
           "blockchain": "mongo",
-          "from-id": "31",
-          "to-id": "2",
-          "amount": "7"
+          "from-id": String(props.id),
+          "to-id": String(values.username),
+          "amount": String(values.amount),
+          "tags": values.tag
+
         })
       })
         .then(res => {
-          console.log(res.data)})
+         let tx = props.addTx(props.agents, res.data)
+         return props.addToTxChain(tx)
+        })
         .catch(err => console.log(err));
     }
   })

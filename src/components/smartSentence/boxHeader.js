@@ -40,7 +40,12 @@ const Header = styled.div`
   background: #0B6DB5;
   ${media.lessThan("medium")`
   padding-left: 4px;
-  `}
+  `};
+  & h1 {
+    font-size: 14px;
+    line-height: 40px;
+    margin-left: 10px;
+  }
 `;
 
 const TitleBox = styled.h3`
@@ -54,9 +59,9 @@ const TitleBox = styled.h3`
   padding-left: 8px;
 `
 
-export default ({handleMenuSelection, menuSelected}) => (
+export default ({handleMenuSelection, menuSelected, isWallet}) => (
   <Header>
-    <Box onClick={() => handleMenuSelection("1")} active={menuSelected == 1 ? true : false}>
+    {isWallet ? <h1>FakeCoin Temp Wallet</h1> : <div><Box onClick={() => handleMenuSelection("1")} active={menuSelected == 1 ? true : false}>
       <Icons.Type width="18" color="#f0f0f080" />
       {menuSelected == 1 ? <TitleBox>Type a message</TitleBox> : null}
       
@@ -68,6 +73,7 @@ export default ({handleMenuSelection, menuSelected}) => (
     <Box onClick={() => handleMenuSelection("3")} active={menuSelected == 3 ? true : false}>
       <Icons.Dollar width="18" color="#f0f0f080" />
       {menuSelected == 3 ? <TitleBox>Transfer a currency</TitleBox> : null}
-    </Box>
+    </Box></div> }
+    
   </Header>
 );

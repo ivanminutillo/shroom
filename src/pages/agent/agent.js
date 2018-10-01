@@ -8,6 +8,7 @@ import { Query } from "react-apollo";
 import media from 'styled-media-query'
 import SmartSentence from "../../components/smartSentence";
 import moment from 'moment'
+import getTxs from "../../queries/getTxs";
 
 const Wrapper = styled.div`
   display: flex;
@@ -163,6 +164,7 @@ const Agent = props => {
           return (
             <ErrorMini refetch={refetch} message={`Error! ${error.message}`} />
           );
+          console.log(data)
         return (
           <Wrapper isOpen={props.isOpen}>
             <Header>
@@ -191,28 +193,28 @@ const Agent = props => {
                     <HeaderTitle>Recent Activities</HeaderTitle>
                   </FeedHeader>
                   <FeedList>
-                    {data.viewer.agent.agentEconomicEvents.map((ev, i) => (
-                      <Feed
-                        image={ev.provider.image}
-                        key={i}
-                        primary={
-                          <FeedItem>
-                            <B>{ev.provider.name}</B>{" "}
-                            {ev.action +
-                              " " +
-                              ev.affectedQuantity.numericValue +
-                              " " +
-                              ev.affectedQuantity.unit.name + 
-                              " of "}
-                              <i>{ev.affects.resourceClassifiedAs.name}</i>
-                          </FeedItem>
-                        }
-                        secondary={ev.note}
-
-                        date={moment(ev.start).format("DD MMM")}
-                      />
-                    ))}
-                  </FeedList>
+                        {data.viewer.agent.agentEconomicEvents.map((ev, i) => (
+                          <Feed
+                            image={ev.provider.image}
+                            key={i}
+                            primary={
+                              <FeedItem>
+                                <B>{ev.provider.name}</B>{" "}
+                                {ev.action +
+                                  " " +
+                                  ev.affectedQuantity.numericValue +
+                                  " " +
+                                  ev.affectedQuantity.unit.name + 
+                                  " of "}
+                                  <i>{ev.affects.resourceClassifiedAs.name}</i>
+                              </FeedItem>
+                            }
+                            secondary={ev.note}
+    
+                            date={moment(ev.start).format("DD MMM")}
+                          />
+                        ))}
+                      </FeedList>
                 </Overview>
               </Inside>
             </Content>

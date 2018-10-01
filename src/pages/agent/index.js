@@ -2,8 +2,6 @@ import React from "react";
 import styled, { css } from "styled-components";
 import RightPanel from "../../components/rightPanel/rightPanel";
 import Component from "./agent";
-import { compose, lifecycle } from "recompose";
-import getList, { getTxs } from "../../xhr/socialwallet";
 
 const Wrapper = styled.div`
   display: flex;
@@ -37,17 +35,4 @@ const Agent = props => {
   );
 };
 
-export default compose(
-  lifecycle({
-    componentDidMount() {
-      getList(
-        {
-          blockchain: "mongo"
-        },
-        getTxs
-      ).then(res => res.json())
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
-    }
-  })
-)(Agent);
+export default Agent

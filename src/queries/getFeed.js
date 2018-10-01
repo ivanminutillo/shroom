@@ -9,9 +9,15 @@ export default gql`
         name
         email
         note
-        agentSkills {
-          id
-          name
+        txs @client {
+           note
+           action
+           provider {
+             id
+           }
+           receiver {
+             id
+           }
         }
         agentEconomicEvents(latestNumberOfDays: 30) {
           note

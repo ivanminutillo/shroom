@@ -5,6 +5,7 @@ import { PropsRoute } from "../../helpers/router";
 import Agent from "../../pages/agent";
 import Wallet from "../../pages/wallet";
 import media from 'styled-media-query'
+import { ApolloConsumer } from 'react-apollo';
 
 
 const Wrapper = styled.div`
@@ -19,10 +20,10 @@ ${media.lessThan("medium")`
   `};
 `
 
-
-
 const Main = props => {
   return (
+    <ApolloConsumer>
+    {client => (
     <Wrapper isSidebarOpen={props.isSidebarOpen}>
       <PropsRoute
         exact
@@ -34,6 +35,7 @@ const Main = props => {
         onTogglePanel={props.onTogglePanel}
         isSidebarOpen={props.isSidebarOpen}
         providerId={props.providerId}
+        client={client}
       />
       <PropsRoute
         toggleLeftPanel={props.toggleLeftPanel}
@@ -44,6 +46,7 @@ const Main = props => {
         onTogglePanel={props.onTogglePanel}
         providerId={props.providerId}
         isSidebarOpen={props.isSidebarOpen}
+        client={client}
       />
       <PropsRoute
       toggleLeftPanel={props.toggleLeftPanel}
@@ -54,6 +57,8 @@ const Main = props => {
         providerId={props.providerId}
       />
     </Wrapper>
+        )}
+        </ApolloConsumer>
   );
 };
 
