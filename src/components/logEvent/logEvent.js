@@ -13,7 +13,7 @@ import Events from "./events";
 import AsyncSelect from "react-select/lib/Async";
 import getResourcesQuery from "../../queries/getResources";
 import Alert from "../alert";
-import BoxHeader from "../smartSentence/boxHeader";
+// import BoxHeader from "../smartSentence/boxHeader";
 require("react-datepicker/dist/react-datepicker-cssmodules.css");
 
 const StartDate = props => {
@@ -98,6 +98,14 @@ const LogEvent = props => {
       border: '1px solid #7D849A50',
       color: '#f0f0f0'
     }),
+    input: base => ({
+      ...base,
+      color: '#f0f0f0'
+    }),
+    singleValue: base => ({
+      ...base,
+      color: '#f0f0f0'
+    }),
     placeholder: base => ({
       ...base,
       color: '#f0f0f0',
@@ -119,24 +127,25 @@ const LogEvent = props => {
       {client => (
         <Form>
           <Log.Module>
-            <BoxHeader
-              menuSelected={menuSelected}
-              handleMenuSelection={handleMenuSelection}
-            />
             <Log.Log>
               <Row>
                 <Action>
                   <Field
                     name={"action"}
-                    render={({ field }) => (
+                    render={({ field }) => {
+                      return (
                       <Select
                         onChange={val =>
-                          props.setFieldValue("action", val.value)
+                          props.setFieldValue("action",  {value: val.value, label: val.label})
                         }
+                        value={{
+                          value: field.value.value,
+                          label: field.value.label
+                        }}
                         options={Events}
                         styles={customStyles}
                       />
-                    )}
+                    )}}
                   />
                   {errors.action &&
                     touched.action && <Alert>{errors.action}</Alert>}
@@ -165,13 +174,18 @@ const LogEvent = props => {
                 <Unit>
                   <Field
                     name={"unit"}
-                    render={({ field }) => (
+                    render={({ field }) => {
+                      return (
                       <Select
-                        onChange={val => props.setFieldValue("unit", val.value)}
+                        onChange={val => props.setFieldValue("unit",  {value: val.value, label: val.label})}
                         options={Units}
                         styles={customStyles}
+                        value={{
+                          value: field.value.value,
+                          label: field.value.label
+                        }}
                       />
-                    )}
+                    )}}
                   />
                   {errors.unit && touched.unit && <Alert>{errors.unit}</Alert>}
                 </Unit>
@@ -184,11 +198,15 @@ const LogEvent = props => {
                       placeholder={"Select a classification..."}
                       defaultOptions
                       cacheOptions
+                      value={{
+                        value: field.value.value,
+                        label: field.value.label
+                      }}
                       styles={customStyles}
                       onChange={val =>
                         props.setFieldValue(
                           "affectedResourceClassifiedAsId",
-                          val.value
+                          {value: val.value, label: val.label}
                         )
                       }
                       loadOptions={val => promiseOptions(client, val)}

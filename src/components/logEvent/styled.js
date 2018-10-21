@@ -4,15 +4,10 @@ import media from "styled-media-query";
 
 const Module = styled.div`
   ${clearFix()};
-  margin: 0 auto;
-  margin-top: 0px;
   position: relative;
-  width: 620px;
-  background: #42495B;
   border-radius: 4px;
+  height: 60px;
   z-index: 1;
-  left: 50%;
-  margin-left: -310px;
   ${media.lessThan("medium")`
     width: 100%;
     left: 0;

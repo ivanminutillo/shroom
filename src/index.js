@@ -17,7 +17,7 @@ import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import Dark from "./style/themeDark";
 
 const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,400i,500,500i,700');
+  @import url('https://fonts.googleapis.com/css?family=Fira+Sans:300,400,400i,500,500i,700');
   body {
     padding: 0;
     margin: 0;
@@ -28,7 +28,8 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     height: 100%;
     padding: 0;
-    background: ${props => props.theme.color.p800};
+    background: ${props => props.theme.color.p900};
+    
   }
   a {
     color: ${props => props.theme.color.p100};

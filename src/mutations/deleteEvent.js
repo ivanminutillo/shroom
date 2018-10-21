@@ -9,6 +9,10 @@ mutation ($token: String!, $id: Int!) {
       economicEvent {
         action
         start
+        scope {
+          id
+          name
+        }
       }
     }
 }

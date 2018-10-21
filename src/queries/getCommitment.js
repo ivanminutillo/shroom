@@ -1,53 +1,53 @@
 import gql from 'graphql-tag'
+import { event } from "../fragments/economicEvents";
 
 const GetCommitment = gql`
 query ($token: String, $id: Int!) {
     viewer(token: $token) {
       commitment(id: $id) {
-        action
         id
-        note
-        scope {
-          id
+        isFinished
+        fulfilledBy {
+          fulfilledBy {
+            ...BasicEvent
+          }
         }
-        
+        plan {
+          note
+          name
+          id
+        }        
         provider {
           id
           name
           image
         }
         inputOf {
-          name
-          id
-        }
-        due
-        isFinished
-        involvedAgents {
-          image
           id
           name
         }
+        outputOf {
+          id
+          name
+        }
+        note
+        action
         committedQuantity {
+          numericValue
           unit {
             name
             id
           }
-          numericValue
         }
+        due
         resourceClassifiedAs {
-          category
           name
           id
         }
       }
     }
-    viewer(token: $token) {
-      allUnits {
-        id
-        name
-        symbol
-      }
-    }
-  }`
+  }
+  ${event}
+  `
 
 export default GetCommitment

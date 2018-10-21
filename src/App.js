@@ -5,16 +5,7 @@ import Main from "./components/main/main";
 import { withState, withHandlers, compose } from "recompose";
 import LeftPanel from './components/leftPanel/leftPanel'
 
-const Wrapper = styled.div`
-  height: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: row;
-`;
 
-const Surface = styled.div`
-  height: 100%;
-`;
 
 const Overlay = styled.div`
   position: absolute;
@@ -30,7 +21,6 @@ const Overlay = styled.div`
 const App = props => (
   
     <Surface>
-      
       <Wrapper>
         <Sidebar togglePanel={props.onTogglePanel} />
         <Main />

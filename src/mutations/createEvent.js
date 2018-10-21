@@ -8,7 +8,9 @@ export default gql`
     $action: String!
     $start: String
     $scopeId: Int!
+    $inputOfId: Int
     $note: String
+    $commitmentId: Int
     $affectedNumericValue: String!
     $affectedUnitId: Int!
     $affectedResourceClassifiedAsId: Int
@@ -17,6 +19,8 @@ export default gql`
       token: $token
       action: $action
       start: $start
+      fulfillsCommitmentId: $commitmentId
+      inputOfId: $inputOfId
       providerId: $providerId
       receiverId: $receiverId
       scopeId: $scopeId
@@ -31,14 +35,21 @@ export default gql`
         start
         id
         note
+        fulfills {
+          fulfills {
+            id
+          }
+        }
         url
         provider {
-          name
-          image
           id
         }
         scope {
           id
+        }
+        inputOf {
+          id
+          name
         }
         affects {
           trackingIdentifier

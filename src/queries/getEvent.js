@@ -1,42 +1,22 @@
-import gql from 'graphql-tag'
+import gql from "graphql-tag";
+import { event } from "../fragments/economicEvents";
 
 export default gql`
-query ($token: String, $id: Int!) {
+  query($token: String, $id: Int!) {
     viewer(token: $token) {
       economicEvent(id: $id) {
-        id
-        action
-        start
-      inputOf {
-        name
-        id
-        processPlan {
+        ...BasicEvent
+        inputOf {
           name
           id
-        }
-      }
-        affectedQuantity {
-          numericValue
-          unit {
-            id
-            name
-          }
-        }
-        note
-        affects {
-          resourceClassifiedAs {
+          processPlan {
             name
             id
           }
-        }
-        provider {
-          id
-          image
-          name
         }
         validations {
-            id
-            note
+          id
+          note
           validatedBy {
             name
             id
@@ -48,4 +28,6 @@ query ($token: String, $id: Int!) {
         }
       }
     }
-  }`
+  }
+  ${event}
+`;

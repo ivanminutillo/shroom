@@ -26,14 +26,14 @@ const Dialog = styled.div`
   margin: 40px auto;
   position: relative;
   border-radius: 3px;
-  padding-bottom: 20px;
   outline: none;
 `;
 
 const Action = styled.div`
-  ${clearFix()} padding-top: 10px;
+  ${clearFix()};
+  padding-top: 10px;
   padding-right: 10px;
-  margin-bottom: -50px;
+  float: right;
 `;
 
 const Close = styled.div`

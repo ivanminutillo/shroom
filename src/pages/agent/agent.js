@@ -1,14 +1,317 @@
 import React from "react";
 import styled from "styled-components";
-import { clearFix } from "polished";
-import { Icons, Feed } from "oce-components/build";
-import { LoadingMini, ErrorMini } from "../../components/loading";
-import getFeed from "../../queries/getFeed";
-import { Query } from "react-apollo";
-import media from 'styled-media-query'
+import Header from "./header";
+import { graphql } from "react-apollo";
+import media from "styled-media-query";
 import SmartSentence from "../../components/smartSentence";
-import moment from 'moment'
-import getTxs from "../../queries/getTxs";
+import Feeds from "./feeds";
+import { ApolloConsumer } from "react-apollo";
+import HeaderTitle from "../../components/agentSectionHeader";
+import AgentPlans from "../../components/agentplans";
+import AgentIntents from "../../components/agentintents";
+import { compose, withState, withHandlers } from "recompose";
+import ValidationModal from "../../components/modalValidation";
+import { Field, withFormik } from "formik";
+import * as Yup from "yup";
+import deleteNotification from "../../mutations/deleteNotification";
+import updateNotification from "../../mutations/updateNotification";
+import createValidation from "../../mutations/createValidation";
+import deleteValidation from "../../mutations/deleteValidation";
+import IntentModal from "../../components/modalIntent";
+import { Icons, Textarea } from "oce-components/build";
+import Claim from "../../queries/getEvent";
+const Agent = props => {
+  return (
+    <Wrapper isOpen={props.isOpen}>
+      <Header
+        id={props.id ? props.id : props.match.params.id}
+        toggleLeftPanel={props.toggleLeftPanel}
+        togglePanel={props.togglePanel}
+      />
+      {props.id ? null : (
+        <ApolloConsumer>
+          {client => (
+            <SmartSentence
+              client={client}
+              providerId={props.providerId}
+              providerImage={props.providerImage}
+              providerName={props.providerName}
+              scopeId={
+                props.id === props.providerId
+                  ? props.providerId
+                  : props.match.params.id
+              }
+            />
+          )}
+        </ApolloConsumer>
+      )}
+      <Content>
+        <Inside>
+          <Overview>
+            <EventsInfo>
+              <AgentPlans id={props.id ? props.id : props.match.params.id} />
+              <AgentIntents
+                toggleModal={props.toggleIntentModal}
+                id={props.id ? props.id : props.match.params.id}
+              />
+            </EventsInfo>
+            <div style={{ margin: "16px", marginBottom: 0, marginTop: 0 }}>
+              <HeaderTitle title="Feed" />
+            </div>
+            <Feeds
+              providerId={props.providerId}
+              openValidationModal={props.toggleValidationModal}
+              id={props.id ? props.id : props.match.params.id}
+            />
+          </Overview>
+        </Inside>
+      </Content>
+      <IntentModal
+        modalIsOpen={props.intentModalIsOpen}
+        toggleModal={props.toggleIntentModal}
+        contributionId={props.intentModalId}
+        intent={props.intentModal}
+        addIntent={props.selectValidationModalId}
+        providerId={props.providerId}
+        scopeId={
+          props.id === props.providerId
+            ? props.providerId
+            : props.match.params.id
+        }
+      />
+      <ValidationModal
+        modalIsOpen={props.validationModalIsOpen}
+        toggleModal={props.toggleValidationModal}
+        contributionId={props.validationModalId}
+        deleteValidation={props.deleteValidation}
+        createValidation={props.createValidation}
+        myId={props.providerId}
+        handleChange={props.handleChange}
+        note={
+          <Field
+            name="note"
+            render={({ field /* _form */ }) => (
+              <Textarea {...field} placeholder="Type the validation note..." />
+            )}
+          />
+        }
+      />
+    </Wrapper>
+  );
+};
+
+export default compose(
+  graphql(createValidation, { name: "createValidationMutation" }),
+  graphql(deleteValidation, { name: "deleteValidationMutation" }),
+  graphql(updateNotification, { name: "updateNotification" }),
+  graphql(deleteNotification, { name: "deleteNotification" }),
+  withFormik({
+    mapPropsToValues: props => ({
+      month: new Date().getMonth() + 1,
+      year: new Date().getFullYear(),
+      note: ""
+    }),
+    validationSchema: Yup.object().shape({
+      month: Yup.number(),
+      year: Yup.number(),
+      note: Yup.string()
+    })
+  }),
+  withState("validationModalIsOpen", "toggleValidationModalIsOpen", false),
+  withState("intentModalIsOpen", "toggleIntentModalIsOpen", false),
+  withState("validationModalId", "selectValidationModalId", null),
+  withState("intentModal", "selectIntentModal", null),
+  withHandlers({
+    toggleValidationModal: props => contributionId => {
+      props.selectValidationModalId(contributionId);
+      props.toggleValidationModalIsOpen(!props.validationModalIsOpen);
+    },
+    toggleIntentModal: props => contributionId => {
+      props.selectIntentModal(contributionId);
+      props.toggleIntentModalIsOpen(!props.intentModalIsOpen);
+    }
+  }),
+  withHandlers({
+    createValidation: props => eventId => {
+      return props
+        .createValidationMutation({
+          variables: {
+            token: localStorage.getItem("oce_token"),
+            validatedById: props.providerId,
+            economicEventId: eventId,
+            note: props.values.note
+          },
+          update: (store, { data }) => {
+            let claimCache = store.readQuery({
+              query: Claim,
+              variables: {
+                token: localStorage.getItem("oce_token"),
+                id: Number(eventId)
+              }
+            });
+            claimCache.viewer.economicEvent.validations.push({
+              id: data.createValidation.validation.id,
+              note: data.createValidation.validation.note,
+              validatedBy: {
+                id: data.createValidation.validation.validatedBy.id,
+                name: data.createValidation.validation.validatedBy.name,
+                __typename: "Person"
+              },
+              __typename: "Validation"
+            });
+            store.writeQuery({
+              query: Claim,
+              variables: {
+                token: localStorage.getItem("oce_token"),
+                id: Number(eventId)
+              },
+              data: claimCache
+            });
+          }
+        })
+        .then(
+          data => {
+            props.toggleValidationModal(eventId);
+            props
+              .updateNotification({
+                variables: {
+                  message: (
+                    <div style={{ fontSize: "14px" }}>
+                      <span
+                        style={{ marginRight: "10px", verticalAlign: "sub" }}
+                      >
+                        <Icons.Bell width="18" height="18" color="white" />
+                      </span>
+                      Validation updated successfully!
+                    </div>
+                  ),
+                  type: "success"
+                }
+              })
+              .then(res => {
+                setTimeout(() => {
+                  props.deleteNotification({
+                    variables: { id: res.data.addNotification.id }
+                  });
+                }, 1000);
+              });
+          },
+          e => {
+            const errors = e.graphQLErrors.map(error => error.message);
+            props.toggleValidationModal(eventId);
+            props
+              .updateNotification({
+                variables: {
+                  message: (
+                    <div style={{ fontSize: "14px" }}>
+                      <span
+                        style={{ marginRight: "10px", verticalAlign: "sub" }}
+                      >
+                        <Icons.Cross width="18" height="18" color="white" />
+                      </span>
+                      {errors}
+                    </div>
+                  ),
+                  type: "alert"
+                }
+              })
+              .then(res => {
+                setTimeout(() => {
+                  props.deleteNotification({
+                    variables: { id: res.data.addNotification.id }
+                  });
+                }, 1000);
+              });
+          }
+        );
+    },
+    deleteValidation: props => (eventId, valId) => {
+      return props
+        .deleteValidationMutation({
+          variables: {
+            token: localStorage.getItem("oce_token"),
+            id: valId
+          },
+          update: (store, { data }) => {
+            let claimCache = store.readQuery({
+              query: Claim,
+              variables: {
+                token: localStorage.getItem("oce_token"),
+                id: Number(eventId)
+              }
+            });
+            let ValIndex = claimCache.viewer.economicEvent.validations.findIndex(
+              item => Number(item.id) === Number(valId)
+            );
+            claimCache.viewer.economicEvent.validations.splice(ValIndex, 1);
+            store.writeQuery({
+              query: Claim,
+              variables: {
+                token: localStorage.getItem("oce_token"),
+                id: Number(eventId)
+              },
+              data: claimCache
+            });
+          }
+        })
+        .then(
+          data => {
+            props.toggleValidationModal(eventId);
+            props
+              .updateNotification({
+                variables: {
+                  message: (
+                    <div style={{ fontSize: "14px" }}>
+                      <span
+                        style={{ marginRight: "10px", verticalAlign: "sub" }}
+                      >
+                        <Icons.Bell width="18" height="18" color="white" />
+                      </span>
+                      Validation updated successfully!
+                    </div>
+                  ),
+                  type: "success"
+                }
+              })
+              .then(res => {
+                setTimeout(() => {
+                  props.deleteNotification({
+                    variables: { id: res.data.addNotification.id }
+                  });
+                }, 1000);
+              });
+          },
+          e => {
+            const errors = e.graphQLErrors.map(error => error.message);
+            props.toggleValidationModal(eventId);
+            props
+              .updateNotification({
+                variables: {
+                  message: (
+                    <div style={{ fontSize: "14px" }}>
+                      <span
+                        style={{ marginRight: "10px", verticalAlign: "sub" }}
+                      >
+                        <Icons.Cross width="18" height="18" color="white" />
+                      </span>
+                      {errors}
+                    </div>
+                  ),
+                  type: "alert"
+                }
+              })
+              .then(res => {
+                setTimeout(() => {
+                  props.deleteNotification({
+                    variables: { id: res.data.addNotification.id }
+                  });
+                }, 1000);
+              });
+          }
+        );
+    }
+  })
+)(Agent);
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,29 +320,15 @@ const Wrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  ${media.lessThan('medium')`
-    display: ${props => props.isOpen ? 'none' : 'flex'}
-  `}
-`;
-
-const Header = styled.div`
-  position: relative;
-  flex: 0 0 auto;
-  height: 50px;
-  width: 620px;
-  margin: 0 auto;
-  color: ${props => props.theme.color.p100};
-  ${clearFix()};
-  ${media.lessThan('medium')`
-    width: 100%;
-  `}
+  ${media.lessThan("medium")`
+    display: ${props => (props.isOpen ? "none" : "flex")}
+  `};
 `;
 
 const Content = styled.div`
   contain: strict;
   flex: 1 1 auto;
   will-change: transform;
-  padding: 8px;
   display: flex;
   flex: 1;
 `;
@@ -52,177 +341,31 @@ const Inside = styled.div`
   position: relative;
   overflow-y: overlay;
   position: relative;
-  min-height: 100vh;
-`;
-
-const HeaderLeft = styled.div`
-  float: left;
-  ${clearFix()};
-  ${media.lessThan('medium')`
-    margin-left: 8px;
-  `}
-`;
-
-const HeaderSpan = styled.div`
-  float: left;
-  vertical-align: sub;
-  margin-top: 14px;
-  margin-left: 0px;
-  cursor:pointer;
-  display: none;
-  ${media.lessThan('medium')`
-    display: block;
-    margin-right: 8px;
-  `}
-`;
-
-const HeaderRight = styled.div`
-  float: right;
-  ${clearFix()};
-  ${media.lessThan('medium')`
-    margin-right: 8px;
-  `}
-`;
-
-const Span = styled.div`
-  margin-top: 16px;
-  margin-right: 0px;
-  cursor: pointer;
-  float: left;
-  margin-left: 16px;
-`;
-
-const Img = styled.div`
-  float: left;
-  background: url(${props => props.src});
-  border-radius: ${props => props.theme.avatar.radius};
-  width: ${props => props.theme.avatar.mini};
-  height: ${props => props.theme.avatar.mini};
-  margin-top: 11px;
-  margin-left: 0px;
-  background-size: cover;
-  background-color: ${props => props.theme.color.p600};
-`;
-const Title = styled.h2`
-  float: left;
-  margin-left: 8px;
-  line-height: 50px;
 `;
 
 const Overview = styled.div`
   flex: 1;
-  width: 620px;
-  margin: 0 auto;
-  margin-top: 16px;
-  background: ${props => props.theme.color.p600};
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  ${media.lessThan('medium')`
+  ${media.lessThan("medium")`
   width: 100%;
-  `}
+  `};
 `;
 
-const FeedHeader = styled.div`
-  height: 40px;
-  border-bottom: 1px solid #f0f0f020;
-`;
-const HeaderTitle = styled.h3`
-  color: ${props => props.theme.color.p300};
-  line-height: 40px;
-  margin-left: 8px;
-`;
+// const Textarea = styled.textarea`
+// width: 100%;
+// height: 100%;
+// box-sizing: border-box;
+// border: none;
+// padding: 8px;
+// resize: none;
+// ${placeholder({
+//   fontFamily: 'Fira-Sans'
+// })}
+// `
 
-const FeedList = styled.div`
-  margin-top: 8px;
-  margin-bottom: 60px;
-  padding: 0;
+const EventsInfo = styled.div`
+  display: grid;
+  column-gap: 16px;
+  grid-template-columns: 1fr 2fr
+  padding: 16px;
+  padding-top: 0;
 `;
-
-const FeedItem = styled.div`
-  font-size: ${props => props.theme.fontSize.h3};
-  color:  ${props => props.theme.color.p100};
-`;
-
-const B = styled.b`
-  text-decoration: underline;
-  font-weight: 500;
-  color: ${props => props.theme.color.p100};
-`;
-
-const Agent = props => {
-  return (
-    <Query
-      query={getFeed}
-      variables={{
-        token: localStorage.getItem("oce_token"),
-        id: props.id ? props.id : Number(props.match.params.id)
-      }}
-    >
-      {({ loading, error, data, refetch }) => {
-        if (loading) return <LoadingMini />;
-        if (error)
-          return (
-            <ErrorMini refetch={refetch} message={`Error! ${error.message}`} />
-          );
-          console.log(data)
-        return (
-          <Wrapper isOpen={props.isOpen}>
-            <Header>
-              <HeaderLeft>
-                <HeaderSpan onClick={props.toggleLeftPanel}><Icons.Left width='22' height='22' color='#99ADC6' /></HeaderSpan>
-                <Img src={`${data.viewer.agent.image}`} />
-                <Title>{data.viewer.agent.name}</Title>
-              </HeaderLeft>
-              <HeaderRight>
-                <Span>
-                  <Icons.Search width="20" height='20' color="#99ADC6" />
-                </Span>
-                <Span onClick={props.togglePanel}>
-                  <Icons.Sidebar width="22" color="#99ADC6" />
-                </Span>
-              </HeaderRight>
-            </Header>
-            <Content>
-              <Inside>
-                  <SmartSentence 
-                    providerId={props.providerId}
-                    scopeId={props.id === props.providerId ? props.providerId : props.match.params.id}
-                  />
-                <Overview>
-                  <FeedHeader>
-                    <HeaderTitle>Recent Activities</HeaderTitle>
-                  </FeedHeader>
-                  <FeedList>
-                        {data.viewer.agent.agentEconomicEvents.map((ev, i) => (
-                          <Feed
-                            image={ev.provider.image}
-                            key={i}
-                            primary={
-                              <FeedItem>
-                                <B>{ev.provider.name}</B>{" "}
-                                {ev.action +
-                                  " " +
-                                  ev.affectedQuantity.numericValue +
-                                  " " +
-                                  ev.affectedQuantity.unit.name + 
-                                  " of "}
-                                  <i>{ev.affects.resourceClassifiedAs.name}</i>
-                              </FeedItem>
-                            }
-                            secondary={ev.note}
-    
-                            date={moment(ev.start).format("DD MMM")}
-                          />
-                        ))}
-                      </FeedList>
-                </Overview>
-              </Inside>
-            </Content>
-          </Wrapper>
-        );
-      }}
-    </Query>
-  );
-};
-
-export default Agent;

@@ -24,6 +24,8 @@ const Agent = props => {
         isOpen={data.isOpen}
         scopeId={scopeId}
         providerId={providerId}
+        providerName={data.data.name}
+        providerImage={data.data.image}
       />
       <RightPanel
         id={id}

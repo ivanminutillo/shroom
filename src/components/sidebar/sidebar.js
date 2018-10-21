@@ -32,6 +32,8 @@ const Header = styled.div`
   height: 50px;
   display: flex;
   align-items: center;
+  background: ${props => props.theme.color.p700};
+  border-bottom: 1px solid #1E2024;
 `;
 
 const Span = styled.div`
@@ -39,15 +41,14 @@ const Span = styled.div`
   cursor: pointer;
   flex: 1;
   text-align: center;
-  margin-right: 8px;
-  margin-left: 8px;
+  margin-left: 16px;
 `;
 
 const SpanInput = styled.div`
   flex: 10;
   margin-right: 8px;
   & input {
-    background: #393f50;
+    background: ${props => props.theme.color.p600};;
     color: #f0f0f0;
     ${placeholder({ color: "#f0f0f0" })};
   }
@@ -70,21 +71,21 @@ const Sidebar = ({ togglePanel, agents, data, isOpen, toggleSidebar }) => {
           <Icons.Menu width="18" color="#f0f0f0" />
         </Span>
         <SpanInput>
-          <Input placeholder="Search" />
+          <NavLink
+            onClick={toggleSidebar}
+            to={"/"}
+            exact
+            activeStyle={{ background: "#2F4F70" }}
+          >
+            <AvatarWrapper>
+              <Img small src={`${data.image}`} />
+              <AvatarTitle>{data.name}</AvatarTitle>
+            </AvatarWrapper>
+          </NavLink>
         </SpanInput>
       </Header>
       <List>
-        <NavLink
-          onClick={toggleSidebar}
-          to={"/"}
-          exact
-          activeStyle={{ background: "#2F4F70" }}
-        >
-          <AvatarWrapper>
-            <Img src={`${data.image}`} />
-            <AvatarTitle>{data.name}</AvatarTitle>
-          </AvatarWrapper>
-        </NavLink>
+       
         {agents.map((a, i) => (
           <NavLink
             activeStyle={{ background: "#2F4F70" }}

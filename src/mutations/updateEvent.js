@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export default gql`
-mutation ($token: String!, $id: Int!, $start: String!, $requestDistribution: Boolean, $scopeId: Int!, $note: String, $affectedNumericValue: String!, $affectedUnitId: Int! ) {
+mutation ($token: String!, $providerId: Int, $id: Int!, $start: String, $requestDistribution: Boolean, $scopeId: Int, $note: String, $affectedNumericValue: String, $affectedUnitId: Int ) {
   updateEconomicEvent(
     token: $token,
     id: $id,
@@ -9,6 +9,7 @@ mutation ($token: String!, $id: Int!, $start: String!, $requestDistribution: Boo
     scopeId: $scopeId, 
     requestDistribution: $requestDistribution, 
     note: $note,
+    providerId: $providerId
     affectedNumericValue: $affectedNumericValue,
     affectedUnitId: $affectedUnitId,
     ) {

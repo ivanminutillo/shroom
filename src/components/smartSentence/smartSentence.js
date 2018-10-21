@@ -1,51 +1,106 @@
 import React from "react";
-import { Icons, Input } from "oce-components/build";
+import { Icons } from "oce-components/build";
 import styled from "styled-components";
 import { clearFix } from "polished";
-import Log from "../logEvent/styled";
-import media from "styled-media-query";
-import {placeholder} from 'polished'
-import BoxHeader from './boxHeader'
+import { MentionsInput, Mention } from "react-mentions";
+import defaultStyle from "./defaultStyle";
 
 const Wrapper = styled.div`
-position: relative;
   ${clearFix()};
-  & input {
-    float: left;
-    width: 580px;
-    height: 50px;
-    border-radius: 4px;
-    background: #42495B;
-    text-indent: 8px;
-    color: ${props => props.theme.color.p100};
-    ${placeholder({ color: "#f0f0f0" })};
-    ${media.lessThan('medium')`
-        width: 100%;
-    `}
-  }
+  margin-left: 40px;
+  margin-right: 60px;
+  min-height: 50px;
 `;
 
 const SpanRight = styled.div`
-  width: 40px;
+  width: 30px;
   text-align: center;
-  margin-top: 15px;
   position: absolute;
-  right: 10px;
+  right: 16px;
+  top: 15px;
+  cursor: pointer;
 `;
 
+const SpanLeft = styled.div`
+  width: 30px;
+  text-align: center;
+  position: absolute;
+  left: 8px;
+  top: 15px;
+  cursor: pointer;
+`;
 
-const SmartSentence = ({ handleMenuSelection, menuSelected }) => {
-    return (
-    <Log.Module>
-        <BoxHeader menuSelected={menuSelected} handleMenuSelection={handleMenuSelection} />
-      <Wrapper>
-        <Input placeholder="Type your message..." />
-        <SpanRight>
-          <Icons.Right width="20" color="#989BA0" />
-        </SpanRight>
+const Module = styled.div`
+  border-radius: 0px;
+  min-height: 80px;
+`;
+
+const SentenceContainer = styled.div`
+  background: #f0f0f0;
+  border-radius: 4px;
+  border: 1px solid #dadada;
+  position: relative;
+  min-height: 50px;
+  margin: 16px;
+  margin-bottom: 0;
+`;
+
+const SmartSentence = ({
+  value,
+  onTaxonomies,
+  onEvents,
+  toggleModal,
+  onAddTaxonomy,
+  onAddProcess,
+  onAddEvent,
+  handleChange,
+  economicEvent,
+  onProcesses,
+  toggleHelpModal
+}) => {
+  return (
+    <Module>
+      <SentenceContainer>
+        <Wrapper>
+          <SpanLeft onClick={toggleHelpModal}>
+            <Icons.Grid width="20" color="#989BA0" />
+          </SpanLeft>
+          <MentionsInput
+            value={value}
+            style={defaultStyle}
+            placeholder="Message"
+            onChange={handleChange}
+            markup="@[__type__ __id__ : __display__]@"
+          >
+            <Mention
+              type="taxonomy"
+              trigger="#"
+              data={onTaxonomies}
+              onAdd={onAddTaxonomy}
+              style={{ backgroundColor: "rgb(224, 233, 196)" }}
+            />
+            <Mention
+              type="process"
+              trigger=">"
+              data={onProcesses}
+              onAdd={onAddProcess}
+              style={{ backgroundColor: "rgb(224, 200, 196)" }}
+            />
+            <Mention
+              type="event"
+              trigger="!"
+              data={onEvents}
+              onAdd={onAddEvent}
+              style={{ backgroundColor: "#b5f6b4" }}
+            />
+          </MentionsInput>
         </Wrapper>
-    </Log.Module>
-  
-)};
+          <SpanRight onClick={toggleModal}>
+            <Icons.Send width="20" color="#989BA0" />
+          </SpanRight>
+      </SentenceContainer>
+    </Module>
+  );
+};
 
 export default SmartSentence;

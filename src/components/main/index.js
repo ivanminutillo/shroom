@@ -11,6 +11,7 @@ import { ApolloConsumer } from 'react-apollo';
 const Wrapper = styled.div`
 display: flex;
 flex: 1;
+border-left: 1px solid #1E2024;
 ${media.lessThan("medium")`
   ${props =>
     props.isSidebarOpen &&
@@ -34,7 +35,6 @@ const Main = props => {
         toggleLeftPanel={props.toggleLeftPanel}
         onTogglePanel={props.onTogglePanel}
         isSidebarOpen={props.isSidebarOpen}
-        providerId={props.providerId}
         client={client}
       />
       <PropsRoute

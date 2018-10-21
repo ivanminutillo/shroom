@@ -4,6 +4,7 @@ const updateCommitment = gql`
   mutation(
     $token: String!
     $id: Int!
+    $providerId: Int
     $note: String
     $due: String
     $committedResourceClassifiedAsId: Int
@@ -17,6 +18,7 @@ const updateCommitment = gql`
       note: $note
       id: $id
       due: $due
+      providerId: $providerId
       isFinished: $isFinished
       action: $action
       committedResourceClassifiedAsId: $committedResourceClassifiedAsId
@@ -28,6 +30,15 @@ const updateCommitment = gql`
         note
         isFinished
         due
+        provider {
+          id
+          name
+        }
+        involvedAgents {
+          id
+          name
+          image
+        }
         committedQuantity {
           unit {
             id

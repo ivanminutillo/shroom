@@ -10,7 +10,7 @@ import Alert from "../../components/alert";
 import * as Yup from "yup";
 import { compose, withHandlers, withState } from "recompose";
 import media from "styled-media-query";
-import BoxHeader from "../smartSentence/boxHeader";
+// import BoxHeader from "../smartSentence/boxHeader";
 import postTx, { newTx } from "../../xhr/socialwallet";
 import axios from 'axios'
 
@@ -108,11 +108,11 @@ const Transfer = ({
   return (
     <Form>
       <Log.Module>
-        <BoxHeader
+        {/* <BoxHeader
           isWallet={isWallet}
           menuSelected={menuSelected}
           handleMenuSelection={handleMenuSelection}
-        />
+        /> */}
         <First>
           <Field
             name="username"

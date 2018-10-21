@@ -1,5 +1,5 @@
 import styled, {css} from "styled-components";
-import { clearFix } from "polished";
+import { clearFix, ellipsis } from "polished";
 
 export const Img = styled.div`
   float: left;
@@ -7,6 +7,13 @@ export const Img = styled.div`
   border-radius: ${props => props.theme.avatar.radius};
   width: ${props => props.theme.avatar.size};
   height: ${props => props.theme.avatar.size};
+  ${props =>
+    props.small &&
+    css`
+      width: 28px;
+      height: 28px;
+      margin-top: 4px;
+    `};
   background-size: cover;
   background-position: center;
   background-color:  ${props => props.theme.color.p600};
@@ -17,6 +24,7 @@ export const AvatarTitle = styled.h3`
   margin-left: 8px;
   line-height: ${props => props.theme.avatar.size};
   font-weight: 400;
+  ${ellipsis('200px')}
 `;
 
 export const AvatarWrapper = styled.div`

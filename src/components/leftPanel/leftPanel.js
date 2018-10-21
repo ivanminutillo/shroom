@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import { Icons } from "oce-components/build";
 import { Img, AvatarTitle, AvatarWrapper } from "../../atoms/avatar";
 import { NavLink } from "react-router-dom";
-import { compose, withState, withHandlers } from "recompose";
+import { compose, withHandlers } from "recompose";
 import media from "styled-media-query";
 
 const LeftPanel = styled.section`
@@ -111,14 +111,14 @@ const Sidebar = ({ togglePanel, active, data, logout }) => (
         </Span>
         <Title>Validate</Title>
       </Item>
-      <NavLink to={"/wallet"}>
+      {/* <NavLink to={"/wallet"}>
         <Item>
           <Span>
             <Icons.Folder color="#99ADC6" width="18" />
           </Span>
           <Title>Wallet</Title>
         </Item>
-      </NavLink>
+      </NavLink> */}
       <Item>
         <Span>
           <Icons.Settings color="#99ADC6" width="18" />

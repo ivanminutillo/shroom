@@ -115,7 +115,6 @@ const RightPanel = ({ onTogglePanel, isOpen, id, match }) =>
             return (
               <ErrorMini refetch={refetch} message={`Error! ${error.message}`} />
             );
-            console.log(data)
           return (
     <Wrapper>
       <Header>

@@ -89,7 +89,6 @@ export const resolvers = {
       return data;
     },
     addTxsList: (_, { id, amount, from, to, date, tags }, { cache }) => {
-      console.log(id, amount, from, to, date, tags);
       const query = gql`
        query GetTxs {
          txs @client {
