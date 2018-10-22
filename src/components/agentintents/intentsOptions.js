@@ -22,7 +22,7 @@ color: #f0f0f0;
 font-size: 14px;
 `
 
-export default ({ onIntentQuery, value }) => (
+export default ({ onIntentQuery, value, profile }) => (
     <Form>
       <Item>
         <Option>
@@ -32,38 +32,45 @@ export default ({ onIntentQuery, value }) => (
             value="All"
             type="radio"
             name="intents"
-            defaultChecked
+            checked={'All' === value}
             onChange={() => onIntentQuery("All")}
           />
           <label htmlFor="All">Show all requirements</label>
         </Option>
       </Item>
-      <Item>
+      {profile ? null :
+        <Item>
         <Option>
           <input
           style={{marginRight: '10px'}}
             id="Available"
             value="Available"
             type="radio"
+            checked={'Available' === value}
             name="intents"
             onChange={() => onIntentQuery("Available")}
           />
           <label htmlFor="Available">Show available requirements</label>
         </Option>
       </Item>
+      }
+      {profile ? null :
       <Item>
-        <Option>
-          <input
-          style={{marginRight: '10px'}}
-            id="Taken"
-            value="Taken"
-            type="radio"
-            name="intents"
-            onChange={() => onIntentQuery("Taken")}
-          />
-          <label htmlFor="Taken">Show taken requirements</label>
-        </Option>
-      </Item>
+      <Option>
+        <input
+        style={{marginRight: '10px'}}
+          id="Taken"
+          value="Taken"
+          type="radio"
+          checked={'Taken' === value}
+          name="intents"
+          onChange={() => onIntentQuery("Taken")}
+        />
+        <label htmlFor="Taken">Show taken requirements</label>
+      </Option>
+    </Item>
+      }
+      
       <Item>
         <Option>
           <input
@@ -72,6 +79,7 @@ export default ({ onIntentQuery, value }) => (
             value="Completed"
             type="radio"
             name="intents"
+            checked={'Completed' === value}
             onChange={() => onIntentQuery("Completed")}
           />
           <label htmlFor="Completed">Show completed requirements</label>

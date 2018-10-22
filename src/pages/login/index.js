@@ -85,7 +85,7 @@ const Login = ({ touched, errors }) => {
             {touched.password &&
               errors.password && <Alert>{errors.password}</Alert>}
           </div>
-          <Button data-testid="login">login</Button>
+          <Button type='submit' data-testid="login">login</Button>
         </Form>
       </Body>
     </Wrapper>

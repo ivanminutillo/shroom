@@ -3,6 +3,7 @@ import styled, {css} from "styled-components";
 import { withState, withHandlers, compose } from "recompose";
 import { PropsRoute } from "../../helpers/router";
 import Agent from "../../pages/agent";
+import Home from "../../pages/home";
 import Wallet from "../../pages/wallet";
 import media from 'styled-media-query'
 import { ApolloConsumer } from 'react-apollo';
@@ -29,7 +30,7 @@ const Main = props => {
       <PropsRoute
         exact
         path={props.match.path}
-        component={Agent}
+        component={Home}
         id={props.data.id}
         data={props}
         toggleLeftPanel={props.toggleLeftPanel}

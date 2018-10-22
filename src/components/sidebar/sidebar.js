@@ -34,6 +34,12 @@ const Header = styled.div`
   align-items: center;
   background: ${props => props.theme.color.p700};
   border-bottom: 1px solid #1E2024;
+
+  margin: 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 20px rgba(0,0,0,.2);
+  background-color: #21D4FD;
+  background-image: linear-gradient(45deg, #31c5e7 0%, #a146cf 100%);
 `;
 
 const Span = styled.div`
