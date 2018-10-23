@@ -1,19 +1,30 @@
 import React from "react";
-import { Button, Icons } from "oce-components/build";
+import { Icons } from "oce-components/build";
 import moment from "moment";
 import styled from "styled-components";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../loading";
 import GetEvent from "../../queries/getEvent";
 import { NavLink } from "react-router-dom";
-import { clearFix, placeholder } from "polished";
-
-export default ({
+import { clearFix } from "polished";
+import CreateValidation, {DeleteValidation} from '../toggleValidation'
+import { compose } from "recompose";
+import { Field, withFormik } from "formik";
+import * as Yup from "yup";
+import Textarea from '../../atoms/textarea'
+export default compose(
+  withFormik({
+    mapPropsToValues: props => ({
+      note: ""
+    }),
+    validationSchema: Yup.object().shape({
+      note: Yup.string()
+    })
+  }),
+)(({
   contributionId,
-  createValidation,
-  deleteValidation,
+  values,
   myId,
-  note
 }) => {
   return (
     <Query
@@ -94,16 +105,7 @@ export default ({
                     </ValMain>
                     <ValMainNote>{val.note}</ValMainNote>
                     {Number(val.validatedBy.id) === Number(myId) ? (
-                      <Button
-                        onClick={() =>
-                          deleteValidation(data.viewer.economicEvent.id, val.id)
-                        }
-                      >
-                        <span>
-                          <Icons.Trash width="18" height="18" color="#f0f0f0" />
-                        </span>
-                        Delete validation
-                      </Button>
+                      <DeleteValidation validationId={val.id} eventId={data.viewer.economicEvent.id}/>
                     ) : null}
                   </ValidationsItem>
                 );
@@ -123,18 +125,16 @@ export default ({
                     marginRight: "-16px"
                   }}
                 >
-                  {note}
+                  <Field
+            name="note"
+            render={({ field /* _form */ }) => (
+              <Textarea {...field} placeholder="Type the validation note..." />
+            )}
+          />
                 </div>
 
                 <Footer>
-                  <Button
-                    style={{ float: "right", borderRadius: 0 }}
-                    onClick={() =>
-                      createValidation(data.viewer.economicEvent.id)
-                    }
-                  >
-                    Validate
-                  </Button>
+                  <CreateValidation  eventId={contributionId} providerId={myId} note={values.note} />
                 </Footer>
               </div>
             )}
@@ -143,7 +143,7 @@ export default ({
       }}
     </Query>
   );
-};
+});
 
 const Title = styled.h3`
   color: ${props => props.theme.color.p900};

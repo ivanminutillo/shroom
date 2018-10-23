@@ -24,7 +24,10 @@ const Dialog = styled.div`
   background-color: #edeff0;
   padding: 0;
   margin: 40px auto;
-  position: relative;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  margin-left: -350px;
   border-radius: 3px;
   outline: none;
 `;

@@ -98,6 +98,7 @@ const Intent = ({ intentId, providerId, addIntent, scopeId }) => {
               ) : null}
             </Section>
             <div>
+              <Suptitle>Activities</Suptitle>
               {intent.fulfilledBy
                 ? intent.fulfilledBy.map((ev, i) => (
                     <Feed
@@ -161,6 +162,16 @@ const B = styled.b`
   text-decoration: underline;
   font-weight: 500;
   color: ${props => props.theme.color.p800};
+`;
+
+const Suptitle = styled.h3`
+  font-weight: 500;
+  color: ${props => props.theme.color.p300};
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  margin-top: 16px;
 `;
 
 const Members = styled.div`

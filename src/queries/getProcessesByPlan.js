@@ -1,17 +1,16 @@
 import gql from 'graphql-tag'
 
-export default gql`
+const Plan = gql`
 query ($token: String, $id: Int) {
     viewer(token: $token) {
-      agent(id: $id) {
+      plan(id: $id) {
         id
-        agentPlans (isFinished: false)  {
-          name
+        planProcesses {
           id
-          note
-          due
+          name
         }
       }
     }
-  }
+  } 
 `
+export default Plan

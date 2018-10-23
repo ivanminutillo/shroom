@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { event } from "../fragments/economicEvents";
 
 const createCommitment = gql`
   mutation(
@@ -30,16 +31,17 @@ const createCommitment = gql`
       providerId: $providerId
     ) {
       commitment {
-        action
         id
-        note
-        scope {
-          id
-        }
+        isFinished
         fulfilledBy {
-          fulfilledQuantity {
-            numericValue
+          fulfilledBy {
+            ...BasicEvent
           }
+        }
+        provider {
+          id
+          image
+          name
         }
         inputOf {
           id
@@ -49,28 +51,24 @@ const createCommitment = gql`
           id
           name
         }
-        due
-        isFinished
-        involvedAgents {
-          image
-          id
-          name
-        }
+        note
+        action
         committedQuantity {
+          numericValue
           unit {
             id
             name
           }
-          numericValue
         }
+        due
         resourceClassifiedAs {
-          category
           name
           id
         }
       }
     }
   }
+  ${event}
 `;
 
 export default createCommitment;

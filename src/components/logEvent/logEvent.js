@@ -69,6 +69,27 @@ const Row = styled.div`
     ${placeholder({ color: "#f0f0f0" })};
   }
 `;
+const customStyles = {
+  control: base => ({
+    ...base,
+    background: '#4F576C',
+    border: '1px solid #7D849A50',
+    color: '#f0f0f0'
+  }),
+  input: base => ({
+    ...base,
+    color: '#f0f0f0'
+  }),
+  singleValue: base => ({
+    ...base,
+    color: '#f0f0f0'
+  }),
+  placeholder: base => ({
+    ...base,
+    color: '#f0f0f0',
+    fontSize: '14px'
+  })
+};
 
 const LogEvent = props => {
   const promiseOptions = (client, val) => {
@@ -91,27 +112,6 @@ const LogEvent = props => {
       });
   };
 
-  const customStyles = {
-    control: base => ({
-      ...base,
-      background: '#4F576C',
-      border: '1px solid #7D849A50',
-      color: '#f0f0f0'
-    }),
-    input: base => ({
-      ...base,
-      color: '#f0f0f0'
-    }),
-    singleValue: base => ({
-      ...base,
-      color: '#f0f0f0'
-    }),
-    placeholder: base => ({
-      ...base,
-      color: '#f0f0f0',
-      fontSize: '14px'
-    })
-  };
   
   const {
     values,
@@ -122,6 +122,7 @@ const LogEvent = props => {
     setFieldTouched,
     menuSelected
   } = props;
+  console.log(values)
   return (
     <ApolloConsumer>
       {client => (
@@ -135,15 +136,11 @@ const LogEvent = props => {
                     render={({ field }) => {
                       return (
                       <Select
-                        onChange={val =>
-                          props.setFieldValue("action",  {value: val.value, label: val.label})
-                        }
-                        value={{
-                          value: field.value.value,
-                          label: field.value.label
-                        }}
+                        onChange={val => props.setFieldValue("action",  {value: val.value, label: val.label})}
                         options={Events}
                         styles={customStyles}
+                        value={field.value}
+                        placeholder='Select an event'
                       />
                     )}}
                   />
@@ -155,7 +152,6 @@ const LogEvent = props => {
                     name="numericValue"
                     render={({ field }) => (
                       <Input
-                        value={field.value}
                         name={field.name}
                         onChange={field.onChange}
                         type="number"
@@ -180,10 +176,8 @@ const LogEvent = props => {
                         onChange={val => props.setFieldValue("unit",  {value: val.value, label: val.label})}
                         options={Units}
                         styles={customStyles}
-                        value={{
-                          value: field.value.value,
-                          label: field.value.label
-                        }}
+                        placeholder='Select a unit'
+                        value={field.value}
                       />
                     )}}
                   />
@@ -195,13 +189,10 @@ const LogEvent = props => {
                   name="affectedResourceClassifiedAsId"
                   render={({ field }) => (
                     <AsyncSelect
-                      placeholder={"Select a classification..."}
+                      placeholder="Select a classification..."
                       defaultOptions
                       cacheOptions
-                      value={{
-                        value: field.value.value,
-                        label: field.value.label
-                      }}
+                      value={field.value}
                       styles={customStyles}
                       onChange={val =>
                         props.setFieldValue(
