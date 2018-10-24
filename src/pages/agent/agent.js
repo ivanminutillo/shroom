@@ -20,7 +20,6 @@ const Agent = props => {
         id={props.id ? props.id : props.match.params.id}
         toggleLeftPanel={props.toggleLeftPanel}
         togglePanel={props.togglePanel}
-        openNewReq={props.togglenewRequirementModal}
       />
       {props.id ? null : (
         <ApolloConsumer>
@@ -47,6 +46,7 @@ const Agent = props => {
               <AgentIntents
                 toggleModal={props.toggleIntentModal}
                 id={props.id ? props.id : props.match.params.id}
+                openNewReq={props.togglenewRequirementModal}
               />
             </EventsInfo>
             <div style={{ margin: "16px", marginBottom: 0, marginTop: 0 }}>

@@ -122,7 +122,6 @@ const LogEvent = props => {
     setFieldTouched,
     menuSelected
   } = props;
-  console.log(values)
   return (
     <ApolloConsumer>
       {client => (

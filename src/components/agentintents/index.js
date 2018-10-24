@@ -57,7 +57,15 @@ const Span = styled.div`
 `;
 const Intents = props => (
   <Wrapper>
-    <Header title={`Requirements (${props.intentQuery})`} actions={<span><Span withText onClick={props.handleQuery}><Icons.Eye width='18' height='18' color={props.query === 'Commitments' ? 'rgb(153, 173, 198)' : '#3B99FC'} /><SpanText>match my skills</SpanText></Span><Span active={props.intentsOptions} onClick={props.onIntentsOptions} ><Icons.Settings width='18' height='18' color='rgb(153, 173, 198)' /></Span></span>} />
+    <Header title={`Requirements (${props.intentQuery})`} actions={<span>
+      <Span onClick={props.openNewReq} ><Icons.Plus width='18' height='18' color='rgb(153, 173, 198)' /></Span>
+      <Span withText onClick={props.handleQuery}>
+        <Icons.Eye width='18' height='18' color={props.query === 'Commitments' ? 'rgb(153, 173, 198)' : '#3B99FC'} />
+        <SpanText>match my skills</SpanText>
+      </Span>
+      <Span active={props.intentsOptions} onClick={props.onIntentsOptions} >
+        <Icons.Settings width='18' height='18' color='rgb(153, 173, 198)' />
+      </Span></span>} />
     {props.intentsOptions ? <IntentsOptions profile={props.profile} value={props.intentQuery} onIntentQuery={props.onIntentQuery} /> : null}
     <Content>
       <Query

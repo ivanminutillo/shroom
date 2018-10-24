@@ -6,14 +6,23 @@ import { Icons } from "oce-components";
 import { NavLink } from "react-router-dom";
 import LogEvent from "../logEvent/index";
 import Feed from "../../components/FeedItem";
-import AddProvider, {DeleteProvider} from "../addProvider";
+import AddProvider, { DeleteProvider } from "../addProvider";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import getComm from "../../queries/getCommitment";
 import CommitmentStatus from "../commitmentStatus";
 import EditDueDate from "../editDueDate";
+import { withHandlers, withState, compose } from "recompose";
+import EditSentence from "./editSentence";
 
-const Intent = ({ intentId, providerId, addIntent, scopeId }) => {
+const Intent = ({
+  intentId,
+  providerId,
+  addIntent,
+  isSentenceOpen,
+  handleSentenceOpen,
+  scopeId
+}) => {
   return (
     <Query
       query={getComm}
@@ -22,7 +31,7 @@ const Intent = ({ intentId, providerId, addIntent, scopeId }) => {
         id: intentId
       }}
     >
-      {({ loading, error, data, refetch, fetchMore }) => {
+      {({ loading, error, data, refetch, fetchMore, client }) => {
         if (loading) return <LoadingMini />;
         if (error)
           return (
@@ -32,20 +41,29 @@ const Intent = ({ intentId, providerId, addIntent, scopeId }) => {
         return (
           <Wrapper>
             <First>
-              <Sentence>
-                {intent.outputOf ? (
-                  <ContainerTitle>
-                    <Icons.UpRight width="16" height="16" color="#36393F" />
-                  </ContainerTitle>
-                ) : (
-                  <ContainerTitle>
-                    <Icons.UpLeft width="16" height="16" color="#36393F" />
-                  </ContainerTitle>
-                )}
-                {`${intent.action} ${intent.committedQuantity.numericValue} ${
-                  intent.committedQuantity.unit.name
-                } ${intent.resourceClassifiedAs.name}`}
-              </Sentence>
+              {isSentenceOpen ? (
+                <EditSentence
+                  client={client}
+                  handleSentenceOpen={handleSentenceOpen}
+                  intent={intent}
+                />
+              ) : (
+                <Sentence onClick={handleSentenceOpen}>
+                  {intent.outputOf ? (
+                    <ContainerTitle>
+                      <Icons.UpRight width="16" height="16" color="#36393F" />
+                    </ContainerTitle>
+                  ) : (
+                    <ContainerTitle>
+                      <Icons.UpLeft width="16" height="16" color="#36393F" />
+                    </ContainerTitle>
+                  )}
+                  {`${intent.action} ${intent.committedQuantity.numericValue} ${
+                    intent.committedQuantity.unit.name
+                  } ${intent.resourceClassifiedAs.name}`}
+                </Sentence>
+              )}
+
               <Note>{intent.note}</Note>
             </First>
             <Second>
@@ -64,12 +82,9 @@ const Intent = ({ intentId, providerId, addIntent, scopeId }) => {
                   />
                 ) : null}
                 {!intent.provider || intent.provider.id !== providerId ? (
-                  <AddProvider
-                    providerId={providerId}
-                    intentId={intent.id}
-                  />
+                  <AddProvider providerId={providerId} intentId={intent.id} />
                 ) : intent.provider && intent.provider.id === providerId ? (
-                  <DeleteProvider intentId={intent.id}  />
+                  <DeleteProvider intentId={intent.id} />
                 ) : null}
               </Members>
             </Second>
@@ -151,7 +166,14 @@ const Intent = ({ intentId, providerId, addIntent, scopeId }) => {
   );
 };
 
-export default Intent;
+export default compose(
+  withState("isSentenceOpen", "onSentenceOpen", false),
+  withHandlers({
+    handleSentenceOpen: props => () => {
+      props.onSentenceOpen(!props.isSentenceOpen);
+    }
+  })
+)(Intent);
 
 const FeedItem = styled.div`
   font-size: ${props => props.theme.fontSize.h3};
@@ -260,8 +282,17 @@ const First = styled.div`
 const Sentence = styled.h2`
   font-weight: 600;
   letter-spacing: 1px;
-  line-height: 20px;
   color: ${props => props.theme.color.p800};
+  height: 30px;
+  line-height: 30px;
+  margin-left: -8px;
+  padding-left: 8px;
+  margin-right: 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  &:hover {
+    background: #e3e3e3;
+  }
 `;
 
 const Note = styled.h3`

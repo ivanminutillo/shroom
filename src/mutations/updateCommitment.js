@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { event } from "../fragments/economicEvents";
 
 const updateCommitment = gql`
   mutation(
@@ -30,6 +31,7 @@ const updateCommitment = gql`
         note
         isFinished
         due
+        action
         provider {
           id
           name
@@ -53,16 +55,7 @@ const updateCommitment = gql`
         }
         fulfilledBy {
           fulfilledBy {
-            action
-            start
-            id
-            requestDistribution
-            note
-            provider {
-              id
-              name
-              image
-            }
+            ...BasicEvent
           }
         }
         inputOf {
@@ -71,6 +64,7 @@ const updateCommitment = gql`
       }
     }
   }
+  ${event}
 `;
 
 export default updateCommitment;

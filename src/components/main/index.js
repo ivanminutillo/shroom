@@ -7,6 +7,7 @@ import Home from "../../pages/home";
 import Wallet from "../../pages/wallet";
 import media from 'styled-media-query'
 import { ApolloConsumer } from 'react-apollo';
+import Plan from "../../pages/plan";
 
 
 const Wrapper = styled.div`
@@ -42,6 +43,17 @@ const Main = props => {
         toggleLeftPanel={props.toggleLeftPanel}
         path="/agent/:id"
         component={Agent}
+        data={props}
+        toggleLeftPanel={props.toggleLeftPanel}
+        onTogglePanel={props.onTogglePanel}
+        providerId={props.providerId}
+        isSidebarOpen={props.isSidebarOpen}
+        client={client}
+      />
+      <PropsRoute
+        toggleLeftPanel={props.toggleLeftPanel}
+        path="/plan/:id"
+        component={Plan}
         data={props}
         toggleLeftPanel={props.toggleLeftPanel}
         onTogglePanel={props.onTogglePanel}
