@@ -14,13 +14,16 @@ import CommitmentStatus from "../commitmentStatus";
 import EditDueDate from "../editDueDate";
 import { withHandlers, withState, compose } from "recompose";
 import EditSentence from "./editSentence";
+import EditNote from "./editNote";
 
 const Intent = ({
   intentId,
   providerId,
   addIntent,
   isSentenceOpen,
+  isNoteOpen,
   handleSentenceOpen,
+  handleNoteOpen,
   scopeId
 }) => {
   return (
@@ -63,8 +66,18 @@ const Intent = ({
                   } ${intent.resourceClassifiedAs.name}`}
                 </Sentence>
               )}
-
-              <Note>{intent.note}</Note>
+              {isNoteOpen ? (
+                <EditNote intent={intent} handleNoteOpen={handleNoteOpen} />
+              ) : intent.note ? (
+                <Note onClick={handleNoteOpen}>{intent.note}</Note>
+              ) : (
+                <AddNote onClick={handleNoteOpen}>
+                  <Span>
+                    <Icons.Plus width="18" height="18" color="#36393F" />
+                  </Span>
+                  Add a note to the requirement...
+                </AddNote>
+              )}
             </First>
             <Second>
               <EditDueDate due={intent.due} intentId={intent.id} />
@@ -168,9 +181,13 @@ const Intent = ({
 
 export default compose(
   withState("isSentenceOpen", "onSentenceOpen", false),
+  withState("isNoteOpen", "onNoteOpen", false),
   withHandlers({
     handleSentenceOpen: props => () => {
       props.onSentenceOpen(!props.isSentenceOpen);
+    },
+    handleNoteOpen: props => () => {
+      props.onNoteOpen(!props.isNoteOpen);
     }
   })
 )(Intent);
@@ -194,6 +211,25 @@ const Suptitle = styled.h3`
   letter-spacing: 1px;
   margin-bottom: 8px;
   margin-top: 16px;
+`;
+
+const AddNote = styled.div`
+  height: 30px;
+  line-height: 30px;
+  color: ${props => props.theme.color.p800};
+  padding: 0 16px;
+  cursor: pointer;
+  background: #e4e6e9;
+  border-radius: 2px;
+  border: 1px dashed #d1d1d1;
+  margin-top: 8px;
+  & div {
+    margin-top: 4px;
+  }
+  &:hover {
+    background: #bacbe1;
+    border-color: ${props => props.theme.color.b100};
+  }
 `;
 
 const Members = styled.div`
@@ -224,6 +260,7 @@ const Img = styled.div`
 
 const Wrapper = styled.div`
   padding: 16px;
+  padding-top: 8px;
   position: relative;
 `;
 const Section = styled.div`

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { compose } from "react-apollo";
-import { withFormik, Form, Field } from "formik";
+import { withFormik, Field } from "formik";
 import * as Yup from "yup";
 import Events from "../logEvent/events";
 import Units from "../logEvent/unit";
@@ -11,7 +11,6 @@ import AsyncSelect from "react-select/lib/Async";
 import getResourcesQuery from "../../queries/getResources";
 import { Mutation } from "react-apollo";
 import UPDATE_COMMITMENT from "../../mutations/updateCommitment";
-import gql from "graphql-tag";
 import withNotif from "../notification";
 import getComm from "../../queries/getCommitment";
 
@@ -194,7 +193,7 @@ export default compose(
             />
           </EditSentence>
           <EditButtons>
-            <Button primary onClick={handleSentenceOpen}>
+            <Button gray onClick={handleSentenceOpen}>
               Cancel
             </Button>
             <Button
@@ -242,4 +241,6 @@ const Input = styled.input`
   text-align: center;
 `;
 
-const WrapperEdit = styled.div``;
+const WrapperEdit = styled.div`
+margin-bottom: 8px;
+`;

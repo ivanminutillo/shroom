@@ -2,8 +2,8 @@ import styled, {css} from 'styled-components'
 
 const Button = styled.button`
   background: #2588d0;
-  border: 10px none;
-  border-radius: 4px;
+  border: none;
+  border-radius: 3px;
   box-sizing: border-box;
   color: #fff;
   cursor: pointer;
@@ -11,14 +11,14 @@ const Button = styled.button`
   font-family: inherit;
   font-size: 14px;
   font-weight: 500;
-  height: 36px;
+  height: 32px;
   letter-spacing: 0;
-  line-height: 36px;
+  line-height: 32px;
   overflow: hidden;
   padding: 0 16px;
   position: relative;
   text-align: center;
-  text-transform: uppercase;
+  text-transform: capitalize;
   text-decoration: none;
   text-overflow: ellipsis;
   transition: all .1s ease-in;
@@ -29,32 +29,13 @@ const Button = styled.button`
     color: #a9a9a9;
     cursor: no-drop;
   }
-${props => props.primary && css`
+${props => props.alert && css`
   background: #FF5630;
   color: white
 `}
 ${props => props.gray && css`
-  background: #e2e4e6;
-  box-shadow: 0 1px 0 0 #c4c9cc;
-  box-sizing: border-box;
-  cursor: pointer;
-  display: block;
-  margin-top: 8px;
-  max-width: 300px;
-  overflow: hidden;
-  position: relative;
-  text-decoration: none;
-  text-overflow: ellipsis;
-  user-select: none;
-  white-space: nowrap;
+  background: #d2d2d3;;
   color: #4c4c4c;
-  padding: 0;
-  line-height: 38px;
-  text-transform: none;
-  background: #e2e4e6;
-  box-shadow: 0 1px 0 0 #c4c9cc;
-  text-align: left;
-  padding: 0 10px;
 `}
 ${props => props.small && css`
   height: 28px;
