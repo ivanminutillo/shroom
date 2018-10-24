@@ -132,10 +132,9 @@ cursor: pointer;
     line-height: 24px;
     width: 100%;
     border: none;
-    width: 100px;
+    width: 80px;
     text-align: center;
     font-weight: 500;
-    letter-spacing: .5px;
     font-size: 12px;
   }
 `
@@ -143,7 +142,6 @@ const Date = styled.h3`
 cursor: pointer;
   & input {
       color: #8d8d8d;
-      text-decoration: underline;
   }
   margin: 0;
   float: left;

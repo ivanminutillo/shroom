@@ -7,6 +7,7 @@ query ($token: String, $id: Int!) {
       commitment(id: $id) {
         id
         isFinished
+        isDeletable
         fulfilledBy {
           fulfilledBy {
             ...BasicEvent

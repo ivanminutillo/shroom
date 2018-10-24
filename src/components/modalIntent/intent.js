@@ -15,6 +15,7 @@ import EditDueDate from "../editDueDate";
 import { withHandlers, withState, compose } from "recompose";
 import EditSentence from "./editSentence";
 import EditNote from "./editNote";
+import ButtonDeleteIntent from '../deleteIntent'
 
 const Intent = ({
   intentId,
@@ -24,7 +25,8 @@ const Intent = ({
   isNoteOpen,
   handleSentenceOpen,
   handleNoteOpen,
-  scopeId
+  scopeId,
+  toggleModal
 }) => {
   return (
     <Query
@@ -172,6 +174,12 @@ const Intent = ({
                 resource={intent.resourceClassifiedAs.name}
               />
             </Actions>
+            {intent.isDeletable ? 
+            <DeleteIntent>
+              <ButtonDeleteIntent toggleModal={toggleModal} intentId={intentId} scopeId={scopeId}/>
+            </DeleteIntent>
+            : null
+          }
           </Wrapper>
         );
       }}
@@ -191,6 +199,11 @@ export default compose(
     }
   })
 )(Intent);
+
+const DeleteIntent = styled.div`
+  height: 30px;
+  margin-top: 30px;
+`;
 
 const FeedItem = styled.div`
   font-size: ${props => props.theme.fontSize.h3};
