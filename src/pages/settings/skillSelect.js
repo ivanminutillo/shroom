@@ -15,6 +15,13 @@ const GET_SKILLS = gql`
     viewer(token: $token) {
       myAgent {
         id
+        agentSkillRelationships {
+          id
+          resourceClassification {
+            name
+            id
+          }
+        }
         agentSkills {
           id
           name
@@ -89,6 +96,7 @@ export default compose(
     addSkillMutation,
     onSuccess,
     onError,
+    data,
     providerId,
     removeSkillMutation,
     promiseOptions
@@ -100,13 +108,14 @@ export default compose(
       let added = val.filter(
         o => !values.agentSkills.some(o2 => o.value == o2.value)
       );
-      console.log(removed)
       if (removed.length > 0) {
+        let relToDelete = data.viewer.myAgent.agentSkillRelationships.filter(
+          r => r.resourceClassification.id == removed[0].value)
         removed.map(r => {
             removeSkillMutation({
               variables: {
                 token: localStorage.getItem("oce_token"),
-                id: r.value
+                id: Number(relToDelete[0].id)
               }
             })
             .then(res => {
@@ -157,6 +166,7 @@ export default compose(
             placeholder="Add more skills..."
             defaultOptions
             cacheOptions
+            isClearable={false}
             isMulti
             value={field.value}
             styles={customStyles}

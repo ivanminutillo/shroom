@@ -28,12 +28,12 @@ export default compose(
           </Span>
           <ItemTitle>General information</ItemTitle>
         </Item>
-        <Item>
+        {/* <Item>
           <Span>
             <Icons.Settings width="24" height="24" color="#8D8D8D" />
           </Span>
           <ItemTitle>Notifications</ItemTitle>
-        </Item>
+        </Item> */}
         <Item onClick={toggleSkills}>
           <Span>
             <Icons.User width="24" height="24" color="#8D8D8D" />

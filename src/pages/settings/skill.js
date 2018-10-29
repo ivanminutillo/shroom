@@ -11,6 +11,13 @@ const GET_SKILLS = gql`
     viewer(token: $token) {
       myAgent {
         id
+        agentSkillRelationships {
+          id
+          resourceClassification {
+            name
+            id
+          }
+        }
         agentSkills {
           id
           name
@@ -44,14 +51,13 @@ export default ({ toggleSkills, providerId }) => (
                 message={`Error! ${error.message}`}
               />
             );
-          let skills = data.viewer.myAgent.agentSkills.map(s => ({
-            value: s.id,
-            label: s.name
+          let skills = data.viewer.myAgent.agentSkillRelationships.map(s => ({
+            value: s.resourceClassification.id,
+            label: s.resourceClassification.name
           }));
-          console.log(skills)
           return (
           <SkillsWrapper>
-            <SkillSelect providerId={providerId} client={client} skills={skills} />
+            <SkillSelect providerId={providerId} client={client} data={data} skills={skills} />
           </SkillsWrapper>
           )
         }}
@@ -87,6 +93,7 @@ left: 0;
 right: 0;
 z-index: 999999999;
 padding: 16px;
+min-height: 100%;
 background: #F0F0F0;
 `;
 const Header = s.div`
