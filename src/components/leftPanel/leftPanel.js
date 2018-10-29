@@ -76,7 +76,7 @@ const Second = styled.h3`
   color: ${props => props.theme.color.p200};
 `;
 
-const Sidebar = ({ togglePanel, active, data, logout }) => (
+const Sidebar = ({ togglePanel, toggleSettings, active, data, logout }) => (
   <LeftPanel onClick={togglePanel} active={active}>
     <Header>
       <AvatarWrapper>
@@ -93,24 +93,24 @@ const Sidebar = ({ togglePanel, active, data, logout }) => (
           <Title>Profile</Title>
         </Item>
       </NavLink>
-      <Item>
+      {/* <Item>
         <Span>
           <Icons.Users color="#99ADC6" width="18" />
         </Span>
         <Title>Network</Title>
-      </Item>
+      </Item> */}
       <Item>
         <Span>
           <Icons.Edit2 color="#99ADC6" width="18" />
         </Span>
         <Title>Create a new plan</Title>
       </Item>
-      <Item>
+      {/* <Item>
         <Span>
           <Icons.Star color="#99ADC6" width="18" />
         </Span>
         <Title>Validate</Title>
-      </Item>
+      </Item> */}
       {/* <NavLink to={"/wallet"}>
         <Item>
           <Span>
@@ -119,7 +119,7 @@ const Sidebar = ({ togglePanel, active, data, logout }) => (
           <Title>Wallet</Title>
         </Item>
       </NavLink> */}
-      <Item>
+      <Item onClick={toggleSettings}>
         <Span>
           <Icons.Settings color="#99ADC6" width="18" />
         </Span>
