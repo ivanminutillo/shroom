@@ -8,6 +8,8 @@ import Wallet from "../../pages/wallet";
 import media from "styled-media-query";
 import { ApolloConsumer } from "react-apollo";
 import Plan from "../../pages/plan";
+import committed from "../../pages/committed";
+import matched from "../../pages/matched";
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,24 +33,51 @@ const Main = props => {
             exact
             path={props.match.path}
             component={Home}
-            id={props.data.id}
-            data={props}
             toggleLeftPanel={props.toggleLeftPanel}
             onTogglePanel={props.onTogglePanel}
             isSidebarOpen={props.isSidebarOpen}
             client={client}
+            providerId={props.providerId}
+            providerId={props.providerId}
+          />
+          <PropsRoute
+            exact
+            path='/committed'
+            component={committed}
+            profile
+            toggleLeftPanel={props.toggleLeftPanel}
+            onTogglePanel={props.onTogglePanel}
+            isSidebarOpen={props.isSidebarOpen}
+            client={client}
+            providerId={props.providerId}
+            providerId={props.providerId}
+          />
+          <PropsRoute
+            exact
+            path='/matched'
+            component={matched}
+            profile
+            toggleLeftPanel={props.toggleLeftPanel}
+            onTogglePanel={props.onTogglePanel}
+            isSidebarOpen={props.isSidebarOpen}
+            client={client}
+            providerId={props.providerId}
+            providerId={props.providerId}
           />
           <PropsRoute
             toggleLeftPanel={props.toggleLeftPanel}
             path="/agent/:id"
             component={Agent}
+            exact
             data={props}
             toggleLeftPanel={props.toggleLeftPanel}
             onTogglePanel={props.onTogglePanel}
-            providerId={props.providerId}
+            providerImage={props.providerImage}
+            loggedUser={props.data.id}
             isSidebarOpen={props.isSidebarOpen}
             client={client}
           />
+          
           <PropsRoute
             toggleLeftPanel={props.toggleLeftPanel}
             path="/plan/:id"

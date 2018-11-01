@@ -38,7 +38,7 @@ export default compose(
     }}
   >
     {(deleteCommitment, { data }) => (
-      <Button
+      <div
         onClick={() =>
           deleteCommitment({
             variables: {
@@ -49,7 +49,7 @@ export default compose(
         }
       >
         Delete requirement
-      </Button>
+      </div>
     )}
   </Mutation>
 ));

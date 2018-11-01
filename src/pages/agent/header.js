@@ -148,9 +148,9 @@ withHandlers({
       <Title>{data.viewer.agent.name}</Title>
     </HeaderLeft>
     <HeaderRight>
-      {/* <Span popup={popup} onClick={handlePopup}>
+      <Span popup={popup} onClick={handlePopup}>
         <Icons.Plus width="20" height="20" color="#99ADC6" />
-      </Span> */}
+      </Span>
       <Span>
         <Icons.Search width="20" height="20" color="#99ADC6" />
       </Span>
@@ -159,11 +159,11 @@ withHandlers({
       </Span>
     </HeaderRight>
   </Header>
-    {/* <AddPopup visible={popup} >
+    <AddPopup visible={popup} >
       <AddItem onClick={openNewReq}>Add a new requirement</AddItem>
       <AddItem>Add a new process</AddItem>
       <AddItem>Add a new Plan</AddItem>
-    </AddPopup> */}
+    </AddPopup>
   </WrappedHeader>
       )}}
       </Query>

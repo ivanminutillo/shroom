@@ -54,6 +54,7 @@ const AppTemplate = props => {
           theme={props.theme}
           isOpen={props.isSidebarOpen}
           toggleSidebar={props.onToggleSidebar}
+          history={props.history}
         />
         <Main
           toggleLeftPanel={props.onToggleSidebar}
@@ -61,6 +62,7 @@ const AppTemplate = props => {
           match={props.match}
           isSidebarOpen={props.isSidebarOpen}
           providerId={props.data.id}
+          providerImage={props.data.image}
         />
         <LeftPanel
           data={props.data}

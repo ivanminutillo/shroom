@@ -5,6 +5,13 @@ export const event = gql`
     id
     action
     start
+    validations{
+      id
+      validatedBy {
+        name
+        id
+      }
+    }
     affectedQuantity {
       numericValue
       unit {
@@ -14,16 +21,16 @@ export const event = gql`
     }
     note
     provider {
-        id
-        image
+      id
+      image
+      name
+    }
+    affects {
+      resourceClassifiedAs {
         name
+        id
       }
-      affects {
-        resourceClassifiedAs {
-          name
-          id
-        }
-        trackingIdentifier
+      trackingIdentifier
     }
   }
 `;

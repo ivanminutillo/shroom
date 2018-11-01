@@ -33,7 +33,7 @@ export default compose(
       }}
     >
       {(addProvider, { data }) => (
-        <Wrapper
+        <Span
           onClick={() =>
             addProvider({
               variables: {
@@ -44,11 +44,8 @@ export default compose(
             })
           }
         >
-          <ImgSpan>
-            <Icons.Plus width="18" height="18" color="#8D8D8D" />
-          </ImgSpan>
-          <h3>Take this requirement</h3>
-        </Wrapper>
+          <Icons.Star width='18' height='18' color='#dadada'/>
+        </Span>
       )}
     </Mutation>
   );
@@ -94,7 +91,7 @@ export const DeleteProvider = compose(
       }}
     >
       {(addProvider, { data }) => (
-        <ImgSpan
+        <Span
           onClick={() =>
             addProvider({
               variables: {
@@ -105,8 +102,8 @@ export const DeleteProvider = compose(
             })
           }
         >
-          <Icons.Trash width="18" height="18" color="#8D8D8D" />
-        </ImgSpan>
+         <Icons.Star width='18' height='18' color='#FFD054'/>
+        </Span>
       )}
     </Mutation>
   );
@@ -117,35 +114,11 @@ const Wrapper = styled.div`
   float: left;
   cursor: pointer;
   background: #dedede;
-  border-radius: 4px;
-  padding-right: 8px;
-  & h3 {
-    float: left;
-    line-height: 24px;
-    color: #7f7f7f;
-    margin-left: 4px;
-    font-weight: 500;
-    font-size: 13px;
-    letter-spacing: 0.5px;
-  }
-`;
-const ImgSpan = styled.div`
-  float: left;
-  width: 24px;
-  height: 24px;
   border-radius: 2px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background: #dedede;
-  text-align: center;
-  cursor: pointer;
-  &:hover {
-    background-color: #6c94be5e;
-    span {
-      color: #f0f0f0;
-    }
-  }
-  & svg {
-    margin-top: 3px;
-  }
+  margin-right: 4px;
+`;
+const Span = styled.span`
+  display: inline-block;
+  vertical-align: sub;
+  margin-right: 8px;
 `;

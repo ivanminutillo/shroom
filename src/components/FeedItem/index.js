@@ -28,21 +28,25 @@ export default function({
         </MemberItem>
       </Member>
       <Desc>
-        <Primary>{primary}</Primary>
-        <Secondary light={light}>{secondary}</Secondary>
-      </Desc>
-      <Date>{date}</Date>
-
-      {withValidation || withDelete ? (
+        <Primary>
+          {primary}
+          <Secondary light={light}>{secondary}</Secondary>
+        </Primary>
+        <Sub>
+        {withValidation || withDelete ? (
         <Actions>
           {withDelete && providerId === loggedUserId ? (
-            <DeleteEvent commitmentId={commitmentId} eventId={id} scopeId={scopeId} />
+            <DeleteEvent
+              commitmentId={commitmentId}
+              eventId={id}
+              scopeId={scopeId}
+            />
           ) : null}
-          {withValidation && providerId !== loggedUserId ? (
+        {withValidation && providerId !== loggedUserId ? (
             <span>
               <Action onClick={() => openValidationModal(id)}>
                 <Span>
-                  <Icons.Star width="16" color="#99ADC6" />
+                  <Icons.Star width="14" color="#989ba0" />
                 </Span>
                 <ActionTitle>Validate</ActionTitle>
               </Action>
@@ -55,72 +59,79 @@ export default function({
           ) : null}
         </Actions>
       ) : null}
+        <Date>{date}</Date>
+        </Sub>
+      </Desc>
     </FeedItem>
   );
 }
 
 const FeedItem = styled.div`
-  border-bottom: 1px solid #e2e4e61a;
   min-height: 30px;
   position: relative;
   margin: 0;
-  margin-left: -8px;
-  margin-right: -8px;
-  padding-left: 8px;
-  padding-right: 8px;
   padding: 8px;
   word-wrap: break-word;
   font-size: 14px;
   color: #f0f0f0bd;
+  margin-bottom: 26px;
   ${clearFix()};
   transition: background 0.5s ease;
-  &:hover {
-    background: #f9f1e320;
-  }
 `;
 
 const Primary = styled.div`
-  margin-right: 50px;
   line-height: 20px;
+  display: inline-block;
+  padding: 6px 10px;
+  background: #f0f8ff0f;
+  border-radius: 56px;
+  position: relative;
 `;
 
 const Secondary = styled.div`
   font-weight: 400;
-  margin-top: 4px;
+  margin-top: 0px;
   letter-spacing. .5px;
   line-height: 20px;
   font-size: 14px;
-  color: ${props => props.light ? props.theme.color.p800 : props.theme.color.p150};
+  color: ${props =>
+    props.light ? props.theme.color.p800 : props.theme.color.p150};
 `;
 
 const Member = styled.div`
-  float: left;
-  vertical-align: sub;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 14px;
 `;
 const Validations = styled.div`
   float: right;
   vertical-align: sub;
 `;
 
+const Sub = styled.div`
+  ${clearFix()};
+  position: absolute;
+  bottom: -26px;
+`;
+
 const MemberItem = styled.span`
   background-color: #d6dadc;
-  border-radius: 3px;
+  border-radius: 100px;
   color: #4d4d4d;
-  display: block;
+  display: inline-block;
   float: left;
-  height: 30px;
-  margin: 0 4px 4px 0;
+  height: 24px;
   overflow: hidden;
   position: relative;
-  width: 30px;
+  width: 24px;
   user-select: none;
   z-index: 0;
 `;
 
 const Desc = styled.div`
-  margin-left: 40px;
   position: relative;
   min-height: 30px;
+  display: inline-block;
 `;
 
 const Img = styled.img`
@@ -139,44 +150,41 @@ const Img = styled.img`
 
 const Date = styled.div`
   font-weight: 400;
-  float: right;
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  color: #99adc6;
-  font-weight: 500;
+  color: ${props => props.theme.color.p200};
+  font-weight: 400;
   font-size: 12px;
+  line-height: 32px;
+  height: 20px;
   letter-spacing: 1px;
   margin: 0;
-  height: 20px;
-  line-height: 20px;
-  border-radius: 3px;
+  float: left;
 `;
 
 const Actions = styled.div`
   ${clearFix()};
-  margin-top: 8px;
-  margin-left: 36px;
+  float: left;
+  vertical-align: middle;
+  margin-left: 8px;
 `;
 
 const ActionTitle = styled.h3`
-  margin-left: 4px;
-  font-weight: 500;
+  font-weight: 400;
   margin-left: 8px;
-  float: left;
   display: inline-block;
   height: 20px;
   line-height: 32px;
   font-size: 12px;
   letter-spacing: 1px;
-  color: ${props => props.theme.color.p300};
+  color: ${props => props.theme.color.p200};
 `;
 
 const Action = styled.div`
   cursor: pointer;
   float: left;
-  margin-right: 8px;
   transition: background-color 0.5s ease;
+  padding-right: 8px;
+  margin-right: 24px;
+  position: relative;
 `;
 
 const Span = styled.span`

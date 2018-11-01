@@ -220,7 +220,8 @@ export default compose(
 });
 
 const EditSentence = styled.div`
-  margin-right: 20px;
+  z-index: 999999999999;
+  position: relative;
   display: grid;
   grid-template-columns: 2fr 1fr 2fr 3fr;
   grid-column-gap: 4px;

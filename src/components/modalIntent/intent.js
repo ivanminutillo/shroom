@@ -77,7 +77,7 @@ const Intent = ({
                   <Span>
                     <Icons.Plus width="18" height="18" color="#36393F" />
                   </Span>
-                  Add a note to the requirement...
+                  Add a note...
                 </AddNote>
               )}
             </First>
@@ -227,17 +227,19 @@ const Suptitle = styled.h3`
 `;
 
 const AddNote = styled.div`
-  height: 30px;
-  line-height: 30px;
   color: ${props => props.theme.color.p800};
-  padding: 0 16px;
+  height: 24px;
+  line-height: 24px;
+  padding: 0 8px;
   cursor: pointer;
   background: #e4e6e9;
   border-radius: 2px;
-  border: 1px dashed #d1d1d1;
   margin-top: 8px;
+  display: inline-block;
+  font-size: 14px;
   & div {
-    margin-top: 4px;
+    margin-top: 0px;
+    margin-right: 0;
   }
   &:hover {
     background: #bacbe1;

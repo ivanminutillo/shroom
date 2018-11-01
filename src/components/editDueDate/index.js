@@ -130,15 +130,14 @@ cursor: pointer;
     background: transparent;
     height: 24px;
     line-height: 24px;
-    width: 100%;
     border: none;
-    width: 80px;
+    width: 60px;
     text-align: center;
     font-weight: 500;
     font-size: 12px;
   }
 `
-const Date = styled.h3`
+const Date = styled.div`
 cursor: pointer;
   & input {
       color: #8d8d8d;
@@ -148,7 +147,7 @@ cursor: pointer;
   height: 24px;
   line-height: 24px;
   border-radius: 3px;
-  margin-right: 16px;
+  margin-left: 4px;
   ${props =>
     props.deadline === "soon" &&
     css`

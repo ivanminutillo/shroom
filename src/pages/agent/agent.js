@@ -11,7 +11,7 @@ import AgentIntents from "../../components/agentintents";
 import { compose, withState, withHandlers } from "recompose";
 import ValidationModal from "../../components/modalValidation";
 import IntentModal from "../../components/modalIntent";
-import NewRequirementModal from "../../components/newRequirementModal"
+import NewRequirementModal from "../../components/newRequirementModal";
 
 const Agent = props => {
   return (
@@ -42,21 +42,16 @@ const Agent = props => {
         <Inside>
           <Overview>
             <EventsInfo>
-              <AgentPlans id={props.id ? props.id : props.match.params.id} />
               <AgentIntents
                 toggleModal={props.toggleIntentModal}
-                id={props.id ? props.id : props.match.params.id}
+                id={props.match.params.id}
                 openNewReq={props.togglenewRequirementModal}
+                myId={props.providerId}
+                scopeId={props.match.params.id}
+                providerImage={props.providerImage}
+                openValidationModal={props.toggleValidationModal}
               />
             </EventsInfo>
-            <div style={{ margin: "16px", marginBottom: 0, marginTop: 0 }}>
-              <HeaderTitle title="Feed" />
-            </div>
-            <Feeds
-              providerId={props.providerId}
-              openValidationModal={props.toggleValidationModal}
-              id={props.id ? props.id : props.match.params.id}
-            />
           </Overview>
         </Inside>
       </Content>
@@ -80,17 +75,21 @@ const Agent = props => {
         myId={props.providerId}
         handleChange={props.handleChange}
       />
-      <NewRequirementModal 
-       modalIsOpen={props.newRequirementModalIsOpen}
-       toggleModal={props.togglenewRequirementModal}
-       scopeId={props.match.params.id}
+      <NewRequirementModal
+        modalIsOpen={props.newRequirementModalIsOpen}
+        toggleModal={props.togglenewRequirementModal}
+        scopeId={props.match.params.id}
       />
     </Wrapper>
   );
 };
 
 export default compose(
-  withState("newRequirementModalIsOpen", "togglenewRequirementModalIsOpen", false),
+  withState(
+    "newRequirementModalIsOpen",
+    "togglenewRequirementModalIsOpen",
+    false
+  ),
   withState("intentModalIsOpen", "toggleIntentModalIsOpen", false),
   withState("validationModalIsOpen", "toggleValidationModalIsOpen", false),
   withState("intentModalIsOpen", "toggleIntentModalIsOpen", false),
@@ -108,7 +107,7 @@ export default compose(
       props.selectIntentModal(contributionId);
       props.toggleIntentModalIsOpen(!props.intentModalIsOpen);
     }
-  }),
+  })
 )(Agent);
 
 const Wrapper = styled.div`
@@ -151,7 +150,7 @@ const Overview = styled.div`
 const EventsInfo = styled.div`
   display: grid;
   column-gap: 16px;
-  grid-template-columns: 1fr 2fr
+  // grid-template-columns: 1fr 2fr
   padding: 16px;
   padding-top: 0;
 `;

@@ -80,21 +80,15 @@ export default compose(
           });
         }}
       >
-        {(addProvider, { data }) => (
-          <Status
-            isFinished={isFinished}
-            onClick={() =>
+        {(addProvider, { data }) => ( 
+            <input type='checkbox' checked={isFinished} onChange={() =>
               addProvider({
                 variables: {
                   token: localStorage.getItem("oce_token"),
                   id: intentId,
                   isFinished: !isFinished
                 }
-              })
-            }
-          >
-            {isFinished ? "Completed" : "Incomplete"}
-          </Status>
+              })} />
         )}
       </Mutation>
     );

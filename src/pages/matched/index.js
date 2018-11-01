@@ -1,18 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import Header from "../agent/header";
-import { graphql } from "react-apollo";
 import media from "styled-media-query";
-import { compose, withState, withHandlers } from "recompose";
-import deleteNotification from "../../mutations/deleteNotification";
-import updateNotification from "../../mutations/updateNotification";
 import HeaderTitle from "../../components/agentSectionHeader";
 import Intent from "../../components/agentintents/intents";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
-import getAllCommitments from "../../queries/getAllCommitments";
+import getComms from "../../queries/getCommitments";
+import getSkillsCommitments from "../../queries/getSkillsCommitments";
 
-const Agent = props => {
+export default props => {
   return (
     <Wrapper isOpen={props.isOpen}>
       <Header
@@ -23,9 +20,8 @@ const Agent = props => {
       <Content>
         <Inside>
           <Overview>
-
-              <Query
-              query={getAllCommitments}
+            <Query
+              query={getSkillsCommitments}
               variables={{
                 token: localStorage.getItem("oce_token"),
                 id: props.providerId
@@ -34,13 +30,17 @@ const Agent = props => {
               {({ loading, error, data, refetch }) => {
                 if (loading) return <LoadingMini />
                 if (error) return <ErrorMini refetch={refetch} message={`Error! ${error.message}`}/>
-                let intents = [].concat(...data.viewer.agent.agentRelationships.map(a => a.object.agentCommitments));
-                let activeIntents = intents.filter(i => !i.isFinished)
-                let completed = intents.filter(i => i.isFinished)
+                let intents = data.viewer.person.commitmentsMatchingSkills
+                let allIntents = intents
+                .filter(int =>
+                    int.provider ? int.provider.id === props.providerId : null
+                );
+                let activeIntents = allIntents.filter(i => !i.isFinished)
+                let completed = allIntents.filter(i => i.isFinished)
                 return (
                   <EventsInfo>
                     <WrapperIntents>
-                      <HeaderTitle title={`Inbox (${activeIntents.length})`} />
+                      <HeaderTitle title={`Matched (${activeIntents.length})`} />
                       <ContentIntents>
                         {activeIntents.map((intent, i) => (
                           <Intent
@@ -84,20 +84,6 @@ const Agent = props => {
   );
 };
 
-export default compose(
-  graphql(updateNotification, { name: "updateNotification" }),
-  graphql(deleteNotification, { name: "deleteNotification" }),
-  withState("intentModalIsOpen", "toggleIntentModalIsOpen", false),
-  withState("intentModal", "selectIntentModal", null),
-  withHandlers({
-    toggleIntentModal: props => contributionId => {
-      props.selectIntentModal(contributionId);
-      props.toggleIntentModalIsOpen(!props.intentModalIsOpen);
-    }
-  })
-)(Agent);
-
-
 const WrapperIntents = styled.div`
   position: relative;
 `;
@@ -108,8 +94,6 @@ const ContentIntents = styled.div`
   padding: 0;
   width: 100%;
 `;
-
-
 
 const Wrapper = styled.div`
   display: flex;
@@ -150,22 +134,9 @@ const Overview = styled.div`
   `};
 `;
 
-// const Textarea = styled.textarea`
-// width: 100%;
-// height: 100%;
-// box-sizing: border-box;
-// border: none;
-// padding: 8px;
-// resize: none;
-// ${placeholder({
-//   fontFamily: 'Fira-Sans'
-// })}
-// `
-
 const EventsInfo = styled.div`
   display: grid;
   column-gap: 16px;
-  // grid-template-columns: 1fr 2fr
   padding: 16px;
   padding-top: 0;
 `;

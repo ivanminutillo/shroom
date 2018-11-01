@@ -36,60 +36,53 @@ const StartDate = props => {
   );
 };
 
-const Action = styled.div`
-  flex: 2;
-  margin-right: 8px;
-`;
+const Action = styled.div``;
 const Qty = styled.div`
-  flex: 1;
   border-radius: 3px;
-  margin-right: 8px;
   max-height: 36px;
   text-align: center;
   & input {
     width: 100%;
     text-align: center;
-    background: #4F576C;
-    color: #f0f0f0;
+    color: #333;
     height: 38px;
-    border: 1px solid #7D849A50;
-    ${placeholder({ color: "#f0f0f0" })};
+    border: 1px solid #7d849a50;
+    ${placeholder({ color: "#333" })};
   }
 `;
-const Unit = styled.div`
-  flex: 2;
-`;
+const Unit = styled.div``;
 const Resource = styled.div`
   margin-bottom: 8px;
 `;
 const Row = styled.div`
-  display: flex;
-  padding: 8px 0;
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr 3fr;
+  grid-column-gap: 4px;
   & input {
     ${placeholder({ color: "#f0f0f0" })};
   }
 `;
-const customStyles = {
-  control: base => ({
-    ...base,
-    background: '#4F576C',
-    border: '1px solid #7D849A50',
-    color: '#f0f0f0'
-  }),
-  input: base => ({
-    ...base,
-    color: '#f0f0f0'
-  }),
-  singleValue: base => ({
-    ...base,
-    color: '#f0f0f0'
-  }),
-  placeholder: base => ({
-    ...base,
-    color: '#f0f0f0',
-    fontSize: '14px'
-  })
-};
+// const customStyles = {
+//   control: base => ({
+//     ...base,
+//     background: "#4F576C",
+//     border: "1px solid #7D849A50",
+//     color: "#f0f0f0"
+//   }),
+//   input: base => ({
+//     ...base,
+//     color: "#f0f0f0"
+//   }),
+//   singleValue: base => ({
+//     ...base,
+//     color: "#f0f0f0"
+//   }),
+//   placeholder: base => ({
+//     ...base,
+//     color: "#f0f0f0",
+//     fontSize: "14px"
+//   })
+// };
 
 const LogEvent = props => {
   const promiseOptions = (client, val) => {
@@ -112,7 +105,6 @@ const LogEvent = props => {
       });
   };
 
-  
   const {
     values,
     setFieldValue,
@@ -134,14 +126,20 @@ const LogEvent = props => {
                     name={"action"}
                     render={({ field }) => {
                       return (
-                      <Select
-                        onChange={val => props.setFieldValue("action",  {value: val.value, label: val.label})}
-                        options={Events}
-                        styles={customStyles}
-                        value={field.value}
-                        placeholder='Select an event'
-                      />
-                    )}}
+                        <Select
+                          onChange={val =>
+                            props.setFieldValue("action", {
+                              value: val.value,
+                              label: val.label
+                            })
+                          }
+                          options={Events}
+                          // styles={customStyles}
+                          value={field.value}
+                          placeholder="Select an event"
+                        />
+                      );
+                    }}
                   />
                   {errors.action &&
                     touched.action && <Alert>{errors.action}</Alert>}
@@ -171,43 +169,49 @@ const LogEvent = props => {
                     name={"unit"}
                     render={({ field }) => {
                       return (
-                      <Select
-                        onChange={val => props.setFieldValue("unit",  {value: val.value, label: val.label})}
-                        options={Units}
-                        styles={customStyles}
-                        placeholder='Select a unit'
-                        value={field.value}
-                      />
-                    )}}
+                        <Select
+                          onChange={val =>
+                            props.setFieldValue("unit", {
+                              value: val.value,
+                              label: val.label
+                            })
+                          }
+                          options={Units}
+                          // styles={customStyles}
+                          placeholder="Select a unit"
+                          value={field.value}
+                        />
+                      );
+                    }}
                   />
                   {errors.unit && touched.unit && <Alert>{errors.unit}</Alert>}
                 </Unit>
+                <Resource>
+                  <Field
+                    name="affectedResourceClassifiedAsId"
+                    render={({ field }) => (
+                      <AsyncSelect
+                        placeholder="Select a classification..."
+                        defaultOptions
+                        cacheOptions
+                        value={field.value}
+                        // styles={customStyles}
+                        onChange={val =>
+                          props.setFieldValue(
+                            "affectedResourceClassifiedAsId",
+                            { value: val.value, label: val.label }
+                          )
+                        }
+                        loadOptions={val => promiseOptions(client, val)}
+                      />
+                    )}
+                  />
+                  {errors.affectedResourceClassifiedAsId &&
+                    touched.affectedResourceClassifiedAsId && (
+                      <Alert>{errors.affectedResourceClassifiedAsId}</Alert>
+                    )}
+                </Resource>
               </Row>
-              <Resource>
-                <Field
-                  name="affectedResourceClassifiedAsId"
-                  render={({ field }) => (
-                    <AsyncSelect
-                      placeholder="Select a classification..."
-                      defaultOptions
-                      cacheOptions
-                      value={field.value}
-                      styles={customStyles}
-                      onChange={val =>
-                        props.setFieldValue(
-                          "affectedResourceClassifiedAsId",
-                          {value: val.value, label: val.label}
-                        )
-                      }
-                      loadOptions={val => promiseOptions(client, val)}
-                    />
-                  )}
-                />
-                {errors.affectedResourceClassifiedAsId &&
-                  touched.affectedResourceClassifiedAsId && (
-                    <Alert>{errors.affectedResourceClassifiedAsId}</Alert>
-                  )}
-              </Resource>
             </Log.Log>
             {/* </div> */}
             <Log.Note>

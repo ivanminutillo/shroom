@@ -147,7 +147,7 @@ export default compose(
             }
           >
             <Span>
-              <Icons.Trash width="16" color="#99ADC6" />
+              <Icons.Trash width="13" color="#989ba0" />
             </Span>
             <ActionTitle>Delete</ActionTitle>
           </Action>
@@ -159,22 +159,34 @@ export default compose(
 
 const ActionTitle = styled.h3`
   margin-left: 4px;
-  font-weight: 500;
+  font-weight: 400;
   margin-left: 8px;
-  float: left;
   display: inline-block;
   height: 20px;
   line-height: 32px;
   font-size: 12px;
   letter-spacing: 1px;
-  color: ${props => props.theme.color.p300};
+  color: ${props => props.theme.color.p200};
 `;
 
 const Action = styled.div`
   cursor: pointer;
   float: left;
-  margin-right: 8px;
+  position: relative;
+  padding-right: 8px;
+    margin-right: 24px;
   transition: background-color 0.5s ease;
+  &:after {
+    position: absolute;
+    content: '';
+    width: 2px;
+    height: 2px;
+    background: ${props => props.theme.color.p200};
+    display: block;
+    right: -8px;
+    top: 15px;
+    border-radius: 100px;
+  }
 `;
 
 const Span = styled.span`

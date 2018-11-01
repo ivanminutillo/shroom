@@ -6,7 +6,6 @@ const Module = styled.div`
   ${clearFix()};
   position: relative;
   border-radius: 4px;
-  height: 60px;
   z-index: 1;
   ${media.lessThan("medium")`
     width: 100%;
@@ -76,10 +75,12 @@ const Of = styled.span`
 `;
 
 const Note = styled.div`
+padding: 0 10px;
+margin-bottom: 8px;
   & textarea {
     outline: none;
     display: block;
-    min-height: 70px;
+    min-height: 30px;
     resize: none;
     width: 100%;
     font-size: 14px;
@@ -88,14 +89,12 @@ const Note = styled.div`
     font-weight: 400;
     overflow: hidden;
     word-wrap: break-word;
-    color: #f0f0f0;
+    color: #333;
     border: none;
     border-top: 1px solid #dedede36;
     margin: 0;
-    background: #00000038;
-    border-radius: 0;
     padding: 8px 16px;
-    ${placeholder({ color: "#f0f0f0" })};
+    ${placeholder({ color: "#333" })};
   }
 `
 

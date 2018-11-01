@@ -4,7 +4,7 @@ import { event } from "../fragments/economicEvents";
 export default gql`
   query($token: String, $id: Int) {
     viewer(token: $token) {
-      agent(id: $id) {
+      person (id: $id) {
         id
         commitmentsMatchingSkills {
           id

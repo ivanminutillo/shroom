@@ -85,7 +85,7 @@ export default compose(
 const Wrapper = styled.div``;
 
 const WrapperTextarea = styled.div`
-  height: 150px;
+  height: 80px;
 `;
 
 const EditButtons = styled.div`

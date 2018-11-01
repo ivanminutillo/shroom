@@ -8,7 +8,6 @@ export default gql`
         id
         agentCommitments(latestNumberOfDays: 30) {
           id
-          isDeletable
           isFinished
           fulfilledBy {
             fulfilledBy {
