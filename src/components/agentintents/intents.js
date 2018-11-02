@@ -49,9 +49,8 @@ export default compose(
     client,
     providerImage
   }) => {
-    let duration = moment.duration(moment(data.due).diff(moment())).asHours();
     return (
-      <Intent>
+      <Intent isFinished={data.isFinished}>
         <Wrapper>
           <First>
             {isSentenceOpen ? (
@@ -276,6 +275,12 @@ const Intent = styled.div`
   padding-bottom: 0px;
   background: #353841;
   margin-bottom: 8px;
+  ${props =>
+    props.isFinished &&
+    css`
+    background: #7cff8a14;
+    border: 1px solid #007a1c;
+    `};
 `;
 const Events = styled.div`
   ${clearFix()};

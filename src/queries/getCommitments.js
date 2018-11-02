@@ -28,6 +28,10 @@ export default gql`
             id
             name
           }
+          scope {
+            id
+            name
+          }
           note
           action
           committedQuantity {

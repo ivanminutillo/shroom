@@ -29,7 +29,7 @@ export const AvatarTitle = styled.h3`
 
 export const AvatarWrapper = styled.div`
   height: ${props => props.theme.avatar.size};
-  padding: 8px 0;
+  // padding: 8px 0;
   ${clearFix()};
   padding-left: 8px;
   ${props =>

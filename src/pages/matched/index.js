@@ -8,12 +8,23 @@ import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import getComms from "../../queries/getCommitments";
 import getSkillsCommitments from "../../queries/getSkillsCommitments";
+import Sidebar from "../../components/sidebar/sidebar";
+const Body = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+`;
 
 export default props => {
   return (
+    <Body>
+    <Sidebar
+      isOpen={props.isSidebarOpen}
+      param={props.match.params.id}
+    />
     <Wrapper isOpen={props.isOpen}>
       <Header
-        id={props.providerId}
+        id={props.profile ? props.providerId : props.match.params.id}
         toggleLeftPanel={props.toggleLeftPanel}
         togglePanel={props.togglePanel}
       />
@@ -81,6 +92,7 @@ export default props => {
         </Inside>
       </Content>
     </Wrapper>
+    </Body>
   );
 };
 
@@ -94,14 +106,12 @@ const ContentIntents = styled.div`
   padding: 0;
   width: 100%;
 `;
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   position: relative;
-  width: 100%;
-  height: 100%;
+  flex: 1;
   ${media.lessThan("medium")`
     display: ${props => (props.isOpen ? "none" : "flex")}
   `};

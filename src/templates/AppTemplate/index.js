@@ -1,26 +1,18 @@
 import * as React from "react";
-import { graphql } from "react-apollo";
 import gql from "graphql-tag";
-import { withRouter } from "react-router-dom";
 import { compose, withHandlers, withState } from "recompose";
 import styled from "styled-components";
-import updateNotification from "../../mutations/updateNotification";
-import deleteNotification from "../../mutations/deleteNotification";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import LeftPanel from "../../components/leftPanel/leftPanel";
-import Sidebar from "../../components/sidebar/sidebar";
 import Main from "../../components/main";
-import SettingModal from '../../pages/settings'
-
-const Wrapper = styled.div`
-  height: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: row;
-`;
+import SettingModal from "../../pages/settings";
+import Header from './header'
+import { Query } from "react-apollo";
 
 const Surface = styled.div`
   height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Overlay = styled.div`
@@ -35,49 +27,56 @@ const Overlay = styled.div`
 `;
 
 const AppTemplate = props => {
-  return props.loading ? (
-    <LoadingMini />
-  ) : props.error ? (
-    <div style={{ padding: "20px" }}>
-      <ErrorMini
-        refetch={props.refetch}
-        message={`Error! ${props.error.message}`}
-      />
-    </div>
-  ) : (
-    <Surface>
-      <Wrapper>
-        <Sidebar
-          agents={props.data.agentRelationships}
-          togglePanel={props.onTogglePanel}
-          data={props.data}
-          theme={props.theme}
-          isOpen={props.isSidebarOpen}
-          toggleSidebar={props.onToggleSidebar}
-          history={props.history}
-        />
-        <Main
-          toggleLeftPanel={props.onToggleSidebar}
-          data={props.data}
-          match={props.match}
-          isSidebarOpen={props.isSidebarOpen}
-          providerId={props.data.id}
-          providerImage={props.data.image}
-        />
-        <LeftPanel
-          data={props.data}
-          togglePanel={props.onTogglePanel}
-          active={props.isOpen}
-          toggleSettings={props.onToggleSettings}
-        />
-        {props.isOpen ? <Overlay onClick={props.onTogglePanel} /> : null}
-      </Wrapper>
-      <SettingModal 
-        modalIsOpen={props.isSettingsOpen}
-        toggleModal={props.onToggleSettings}
-        providerId={props.data.id}
-      />
-    </Surface>
+  return (
+    <Query
+      query={agentRelationships}
+      variables={{
+        token: localStorage.getItem("oce_token")
+      }}
+    >
+      {({ loading, error, data, refetch, client }) => {
+        if (loading) return <LoadingMini />;
+        if (error)
+          return (
+            <ErrorMini refetch={refetch} message={`Error! ${error.message}`} />
+          );
+
+        return (
+          <Surface>
+            <Header
+              handleGroup={props.handleGroup}
+              history={props.history}
+              providerId={data.viewer.myAgent.id}
+              providerImage={data.viewer.myAgent.image}
+              providerName={data.viewer.myAgent.name}
+              togglePanel={props.onTogglePanel}
+            />
+              <Main
+                onToggleSidebar={props.onToggleSidebar}
+                data={data.viewer.myAgent}
+                match={props.match}
+                togglePanel={props.onTogglePanel}
+                isSidebarOpen={props.isSidebarOpen}
+                providerId={data.viewer.myAgent.id}
+                providerImage={data.viewer.myAgent.image}
+                providerName={data.viewer.myAgent.name}
+              />
+              <LeftPanel
+                data={data.viewer.myAgent}
+                togglePanel={props.onTogglePanel}
+                active={props.isOpen}
+                toggleSettings={props.onToggleSettings}
+              />
+              {props.isOpen ? <Overlay onClick={props.onTogglePanel} /> : null}
+            <SettingModal
+              modalIsOpen={props.isSettingsOpen}
+              toggleModal={props.onToggleSettings}
+              providerId={data.viewer.myAgent.id}
+            />
+          </Surface>
+        );
+      }}
+    </Query>
   );
 };
 
@@ -88,54 +87,41 @@ const agentRelationships = gql`
         id
         name
         image
-        agentRelationships {
-          object {
-            id
-            name
-            note
-            image
-          }
-        }
       }
     }
   }
 `;
-const App = withRouter(AppTemplate);
 
 export default compose(
-  graphql(updateNotification, { name: "updateNotification" }),
-  graphql(deleteNotification, { name: "deleteNotification" }),
-  graphql(agentRelationships, {
-    options: props => ({
-      variables: {
-        token: localStorage.getItem("oce_token")
+  withState("group", "onGroup", "all"),
+  withHandlers({
+    handleGroup: props => val => {
+      props.onGroup(val.value);
+      if (val.value !== "all") {
+        return props.history.push("/agent/" + val.value);
+      } else {
+        return props.history.push("/");
       }
-    }),
-    props: ({ ownProps, data: { viewer, loading, error, refetch } }) => ({
-      loading,
-      error,
-      refetch,
-      data: viewer ? viewer.myAgent : null
-    })
+    }
   }),
   withState("isOpen", "togglePanel", false),
   withState("isSidebarOpen", "toggleSidebar", false),
   withState("isSettingsOpen", "toggleSettings", false),
   withHandlers({
     onToggleSettings: props => () => {
-      props.toggleSettings(!props.isSettingsOpen)
+      props.toggleSettings(!props.isSettingsOpen);
       if (props.isOpen && props.isSidebarOpen) {
-        return props.toggleSidebar(!props.isSidebarOpen)
+        return props.toggleSidebar(!props.isSidebarOpen);
       }
-      return null
+      return null;
     },
     onTogglePanel: props => () => {
-      props.togglePanel(!props.isOpen)
+      props.togglePanel(!props.isOpen);
       if (props.isOpen && props.isSidebarOpen) {
-        return props.toggleSidebar(!props.isSidebarOpen)
+        return props.toggleSidebar(!props.isSidebarOpen);
       }
-      return null
+      return null;
     },
     onToggleSidebar: props => () => props.toggleSidebar(!props.isSidebarOpen)
   })
-)(App);
+)(AppTemplate);

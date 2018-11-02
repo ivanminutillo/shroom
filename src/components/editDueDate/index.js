@@ -19,7 +19,7 @@ const DueDate = props => {
       <DatePicker
         selected={props.value}
         onChange={props.action}
-        dateFormat={"DD MMM YYYY"}
+        dateFormat={"DD MMM"}
         withPortal
       />
     </Wrapper>

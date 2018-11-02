@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   `};
 `;
 
-const Main = props => {
+export default props => {
   return (
     <ApolloConsumer>
       {client => (
@@ -33,64 +33,99 @@ const Main = props => {
             exact
             path={props.match.path}
             component={Home}
-            toggleLeftPanel={props.toggleLeftPanel}
-            onTogglePanel={props.onTogglePanel}
+            onToggleSidebar={props.onToggleSidebar}
+            
+            togglePanel={props.togglePanel}
             isSidebarOpen={props.isSidebarOpen}
             client={client}
             providerId={props.providerId}
+            providerImage={props.providerImage}
+            providerName={props.providerName}
+          />
+          <PropsRoute
+            onToggleSidebar={props.onToggleSidebar}
+            path="/agent/:id"
+            component={Agent}
+            exact
+            data={props}
+            
+            togglePanel={props.togglePanel}
+            providerImage={props.providerImage}
             providerId={props.providerId}
+            isSidebarOpen={props.isSidebarOpen}
+            client={client}
+            providerName={props.providerName}
           />
           <PropsRoute
             exact
             path='/committed'
             component={committed}
             profile
-            toggleLeftPanel={props.toggleLeftPanel}
-            onTogglePanel={props.onTogglePanel}
+            onToggleSidebar={props.onToggleSidebar}
+            
+            togglePanel={props.togglePanel}
             isSidebarOpen={props.isSidebarOpen}
             client={client}
             providerId={props.providerId}
-            providerId={props.providerId}
+            providerImage={props.providerImage}
+            providerName={props.providerName}
           />
           <PropsRoute
             exact
             path='/matched'
             component={matched}
             profile
-            toggleLeftPanel={props.toggleLeftPanel}
-            onTogglePanel={props.onTogglePanel}
+            onToggleSidebar={props.onToggleSidebar}
+            
+            togglePanel={props.togglePanel}
             isSidebarOpen={props.isSidebarOpen}
             client={client}
             providerId={props.providerId}
+            providerName={props.providerName}
+            providerImage={props.providerImage}
+          />
+          
+          <PropsRoute
+            onToggleSidebar={props.onToggleSidebar}
+            path="/agent/:id/committed"
+            component={committed}
+            exact
+            
+            togglePanel={props.togglePanel}
+            providerImage={props.providerImage}
             providerId={props.providerId}
+            providerName={props.providerName}
+            isSidebarOpen={props.isSidebarOpen}
+            client={client}
           />
           <PropsRoute
-            toggleLeftPanel={props.toggleLeftPanel}
-            path="/agent/:id"
-            component={Agent}
+            onToggleSidebar={props.onToggleSidebar}
+            path="/agent/:id/matched"
+            component={matched}
             exact
-            data={props}
-            toggleLeftPanel={props.toggleLeftPanel}
-            onTogglePanel={props.onTogglePanel}
+            
+            togglePanel={props.togglePanel}
             providerImage={props.providerImage}
+            providerId={props.providerId}
+            providerName={props.providerName}
             loggedUser={props.data.id}
             isSidebarOpen={props.isSidebarOpen}
             client={client}
           />
           
           <PropsRoute
-            toggleLeftPanel={props.toggleLeftPanel}
+            onToggleSidebar={props.onToggleSidebar}
             path="/plan/:id"
             component={Plan}
             data={props}
-            toggleLeftPanel={props.toggleLeftPanel}
-            onTogglePanel={props.onTogglePanel}
+            
+            togglePanel={props.togglePanel}
             providerId={props.providerId}
             isSidebarOpen={props.isSidebarOpen}
             client={client}
           />
           <PropsRoute
-            toggleLeftPanel={props.toggleLeftPanel}
+            onToggleSidebar={props.onToggleSidebar}
             id={props.data.id}
             path="/wallet"
             component={Wallet}
@@ -103,9 +138,4 @@ const Main = props => {
   );
 };
 
-export default compose(
-  withState("isOpen", "togglePanel", false),
-  withHandlers({
-    onTogglePanel: props => () => props.togglePanel(!props.isOpen)
-  })
-)(Main);
+

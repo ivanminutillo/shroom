@@ -11,76 +11,105 @@ import Intent from "../../components/agentintents/intents";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import getAllCommitments from "../../queries/getAllCommitments";
+import Sidebar from "../../components/sidebar/sidebar";
 
 const Agent = props => {
   return (
-    <Wrapper isOpen={props.isOpen}>
-      <Header
-        id={props.providerId}
-        toggleLeftPanel={props.toggleLeftPanel}
-        togglePanel={props.togglePanel}
+    <Body>
+      <Sidebar
+        isOpen={props.isSidebarOpen}
+        param={props.match.params.id}
       />
-      <Content>
-        <Inside>
-          <Overview>
 
+      <Wrapper isOpen={props.isOpen}>
+        <Header
+          id={props.providerId}
+          toggleLeftPanel={props.toggleLeftPanel}
+          togglePanel={props.togglePanel}
+        />
+        <Content>
+          <Inside>
+            <Overview>
               <Query
-              query={getAllCommitments}
-              variables={{
-                token: localStorage.getItem("oce_token"),
-                id: props.providerId
-              }}
-            >
-              {({ loading, error, data, refetch }) => {
-                if (loading) return <LoadingMini />
-                if (error) return <ErrorMini refetch={refetch} message={`Error! ${error.message}`}/>
-                let intents = [].concat(...data.viewer.agent.agentRelationships.map(a => a.object.agentCommitments));
-                let activeIntents = intents.filter(i => !i.isFinished)
-                let completed = intents.filter(i => i.isFinished)
-                return (
-                  <EventsInfo>
-                    <WrapperIntents>
-                      <HeaderTitle title={`Inbox (${activeIntents.length})`} />
-                      <ContentIntents>
-                        {activeIntents.map((intent, i) => (
-                          <Intent
-                            handleAddEvent={props.handleAddEvent}
-                            addEvent={props.addEvent}
-                            toggleModal={props.toggleModal}
-                            key={i}
-                            data={intent}
-                            scopeId={props.id}
-                            myId={props.providerId}
-                            providerImage={props.providerImage}
-                          />
-                        ))}
-                      </ContentIntents>
-                    </WrapperIntents>
-                    <WrapperIntents>
-                      <HeaderTitle title={`Completed (${completed.length})`} />
-                      <ContentIntents>
-                        {completed.map((intent, i) => (
-                          <Intent
-                            handleAddEvent={props.handleAddEvent}
-                            addEvent={props.addEvent}
-                            toggleModal={props.toggleModal}
-                            key={i}
-                            data={intent}
-                            scopeId={props.id}
-                            myId={props.providerId}
-                            providerImage={props.providerImage}
-                          />
-                        ))}
-                      </ContentIntents>
-                    </WrapperIntents>
-                  </EventsInfo>
-                );
-              }}
-            </Query>
-          </Overview>
-        </Inside>
-      </Content>
-    </Wrapper>
+                query={getAllCommitments}
+                variables={{
+                  token: localStorage.getItem("oce_token"),
+                  id: props.providerId
+                }}
+              >
+                {({ loading, error, data, refetch }) => {
+                  if (loading) return <LoadingMini />;
+                  if (error)
+                    return (
+                      <ErrorMini
+                        refetch={refetch}
+                        message={`Error! ${error.message}`}
+                      />
+                    );
+                  let intents = [].concat(
+                    ...data.viewer.agent.agentRelationships.map(
+                      a => a.object.agentCommitments
+                    )
+                  );
+                  let activeIntents = intents.filter(i => !i.isFinished);
+                  let completed = intents.filter(i => i.isFinished);
+                  return (
+                    <EventsInfo>
+                      <WrapperIntents>
+                        <HeaderTitle
+                          isOpen={props.isCommittedOpen}
+                          action={props.handleCommittedOpen}
+                          title={`Inbox (${activeIntents.length})`}
+                        />
+                        {props.isCommittedOpen ? (
+                        <ContentIntents>
+                          {activeIntents.map((intent, i) => (
+                            <Intent
+                              handleAddEvent={props.handleAddEvent}
+                              addEvent={props.addEvent}
+                              toggleModal={props.toggleModal}
+                              key={i}
+                              data={intent}
+                              scopeId={props.id}
+                              myId={props.providerId}
+                              providerImage={props.providerImage}
+                            />
+                          ))}
+                        </ContentIntents>
+                         ) : null}
+                      </WrapperIntents>
+                      <WrapperIntents>
+                        <HeaderTitle
+                          isOpen={props.isCompletedOpen}
+                          action={props.handleCompletedOpen}
+                          title={`Completed (${completed.length})`}
+                        />
+                         {props.isCompletedOpen ? (
+                        <ContentIntents>
+                          {completed.map((intent, i) => (
+                            <Intent
+                              handleAddEvent={props.handleAddEvent}
+                              addEvent={props.addEvent}
+                              toggleModal={props.toggleModal}
+                              key={i}
+                              data={intent}
+                              scopeId={props.id}
+                              myId={props.providerId}
+                              providerImage={props.providerImage}
+                            />
+                          ))}
+                        </ContentIntents>
+                        ) : null}
+                      </WrapperIntents>
+                    </EventsInfo>
+                  );
+                }}
+              </Query>
+            </Overview>
+          </Inside>
+        </Content>
+      </Wrapper>
+    </Body>
   );
 };
 
@@ -89,7 +118,13 @@ export default compose(
   graphql(deleteNotification, { name: "deleteNotification" }),
   withState("intentModalIsOpen", "toggleIntentModalIsOpen", false),
   withState("intentModal", "selectIntentModal", null),
+  withState("isCommittedOpen", "onCommittedOpen", true),
+  withState("isCompletedOpen", "onCompletedOpen", false),
   withHandlers({
+    handleCommittedOpen: props => () =>
+      props.onCommittedOpen(!props.isCommittedOpen),
+    handleCompletedOpen: props => () =>
+      props.onCompletedOpen(!props.isCompletedOpen),
     toggleIntentModal: props => contributionId => {
       props.selectIntentModal(contributionId);
       props.toggleIntentModalIsOpen(!props.intentModalIsOpen);
@@ -97,6 +132,11 @@ export default compose(
   })
 )(Agent);
 
+const Body = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+`;
 
 const WrapperIntents = styled.div`
   position: relative;
@@ -109,15 +149,12 @@ const ContentIntents = styled.div`
   width: 100%;
 `;
 
-
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   position: relative;
-  width: 100%;
-  height: 100%;
+  flex: 1;
   ${media.lessThan("medium")`
     display: ${props => (props.isOpen ? "none" : "flex")}
   `};

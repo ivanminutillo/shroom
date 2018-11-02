@@ -5,19 +5,36 @@ import media from "styled-media-query";
 import SmartSentence from "../../components/smartSentence";
 import Feeds from "./feeds";
 import { ApolloConsumer } from "react-apollo";
-import HeaderTitle from "../../components/agentSectionHeader";
 import AgentPlans from "../../components/agentplans";
 import AgentIntents from "../../components/agentintents";
 import { compose, withState, withHandlers } from "recompose";
 import ValidationModal from "../../components/modalValidation";
 import IntentModal from "../../components/modalIntent";
 import NewRequirementModal from "../../components/newRequirementModal";
+import HeaderTitle from "../../components/agentSectionHeader";
+import Intent from "../../components/agentintents/intents";
+import { Query } from "react-apollo";
+import { LoadingMini, ErrorMini } from "../../components/loading";
+import getAllCommitments from "../../queries/getAllCommitments";
+import getCommitments from "../../queries/getCommitments";
+import Sidebar from "../../components/sidebar/sidebar";
+const Body = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+`;
+
 
 const Agent = props => {
   return (
+    <Body>
+      <Sidebar
+        isOpen={props.isSidebarOpen}
+        param={props.match.params.id}
+      />
     <Wrapper isOpen={props.isOpen}>
       <Header
-        id={props.id ? props.id : props.match.params.id}
+        id={props.match.params.id}
         toggleLeftPanel={props.toggleLeftPanel}
         togglePanel={props.togglePanel}
       />
@@ -29,45 +46,71 @@ const Agent = props => {
               providerId={props.providerId}
               providerImage={props.providerImage}
               providerName={props.providerName}
-              scopeId={
-                props.id === props.providerId
-                  ? props.providerId
-                  : props.match.params.id
-              }
+              scopeId={props.match.params.id}
             />
           )}
         </ApolloConsumer>
       )}
-      <Content>
+       <Content>
         <Inside>
           <Overview>
-            <EventsInfo>
-              <AgentIntents
-                toggleModal={props.toggleIntentModal}
-                id={props.match.params.id}
-                openNewReq={props.togglenewRequirementModal}
-                myId={props.providerId}
-                scopeId={props.match.params.id}
-                providerImage={props.providerImage}
-                openValidationModal={props.toggleValidationModal}
-              />
-            </EventsInfo>
+
+              <Query
+              query={getCommitments}
+              variables={{
+                token: localStorage.getItem("oce_token"),
+                id: props.match.params.id
+              }}
+            >
+              {({ loading, error, data, refetch }) => {
+                if (loading) return <LoadingMini />
+                if (error) return <ErrorMini refetch={refetch} message={`Error! ${error.message}`}/>
+                let intents = data.viewer.agent.agentCommitments
+                let activeIntents = intents.filter(i => !i.isFinished)
+                let completed = intents.filter(i => i.isFinished)
+                return (
+                  <EventsInfo>
+                    <WrapperIntents>
+                      <HeaderTitle title={`Inbox (${activeIntents.length})`} />
+                      <ContentIntents>
+                        {activeIntents.map((intent, i) => (
+                          <Intent
+                            handleAddEvent={props.handleAddEvent}
+                            addEvent={props.addEvent}
+                            toggleModal={props.toggleModal}
+                            key={i}
+                            data={intent}
+                            scopeId={props.id}
+                            myId={props.providerId}
+                            providerImage={props.providerImage}
+                          />
+                        ))}
+                      </ContentIntents>
+                    </WrapperIntents>
+                    <WrapperIntents>
+                      <HeaderTitle title={`Completed (${completed.length})`} />
+                      <ContentIntents>
+                        {completed.map((intent, i) => (
+                          <Intent
+                            handleAddEvent={props.handleAddEvent}
+                            addEvent={props.addEvent}
+                            toggleModal={props.toggleModal}
+                            key={i}
+                            data={intent}
+                            scopeId={props.id}
+                            myId={props.providerId}
+                            providerImage={props.providerImage}
+                          />
+                        ))}
+                      </ContentIntents>
+                    </WrapperIntents>
+                  </EventsInfo>
+                );
+              }}
+            </Query>
           </Overview>
         </Inside>
       </Content>
-      <IntentModal
-        modalIsOpen={props.intentModalIsOpen}
-        toggleModal={props.toggleIntentModal}
-        contributionId={props.intentModalId}
-        intent={props.intentModal}
-        addIntent={props.selectValidationModalId}
-        providerId={props.providerId}
-        scopeId={
-          props.id === props.providerId
-            ? props.providerId
-            : props.match.params.id
-        }
-      />
       <ValidationModal
         modalIsOpen={props.validationModalIsOpen}
         toggleModal={props.toggleValidationModal}
@@ -81,8 +124,23 @@ const Agent = props => {
         scopeId={props.match.params.id}
       />
     </Wrapper>
+    </Body>
   );
 };
+
+
+
+const WrapperIntents = styled.div`
+  position: relative;
+`;
+
+const ContentIntents = styled.div`
+  overflow-y: scroll;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+`;
+
 
 export default compose(
   withState(
@@ -115,8 +173,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   position: relative;
-  width: 100%;
-  height: 100%;
+  flex: 1;
   ${media.lessThan("medium")`
     display: ${props => (props.isOpen ? "none" : "flex")}
   `};
