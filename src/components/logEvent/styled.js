@@ -110,6 +110,7 @@ const PublishActions = styled.div`
         box-shadow: none;
         border: 0;
         border-radius: 0;
+        margin-left: 8px;
     }
 `
 

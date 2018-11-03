@@ -71,7 +71,7 @@ const Agent = props => {
                               key={i}
                               data={intent}
                               client={client}
-                              scopeId={props.id}
+                              scopeId={intent.scope.id}
                               myId={props.providerId}
                               providerImage={props.providerImage}
                             />
@@ -95,7 +95,7 @@ const Agent = props => {
                               key={i}
                               data={intent}
                               client={client}
-                              scopeId={props.id}
+                              scopeId={intent.scope.id}
                               myId={props.providerId}
                               providerImage={props.providerImage}
                             />

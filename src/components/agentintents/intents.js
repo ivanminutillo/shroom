@@ -36,7 +36,6 @@ export default compose(
     data,
     handleAddEvent,
     addEvent,
-    toggleModal,
     handlePopup,
     handleNoteOpen,
     isNoteOpen,
@@ -49,6 +48,8 @@ export default compose(
     client,
     providerImage
   }) => {
+    console.log(scopeId)
+    console.log(data)
     return (
       <Intent isFinished={data.isFinished}>
         <Wrapper>
@@ -139,12 +140,6 @@ export default compose(
                   ) : null}
                 </span>
               </Agents>
-
-              {/* {data.provider ? (
-            
-              <Img style={{ backgroundImage: `url(${data.provider.image})` }} />
-            </Agents>
-          ) : null} */}
             </FirstInfo>
           </Second>
         </Wrapper>
@@ -190,6 +185,7 @@ export default compose(
               unitId={data.committedQuantity.unit.id}
               resourceId={data.resourceClassifiedAs.id}
               resource={data.resourceClassifiedAs.name}
+              closeLogEvent={handleAddEvent}
             />
           ) : (
             <div style={{ marginLeft: "8px" }}>

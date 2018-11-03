@@ -6,7 +6,6 @@ import HeaderTitle from "../../components/agentSectionHeader";
 import Intent from "../../components/agentintents/intents";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
-import getComms from "../../queries/getCommitments";
 import getSkillsCommitments from "../../queries/getSkillsCommitments";
 import Sidebar from "../../components/sidebar/sidebar";
 const Body = styled.div`
@@ -61,7 +60,7 @@ export default props => {
                             key={i}
                             client={client}
                             data={intent}
-                            scopeId={props.id}
+                            scopeId={intent.scope.id}
                             myId={props.providerId}
                             providerImage={props.providerImage}
                           />
@@ -79,7 +78,7 @@ export default props => {
                             key={i}
                             client={client}
                             data={intent}
-                            scopeId={props.id}
+                            scopeId={intent.scope.id}
                             myId={props.providerId}
                             providerImage={props.providerImage}
                           />

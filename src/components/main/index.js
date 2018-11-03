@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { withState, withHandlers, compose } from "recompose";
 import { PropsRoute } from "../../helpers/router";
 import Agent from "../../pages/agent";
 import Home from "../../pages/home";
@@ -30,11 +29,10 @@ export default props => {
       {client => (
         <Wrapper isSidebarOpen={props.isSidebarOpen}>
           <PropsRoute
+            component={Home}
             exact
             path={props.match.path}
-            component={Home}
             onToggleSidebar={props.onToggleSidebar}
-            
             togglePanel={props.togglePanel}
             isSidebarOpen={props.isSidebarOpen}
             client={client}
@@ -43,12 +41,11 @@ export default props => {
             providerName={props.providerName}
           />
           <PropsRoute
+            component={Agent}
             onToggleSidebar={props.onToggleSidebar}
             path="/agent/:id"
-            component={Agent}
             exact
             data={props}
-            
             togglePanel={props.togglePanel}
             providerImage={props.providerImage}
             providerId={props.providerId}

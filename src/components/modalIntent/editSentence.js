@@ -12,7 +12,6 @@ import getResourcesQuery from "../../queries/getResources";
 import { Mutation } from "react-apollo";
 import UPDATE_COMMITMENT from "../../mutations/updateCommitment";
 import withNotif from "../notification";
-import getComm from "../../queries/getCommitment";
 import gql from "graphql-tag";
 
 const customStyles = {
@@ -111,8 +110,27 @@ export default compose(
         commitment.action = updateCommitment.commitment.action;
         commitment.committedQuantity = updateCommitment.commitment.committedQuantity;
         commitment.resourceClassifiedAs = updateCommitment.commitment.resourceClassifiedAs;
-        store.writeQuery({
-          query: getComm,
+        store.writeFragment({
+          id: `${updateCommitment.commitment.__typename}-${
+            updateCommitment.commitment.id
+          }`,
+          fragment: gql`
+            fragment myCommitment on Commitment {
+              id
+              action
+              committedQuantity {
+                numericValue
+                unit {
+                  id
+                  name
+                }
+              }
+              resourceClassifiedAs {
+                name
+                id
+              }
+            }
+          `,
           data: commitment
         });
         handleSentenceOpen()

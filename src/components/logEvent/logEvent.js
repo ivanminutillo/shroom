@@ -1,8 +1,10 @@
 import React from "react";
-import { Button, Input, Textarea, Icons } from "oce-components/build";
+import { Icons } from "oce-components/build";
+import Button from '../../atoms/button'
+import Input from '../../atoms/input'
+import Textarea from '../../atoms/textarea'
 import DatePicker from "react-datepicker";
 import { Form, Field } from "formik";
-// import Alert from "../../alert";
 import { ApolloConsumer } from "react-apollo";
 import { placeholder } from "polished";
 import Log from "./styled";
@@ -13,76 +15,8 @@ import Events from "./events";
 import AsyncSelect from "react-select/lib/Async";
 import getResourcesQuery from "../../queries/getResources";
 import Alert from "../alert";
-// import BoxHeader from "../smartSentence/boxHeader";
 require("react-datepicker/dist/react-datepicker-cssmodules.css");
 
-const StartDate = props => {
-  const handleChange = value => {
-    props.onChange("date", value);
-  };
-  return (
-    <Log.ItemDate>
-      <span>
-        <Icons.Calendar width="18" height="18" color="#3B99FC" />
-      </span>
-      <DatePicker
-        selected={props.value}
-        onChange={handleChange}
-        dateFormat={"DD MMM"}
-        withPortal
-      />
-      {/* {props.error && props.touched && <Alert>{props.error}</Alert>} */}
-    </Log.ItemDate>
-  );
-};
-
-const Action = styled.div``;
-const Qty = styled.div`
-  border-radius: 3px;
-  max-height: 36px;
-  text-align: center;
-  & input {
-    width: 100%;
-    text-align: center;
-    color: #333;
-    height: 38px;
-    border: 1px solid #7d849a50;
-    ${placeholder({ color: "#333" })};
-  }
-`;
-const Unit = styled.div``;
-const Resource = styled.div`
-  margin-bottom: 8px;
-`;
-const Row = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr 2fr 3fr;
-  grid-column-gap: 4px;
-  & input {
-    ${placeholder({ color: "#f0f0f0" })};
-  }
-`;
-// const customStyles = {
-//   control: base => ({
-//     ...base,
-//     background: "#4F576C",
-//     border: "1px solid #7D849A50",
-//     color: "#f0f0f0"
-//   }),
-//   input: base => ({
-//     ...base,
-//     color: "#f0f0f0"
-//   }),
-//   singleValue: base => ({
-//     ...base,
-//     color: "#f0f0f0"
-//   }),
-//   placeholder: base => ({
-//     ...base,
-//     color: "#f0f0f0",
-//     fontSize: "14px"
-//   })
-// };
 
 const LogEvent = props => {
   const promiseOptions = (client, val) => {
@@ -236,7 +170,8 @@ const LogEvent = props => {
                 error={errors.start}
                 touched={touched.start}
               />
-              <Button type="submit">Publish</Button>
+              <Button  type="submit">Publish</Button>
+              <Button gray onClick={props.closeLogEvent}>Cancel</Button>
             </Log.PublishActions>
           </Log.Module>
         </Form>
@@ -244,5 +179,53 @@ const LogEvent = props => {
     </ApolloConsumer>
   );
 };
+
+const Action = styled.div``;
+const Qty = styled.div`
+  border-radius: 3px;
+  max-height: 36px;
+  text-align: center;
+  & input {
+    width: 100%;
+    text-align: center;
+    color: #333;
+    height: 38px;
+    border: 1px solid #7d849a50;
+    ${placeholder({ color: "#333" })};
+  }
+`;
+const Unit = styled.div``;
+const Resource = styled.div`
+  margin-bottom: 8px;
+`;
+const Row = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr 3fr;
+  grid-column-gap: 4px;
+  & input {
+    ${placeholder({ color: "#f0f0f0" })};
+  }
+`;
+
+const StartDate = props => {
+  const handleChange = value => {
+    props.onChange("date", value);
+  };
+  return (
+    <Log.ItemDate>
+      <span>
+        <Icons.Calendar width="18" height="18" color="#3B99FC" />
+      </span>
+      <DatePicker
+        selected={props.value}
+        onChange={handleChange}
+        dateFormat={"DD MMM"}
+        withPortal
+      />
+      {/* {props.error && props.touched && <Alert>{props.error}</Alert>} */}
+    </Log.ItemDate>
+  );
+};
+
 
 export default LogEvent;

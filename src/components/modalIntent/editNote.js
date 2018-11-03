@@ -29,7 +29,7 @@ export default compose(
     mutation={UPDATE_COMMITMENT}
     onError={onError}
     update={(store, { data: { updateCommitment } }) => {
-      const commitment = store.readFragment({
+      store.writeFragment({
         id: `${updateCommitment.commitment.__typename}-${
           updateCommitment.commitment.id
         }`,
@@ -38,12 +38,11 @@ export default compose(
             id
             note
           }
-        `
-      });
-      commitment.note = updateCommitment.commitment.note;
-      store.writeQuery({
-        query: getComm,
-        data: commitment
+        `,
+        data: {
+          __typename: 'Commitment',
+          note: updateCommitment.commitment.note
+        }
       });
       handleNoteOpen();
       return onSuccess();

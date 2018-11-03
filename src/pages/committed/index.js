@@ -91,7 +91,7 @@ export default compose(
                               key={i}
                               client={client}
                               data={intent}
-                              scopeId={props.id}
+                              scopeId={intent.scope.id}
                               myId={props.providerId}
                               providerImage={props.providerImage}
                             />
@@ -114,7 +114,7 @@ export default compose(
                               toggleModal={props.toggleModal}
                               key={i}
                               data={intent}
-                              scopeId={props.id}
+                              scopeId={intent.scope.id}
                               myId={props.providerId}
                               providerImage={props.providerImage}
                             />
