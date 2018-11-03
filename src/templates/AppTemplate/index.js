@@ -8,6 +8,7 @@ import Main from "../../components/main";
 import SettingModal from "../../pages/settings";
 import Header from './header'
 import { Query } from "react-apollo";
+import ValidationModal from "../../components/modalValidation";
 
 const Surface = styled.div`
   height: 100%;
@@ -50,6 +51,8 @@ const AppTemplate = props => {
               providerImage={data.viewer.myAgent.image}
               providerName={data.viewer.myAgent.name}
               togglePanel={props.onTogglePanel}
+              togglenewRequirementModal={props.togglenewRequirementModal}
+              toggleValidationModal={props.toggleValidationModal}
             />
               <Main
                 onToggleSidebar={props.onToggleSidebar}
@@ -60,6 +63,7 @@ const AppTemplate = props => {
                 providerId={data.viewer.myAgent.id}
                 providerImage={data.viewer.myAgent.image}
                 providerName={data.viewer.myAgent.name}
+                toggleValidationModal={props.toggleValidationModal}
               />
               <LeftPanel
                 data={data.viewer.myAgent}
@@ -73,6 +77,19 @@ const AppTemplate = props => {
               toggleModal={props.onToggleSettings}
               providerId={data.viewer.myAgent.id}
             />
+
+          <ValidationModal
+            modalIsOpen={props.validationModalIsOpen}
+            toggleModal={props.toggleValidationModal}
+            contributionId={props.validationModalId}
+            myId={data.viewer.myAgent.id}
+          />
+          {/* <NewRequirementModal
+            modalIsOpen={props.newRequirementModalIsOpen}
+            toggleModal={props.togglenewRequirementModal}
+            scopeId={props.match.params.id}
+          /> */}
+
           </Surface>
         );
       }}
@@ -93,6 +110,13 @@ const agentRelationships = gql`
 `;
 
 export default compose(
+  withState(
+    "newRequirementModalIsOpen",
+    "togglenewRequirementModalIsOpen",
+    false
+  ),
+  withState("validationModalIsOpen", "toggleValidationModalIsOpen", false),
+  withState("validationModalId", "selectValidationModalId", null),
   withState("group", "onGroup", "all"),
   withHandlers({
     handleGroup: props => val => {
@@ -122,6 +146,13 @@ export default compose(
       }
       return null;
     },
-    onToggleSidebar: props => () => props.toggleSidebar(!props.isSidebarOpen)
+    onToggleSidebar: props => () => props.toggleSidebar(!props.isSidebarOpen),
+    togglenewRequirementModal: props => () => {
+      props.togglenewRequirementModalIsOpen(!props.newRequirementModalIsOpen);
+    },
+    toggleValidationModal: props => contributionId => {
+      props.selectValidationModalId(contributionId);
+      props.toggleValidationModalIsOpen(!props.validationModalIsOpen);
+    }
   })
 )(AppTemplate);

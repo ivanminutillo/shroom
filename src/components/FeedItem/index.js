@@ -32,6 +32,11 @@ export default function({
           {primary}
           <Secondary light={light}>{secondary}</Secondary>
         </Primary>
+        <Validations>
+          {validations.map((a, i) => (
+            <Icons.Check key={i} with="20" height="20" color="green" />
+          ))}
+        </Validations>
         <Sub>
         {withValidation || withDelete ? (
         <Actions>
@@ -50,11 +55,6 @@ export default function({
                 </Span>
                 <ActionTitle>Validate</ActionTitle>
               </Action>
-              <Validations>
-                {validations.map((a, i) => (
-                  <Icons.Check key={i} with="20" height="20" color="green" />
-                ))}
-              </Validations>
             </span>
           ) : null}
         </Actions>
@@ -105,7 +105,9 @@ const Member = styled.div`
 `;
 const Validations = styled.div`
   float: right;
+  margin-top: 5px;
   vertical-align: sub;
+  margin-left: 5px;
 `;
 
 const Sub = styled.div`

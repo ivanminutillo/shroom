@@ -39,6 +39,8 @@ export default props => {
             providerId={props.providerId}
             providerImage={props.providerImage}
             providerName={props.providerName}
+
+            toggleValidationModal={props.toggleValidationModal}
           />
           <PropsRoute
             component={Agent}
@@ -52,6 +54,7 @@ export default props => {
             isSidebarOpen={props.isSidebarOpen}
             client={client}
             providerName={props.providerName}
+            toggleValidationModal={props.toggleValidationModal}
           />
           <PropsRoute
             exact
@@ -59,7 +62,7 @@ export default props => {
             component={committed}
             profile
             onToggleSidebar={props.onToggleSidebar}
-            
+            toggleValidationModal={props.toggleValidationModal}
             togglePanel={props.togglePanel}
             isSidebarOpen={props.isSidebarOpen}
             client={client}
@@ -73,7 +76,7 @@ export default props => {
             component={matched}
             profile
             onToggleSidebar={props.onToggleSidebar}
-            
+            toggleValidationModal={props.toggleValidationModal}
             togglePanel={props.togglePanel}
             isSidebarOpen={props.isSidebarOpen}
             client={client}
@@ -87,7 +90,7 @@ export default props => {
             path="/agent/:id/committed"
             component={committed}
             exact
-            
+            toggleValidationModal={props.toggleValidationModal}
             togglePanel={props.togglePanel}
             providerImage={props.providerImage}
             providerId={props.providerId}
@@ -100,7 +103,7 @@ export default props => {
             path="/agent/:id/matched"
             component={matched}
             exact
-            
+            toggleValidationModal={props.toggleValidationModal}
             togglePanel={props.togglePanel}
             providerImage={props.providerImage}
             providerId={props.providerId}

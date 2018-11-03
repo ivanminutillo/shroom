@@ -69,6 +69,7 @@ const Agent = props => {
                               addEvent={props.addEvent}
                               toggleModal={props.toggleModal}
                               key={i}
+                              toggleValidationModal={props.toggleValidationModal}
                               data={intent}
                               client={client}
                               scopeId={intent.scope.id}

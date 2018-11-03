@@ -42,14 +42,12 @@ export default compose(
     isSentenceOpen,
     handleSentenceOpen,
     popup,
-    openValidationModal,
+    toggleValidationModal,
     scopeId,
     myId,
     client,
     providerImage
   }) => {
-    console.log(scopeId)
-    console.log(data)
     return (
       <Intent isFinished={data.isFinished}>
         <Wrapper>
@@ -156,7 +154,7 @@ export default compose(
               withValidation
               withDelete
               validations={ev.fulfilledBy.validations}
-              openValidationModal={openValidationModal}
+              openValidationModal={toggleValidationModal}
               primary={
                 <FeedItem>
                   <B>{ev.fulfilledBy.provider.name}</B>{" "}
