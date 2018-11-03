@@ -1,88 +1,48 @@
 import { Mutation } from "react-apollo";
-import { Icons } from "oce-components";
 import React from "react";
 import styled, { css } from "styled-components";
 import getComm from "../../queries/getCommitment";
-import updateNotification from "../../mutations/updateNotification";
-import deleteNotification from "../../mutations/deleteNotification";
 import { compose } from "recompose";
-import { graphql } from "react-apollo";
 import UPDATE_COMMITMENT from "../../mutations/updateCommitment";
+import withNotif from "../notification";
+import gql from "graphql-tag";
 
 export default compose(
-  graphql(deleteNotification, { name: "deleteNotification" }),
-  graphql(updateNotification, { name: "updateNotification" })
+  withNotif("Status is successfully updated", "Error! Status is not updated")
 )(
   ({
     intentId,
     isFinished,
-    updateNotification,
-    deleteNotification
+    onError,
+    onSuccess
   }) => {
     return (
       <Mutation
         mutation={UPDATE_COMMITMENT}
-        onError={e => {
-          const errors = e.graphQLErrors.map(error => error.message);
-          updateNotification({
-            variables: {
-              message: (
-                <div style={{ fontSize: "14px", color: "#f0f0f0" }}>
-                  <span style={{ marginRight: "10px", verticalAlign: "sub" }}>
-                    <Icons.Cross width="18" height="18" color="white" />
-                  </span>
-                  {errors}
-                </div>
-              ),
-              type: "alert"
-            }
-          }).then(res => {
-            setTimeout(() => {
-              deleteNotification({
-                variables: { id: res.data.addNotification.id }
-              });
-            }, 1000);
-          });
-        }}
-        onCompleted={res => {
-          updateNotification({
-            variables: {
-              message: (
-                <div style={{ fontSize: "14px", color: "#f0f0f0" }}>
-                  <span style={{ marginRight: "10px", verticalAlign: "sub" }}>
-                    <Icons.Bell width="18" height="18" color="white" />
-                  </span>
-                  Event deleted successfully!
-                </div>
-              ),
-              type: "success"
-            }
-          }).then(res => {
-            setTimeout(() => {
-              deleteNotification({
-                variables: { id: res.data.addNotification.id }
-              });
-            }, 1000);
-          });
-        }}
+        onError={onError}
         update={(store, { data: { updateCommitment } }) => {
-          let commCache = store.readQuery({
-            query: getComm,
-            variables: {
-              token: localStorage.getItem("oce_token"),
-              id: intentId
-            }
+          const commitment = store.readFragment({
+            id: `${updateCommitment.commitment.__typename}-${
+              updateCommitment.commitment.id
+            }`,
+            fragment: gql`
+              fragment myCommitment on Commitment {
+                id
+                isFinished
+              }
+            `
           });
-          commCache.isFinished = updateCommitment.commitment.isFinished;
+          commitment.isFinished = updateCommitment.commitment.isFinished;
           store.writeQuery({
             query: getComm,
-            data: commCache
+            data: commitment
           });
+          return onSuccess();
         }}
       >
-        {(addProvider, { data }) => ( 
+        {(editStatus, { data }) => ( 
             <input type='checkbox' checked={isFinished} onChange={() =>
-              addProvider({
+              editStatus({
                 variables: {
                   token: localStorage.getItem("oce_token"),
                   id: intentId,
