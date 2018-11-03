@@ -9,6 +9,7 @@ import getComm from "../../queries/getCommitment";
 import { compose } from "react-apollo";
 import { withFormik, Field } from "formik";
 import * as Yup from "yup";
+import gql from "graphql-tag";
 
 export default compose(
   withNotif(
@@ -28,17 +29,21 @@ export default compose(
     mutation={UPDATE_COMMITMENT}
     onError={onError}
     update={(store, { data: { updateCommitment } }) => {
-      let commCache = store.readQuery({
-        query: getComm,
-        variables: {
-          token: localStorage.getItem("oce_token"),
-          id: intent.id
-        }
+      const commitment = store.readFragment({
+        id: `${updateCommitment.commitment.__typename}-${
+          updateCommitment.commitment.id
+        }`,
+        fragment: gql`
+          fragment myCommitment on Commitment {
+            id
+            note
+          }
+        `
       });
-      commCache.viewer.commitment.note = updateCommitment.commitment.note;
+      commitment.note = updateCommitment.commitment.note;
       store.writeQuery({
         query: getComm,
-        data: commCache
+        data: commitment
       });
       handleNoteOpen();
       return onSuccess();

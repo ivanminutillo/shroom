@@ -39,21 +39,7 @@ export default compose(
   withNotif('Requirement successfully updated', "error! Requirement had not been updated"),
   withFormik({
     mapPropsToValues: props => ({
-    //   plan: { value: props.intent.plan.id, label: props.intent.plan.name },
-    //   process: {
-    //     value: props.intent.inputOf
-    //       ? props.intent.inputOf.id
-    //       : props.intent.outputOf
-    //         ? props.intent.outputOf.id
-    //         : "",
-    //     label: props.intent.inputOf
-    //       ? props.intent.inputOf.name
-    //       : props.intent.outputOf
-    //         ? props.intent.outputOf.name
-    //         : ""
-    //   },
       action: { value: props.intent.action, label: props.intent.action },
-    //   note: props.intent.note,
       numericValue: props.intent.committedQuantity.numericValue,
       unit: {
         value: props.intent.committedQuantity.unit.id,
