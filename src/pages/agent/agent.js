@@ -3,19 +3,14 @@ import styled from "styled-components";
 import Header from "./header";
 import media from "styled-media-query";
 import SmartSentence from "../../components/smartSentence";
-import Feeds from "./feeds";
 import { ApolloConsumer } from "react-apollo";
-import AgentPlans from "../../components/agentplans";
-import AgentIntents from "../../components/agentintents";
 import { compose, withState, withHandlers } from "recompose";
 import ValidationModal from "../../components/modalValidation";
-import IntentModal from "../../components/modalIntent";
 import NewRequirementModal from "../../components/newRequirementModal";
 import HeaderTitle from "../../components/agentSectionHeader";
 import Intent from "../../components/agentintents/intents";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
-import getAllCommitments from "../../queries/getAllCommitments";
 import getCommitments from "../../queries/getCommitments";
 import Sidebar from "../../components/sidebar/sidebar";
 const Body = styled.div`
@@ -62,7 +57,7 @@ const Agent = props => {
                 id: props.match.params.id
               }}
             >
-              {({ loading, error, data, refetch }) => {
+              {({ loading, error, data, client, refetch }) => {
                 if (loading) return <LoadingMini />
                 if (error) return <ErrorMini refetch={refetch} message={`Error! ${error.message}`}/>
                 let intents = data.viewer.agent.agentCommitments
@@ -80,6 +75,7 @@ const Agent = props => {
                             toggleModal={props.toggleModal}
                             key={i}
                             data={intent}
+                            client={client}
                             scopeId={props.id}
                             myId={props.providerId}
                             providerImage={props.providerImage}
@@ -97,6 +93,7 @@ const Agent = props => {
                             toggleModal={props.toggleModal}
                             key={i}
                             data={intent}
+                            client={client}
                             scopeId={props.id}
                             myId={props.providerId}
                             providerImage={props.providerImage}

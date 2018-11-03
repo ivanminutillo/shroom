@@ -38,7 +38,7 @@ export default props => {
                 id: props.providerId
               }}
             >
-              {({ loading, error, data, refetch }) => {
+              {({ loading, error, data, client, refetch }) => {
                 if (loading) return <LoadingMini />
                 if (error) return <ErrorMini refetch={refetch} message={`Error! ${error.message}`}/>
                 let intents = data.viewer.person.commitmentsMatchingSkills
@@ -59,6 +59,7 @@ export default props => {
                             addEvent={props.addEvent}
                             toggleModal={props.toggleModal}
                             key={i}
+                            client={client}
                             data={intent}
                             scopeId={props.id}
                             myId={props.providerId}
@@ -76,6 +77,7 @@ export default props => {
                             addEvent={props.addEvent}
                             toggleModal={props.toggleModal}
                             key={i}
+                            client={client}
                             data={intent}
                             scopeId={props.id}
                             myId={props.providerId}

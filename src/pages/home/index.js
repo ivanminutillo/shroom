@@ -37,7 +37,7 @@ const Agent = props => {
                   id: props.providerId
                 }}
               >
-                {({ loading, error, data, refetch }) => {
+                {({ loading, error, data, client, refetch }) => {
                   if (loading) return <LoadingMini />;
                   if (error)
                     return (
@@ -70,6 +70,7 @@ const Agent = props => {
                               toggleModal={props.toggleModal}
                               key={i}
                               data={intent}
+                              client={client}
                               scopeId={props.id}
                               myId={props.providerId}
                               providerImage={props.providerImage}
@@ -93,6 +94,7 @@ const Agent = props => {
                               toggleModal={props.toggleModal}
                               key={i}
                               data={intent}
+                              client={client}
                               scopeId={props.id}
                               myId={props.providerId}
                               providerImage={props.providerImage}

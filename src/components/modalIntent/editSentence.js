@@ -13,6 +13,7 @@ import { Mutation } from "react-apollo";
 import UPDATE_COMMITMENT from "../../mutations/updateCommitment";
 import withNotif from "../notification";
 import getComm from "../../queries/getCommitment";
+import gql from "graphql-tag";
 
 const customStyles = {
   control: base => ({
@@ -99,20 +100,34 @@ export default compose(
       mutation={UPDATE_COMMITMENT}
       onError={onError}
       update={(store, { data: { updateCommitment } }) => {
-        let commCache = store.readQuery({
-          query: getComm,
-          variables: {
-            token: localStorage.getItem("oce_token"),
-            id: intent.id
-          }
+        const commitment = store.readFragment({
+          id: `${updateCommitment.commitment.__typename}-${
+            updateCommitment.commitment.id
+          }`,
+          fragment: gql`
+            fragment myCommitment on Commitment {
+              id
+              action
+              committedQuantity {
+                numericValue
+                unit {
+                  id
+                  name
+                }
+              }
+              resourceClassifiedAs {
+                name
+                id
+              }
+            }
+          `
         });
-        commCache.viewer.commitment.action = updateCommitment.commitment.action;
-        commCache.viewer.commitment.committedQuantity = updateCommitment.commitment.committedQuantity;
-        commCache.viewer.commitment.resourceClassifiedAs = updateCommitment.commitment.resourceClassifiedAs;
-        
+        commitment.action = updateCommitment.commitment.action;
+        commitment.committedQuantity = updateCommitment.commitment.committedQuantity;
+        commitment.resourceClassifiedAs = updateCommitment.commitment.resourceClassifiedAs;
         store.writeQuery({
           query: getComm,
-          data: commCache
+          data: commitment
         });
         handleSentenceOpen()
         return onSuccess();
