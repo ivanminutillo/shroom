@@ -89,8 +89,8 @@ const Header = s.div`
   float: left;
   ${clearFix()}
   background: #277BD5;
-  border-right: 1px solid #121315;
-  box-shadow: 1 0px 0px rgba(250, 250, 250, 0.1);
+  border-right: 1px solid #1e68b8;
+    box-shadow: 1px 0px 0px rgba(250,250,250,0.1);
 `;
 
 const Span = s.div`

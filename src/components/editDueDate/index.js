@@ -1,14 +1,11 @@
 import { Mutation } from "react-apollo";
-import { Icons } from "oce-components";
 import React from "react";
 import styled, { css } from "styled-components";
 import getComm from "../../queries/getCommitment";
-import updateNotification from "../../mutations/updateNotification";
-import deleteNotification from "../../mutations/deleteNotification";
 import { compose } from "recompose";
-import { graphql } from "react-apollo";
 import UPDATE_COMMITMENT from "../../mutations/updateCommitment";
 import moment from "moment";
+import withNotif from "../notification";
 import gql from "graphql-tag";
 import DatePicker from "react-datepicker";
 require("react-datepicker/dist/react-datepicker-cssmodules.css");
@@ -27,65 +24,15 @@ const DueDate = props => {
 };
 
 export default compose(
-  graphql(deleteNotification, { name: "deleteNotification" }),
-  graphql(updateNotification, { name: "updateNotification" })
-)(({ intentId, due, updateNotification, deleteNotification }) => {
+  withNotif("Due date is successfully updated", "Error! Due date is not updated")
+)(({ intentId, due, onError, onSuccess }) => {
   let duration = moment.duration(moment(due).diff(moment())).asHours();
 
   return (
     <Mutation
       mutation={UPDATE_COMMITMENT}
-      onError={e => {
-        const errors = e.graphQLErrors.map(error => error.message);
-        updateNotification({
-          variables: {
-            message: (
-              <div style={{ fontSize: "14px", color: "#f0f0f0" }}>
-                <span style={{ marginRight: "10px", verticalAlign: "sub" }}>
-                  <Icons.Cross width="18" height="18" color="white" />
-                </span>
-                {errors}
-              </div>
-            ),
-            type: "alert"
-          }
-        }).then(res => {
-          setTimeout(() => {
-            deleteNotification({
-              variables: { id: res.data.addNotification.id }
-            });
-          }, 1000);
-        });
-      }}
-      onCompleted={res => {
-        updateNotification({
-          variables: {
-            message: (
-              <div style={{ fontSize: "14px", color: "#f0f0f0" }}>
-                <span style={{ marginRight: "10px", verticalAlign: "sub" }}>
-                  <Icons.Bell width="18" height="18" color="white" />
-                </span>
-                Due date updated successfully!
-              </div>
-            ),
-            type: "success"
-          }
-        }).then(res => {
-          setTimeout(() => {
-            deleteNotification({
-              variables: { id: res.data.addNotification.id }
-            });
-          }, 1000);
-        });
-      }}
+      onError={onError}
       update={(store, { data: { updateCommitment } }) => {
-        let commCache = store.readQuery({
-          query: getComm,
-          variables: {
-            token: localStorage.getItem("oce_token"),
-            id: intentId
-          }
-        });
         const commitment = store.readFragment({
           id: `${updateCommitment.commitment.__typename}-${
             updateCommitment.commitment.id
@@ -97,18 +44,19 @@ export default compose(
             }
           `
         });
-        commCache.due = updateCommitment.commitment.due;
+        commitment.due = updateCommitment.commitment.due;
         store.writeQuery({
           query: getComm,
-          data: commCache
+          data: commitment
         });
+        return onSuccess();
       }}
     >
-      {(addProvider, { data }) => (
+      {(editDueDate, { data }) => (
         <Date deadline={duration < 0 ? "expired" : duration < 48 ? "soon" : ""}>
           <DueDate
             value={moment(due)}
-            action={(value) => addProvider({
+            action={(value) => editDueDate({
               variables: {
                 token: localStorage.getItem("oce_token"),
                 id: intentId,
