@@ -77,6 +77,7 @@ const Of = styled.span`
 const Note = styled.div`
 padding: 0 10px;
 margin-bottom: 8px;
+
   & textarea {
     outline: none;
     display: block;
@@ -91,18 +92,17 @@ margin-bottom: 8px;
     word-wrap: break-word;
     color: #333;
     border: none;
-    border-top: 1px solid #dedede36;
     margin: 0;
     padding: 8px 16px;
+    border: 1px solid #cccccc;
     ${placeholder({ color: "#333" })};
   }
 `
 
 const PublishActions = styled.div`
     height: 36px;
-    background: #393f50;
+    padding: 0 10px;
     ${clearFix}
-
     & button {
         float: right;
         width: 120px;

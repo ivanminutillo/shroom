@@ -131,6 +131,7 @@ export default compose(
     setFieldValue,
     setFieldTouched,
     values,
+    toggleModal,
     addIntent
   }) => {
     const promiseOptions = (client, val) => {
@@ -173,7 +174,7 @@ export default compose(
     };
 
     return (
-      <div style={{ padding: "16px", paddingBottom: 0, marginBottom: "-20px" }}>
+      <div>
         <Title>Create a new requirement</Title>
         <Wrapper>
           <ApolloConsumer>
@@ -199,7 +200,8 @@ export default compose(
               />
             )}
           </ApolloConsumer>
-          {values.scope ? 
+          {values.scope ?
+          <PlanWrapper>
           <ApolloConsumer>
             {client => (
               <Field
@@ -223,6 +225,7 @@ export default compose(
               />
             )}
           </ApolloConsumer>
+          </PlanWrapper> 
         : null}
           {values.plan ? (
             <SelectContainer>
@@ -255,6 +258,7 @@ export default compose(
             unitId={intent}
             resourceId={intent}
             resource={intent}
+            closeLogEvent={toggleModal}
           />
         </Actions>
       </div>
@@ -266,18 +270,23 @@ const Title = styled.h3`
   color: ${props => props.theme.color.p900};
   letter-spacing: 0.5px;
   margin-bottom: 16px;
+  margin-left: 10px;
+  margin-top: 20px;
 `;
 
 const Actions = styled.div`
-  margin-left: -16px;
-  margin-bottom: -16px;
-  margin-right: -16px;
   ${clearFix()};
+`;
+
+const PlanWrapper = styled.div`
+  ${clearFix()};
+  margin-top: 10px;
 `;
 
 const Wrapper = styled.div`
   ${clearFix()};
-  margin-bottom: 16px;
+  margin: 0 10px;
+  margin-bottom: 10px;
   position: relative;
   z-index: 999999;
 `;

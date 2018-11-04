@@ -174,6 +174,7 @@ export default compose(
         </Events>
         <Actions>
           {addEvent ? (
+            <WrapperLogEvent>
             <LogEvent
               commitmentId={data.id}
               providerId={myId}
@@ -185,6 +186,7 @@ export default compose(
               resource={data.resourceClassifiedAs.name}
               closeLogEvent={handleAddEvent}
             />
+            </WrapperLogEvent>
           ) : (
             <div style={{ marginLeft: "8px" }}>
               <ImgProvider
@@ -203,6 +205,11 @@ const B = styled.b`
   font-weight: 500;
   color: ${props => props.theme.color.p100};
 `;
+
+const WrapperLogEvent = styled.div`
+background: #f2f2f2;
+padding: 10px 0;
+`
 
 const FeedItem = styled.div`
   font-size: ${props => props.theme.fontSize.h3};

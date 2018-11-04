@@ -8,21 +8,20 @@ import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import getCommitments from "../../queries/getCommitments";
 import setInbox from "../../mutations/setInbox";
-import Todo from '../../components/todo'
+import Todo from "../../components/todo";
 import { PropsRoute } from "../../helpers/router";
 import Sidebar from "../../components/sidebar/sidebar";
 
 import setCommitted from "../../mutations/setCommitted";
 
-
 export default props => {
   return (
     <Body>
-    <Sidebar isopen={props.isopen} param={props.match.params.id} />
-    <Wrapper isopen={props.isopen}>
-       <Content> 
-        <Inside>
-              <Query
+      <Sidebar isopen={props.isopen} param={props.match.params.id} />
+      <Wrapper isopen={props.isopen}>
+        <Content>
+          <Inside>
+            <Query
               query={getCommitments}
               variables={{
                 token: localStorage.getItem("oce_token"),
@@ -30,34 +29,44 @@ export default props => {
               }}
             >
               {({ loading, error, data, client, refetch }) => {
-                if (loading) return <LoadingMini />
-                if (error) return <ErrorMini refetch={refetch} message={`Error! ${error.message}`}/>
-                let intents = data.viewer.agent.agentCommitments
-               // INBOX
-               let activeIntents = intents.filter(i => !i.isFinished);
-               let completed = intents.filter(i => i.isFinished);
-               client.mutate({
-                 mutation: setInbox,
-                 variables: { total: intents.length }
-               });
-               // COMMITTED
-               let allCommittedIntents = intents.filter(int =>
-                 int.provider ? int.provider.id === props.providerId : null);
-               let committed = allCommittedIntents.filter(i => !i.isFinished);
-               let committedCompleted = allCommittedIntents.filter(i => i.isFinished);
-               client.mutate({
-                 mutation: setCommitted,
-                 variables: { total: allCommittedIntents.length }
-               });
+                if (loading) return <LoadingMini />;
+                if (error)
+                  return (
+                    <ErrorMini
+                      refetch={refetch}
+                      message={`Error! ${error.message}`}
+                    />
+                  );
+                let intents = data.viewer.agent.agentCommitments;
+                // INBOX
+                let activeIntents = intents.filter(i => !i.isFinished);
+                let completed = intents.filter(i => i.isFinished);
+                client.mutate({
+                  mutation: setInbox,
+                  variables: { total: intents.length }
+                });
+                // COMMITTED
+                let allCommittedIntents = intents.filter(
+                  int =>
+                    int.provider ? int.provider.id === props.providerId : null
+                );
+                let committed = allCommittedIntents.filter(i => !i.isFinished);
+                let committedCompleted = allCommittedIntents.filter(
+                  i => i.isFinished
+                );
+                client.mutate({
+                  mutation: setCommitted,
+                  variables: { total: allCommittedIntents.length }
+                });
                 return (
                   <Overview>
-                  <Header
-                  image={data.viewer.agent.image}
-                  name={data.viewer.agent.name}
-                  toggleLeftPanel={props.toggleLeftPanel}
-                  togglePanel={props.togglePanel}
-                />
-               {/* {props.id ? null : (
+                    <Header
+                      image={data.viewer.agent.image}
+                      name={data.viewer.agent.name}
+                      toggleLeftPanel={props.toggleLeftPanel}
+                      togglePanel={props.togglePanel}
+                    />
+                    {/* {props.id ? null : (
                   <ApolloConsumer>
                     {client => (
                       <SmartSentence
@@ -131,13 +140,12 @@ export default props => {
                 );
               }}
             </Query>
-        </Inside>
-      </Content>
-    </Wrapper>
-  </Body>
+          </Inside>
+        </Content>
+      </Wrapper>
+    </Body>
   );
 };
-
 
 const Body = styled.div`
   flex: 1;

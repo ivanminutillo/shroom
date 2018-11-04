@@ -185,13 +185,14 @@ const Qty = styled.div`
   border-radius: 3px;
   max-height: 36px;
   text-align: center;
+  ${placeholder({ color: "red" })};
   & input {
     width: 100%;
     text-align: center;
     color: #333;
     height: 38px;
     border: 1px solid #7d849a50;
-    ${placeholder({ color: "#333" })};
+    ${placeholder({ color: "red" })};
   }
 `;
 const Unit = styled.div``;
@@ -203,7 +204,7 @@ const Row = styled.div`
   grid-template-columns: 2fr 1fr 2fr 3fr;
   grid-column-gap: 4px;
   & input {
-    ${placeholder({ color: "#f0f0f0" })};
+    ${placeholder({ color: "#333" })};
   }
 `;
 

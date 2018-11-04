@@ -10,17 +10,28 @@ import getAllCommitments from "../../queries/getAllCommitments";
 import { PropsRoute } from "../../helpers/router";
 import Todo from "../../components/todo";
 import Sidebar from "../../components/sidebar/sidebar";
-import setMatched from '../../mutations/setMatched'
-export default props => {
+import setMatched from "../../mutations/setMatched";
+import { compose, withState, withHandlers } from "recompose";
+export default compose(
+  withState('event', 'onEvent', 'all'),
+  withHandlers({
+    handleEvent: props => (val) => (props.onEvent(val.value))
+  })
+)(props => {
   return (
     <Body>
-      <Sidebar profile='true' isopen={props.isopen} param={props.match.params.id} />
+      <Sidebar
+        profile="true"
+        isopen={props.isopen}
+        param={props.match.params.id}
+      />
       <Wrapper isopen={props.isopen}>
         <Header
-          image={''}
-          name={'All groups'}
+          image={""}
+          name={"All groups"}
           toggleLeftPanel={props.toggleLeftPanel}
           togglePanel={props.togglePanel}
+          handleEvent={props.handleEvent}
         />
         <Content>
           <Inside>
@@ -46,15 +57,21 @@ export default props => {
                       a => a.object.agentCommitments
                     )
                   );
+                  let filteredIntents = []
+                  if (props.event !== 'all') {
+                    filteredIntents = intents.filter(i => i.action === props.event)
+                  } else {
+                    filteredIntents = intents
+                  }
                   // INBOX
-                  let activeIntents = intents.filter(i => !i.isFinished);
-                  let completed = intents.filter(i => i.isFinished);
+                  let inbox = filteredIntents.filter(i => !i.isFinished);
+                  let completed = filteredIntents.filter(i => i.isFinished);
                   client.mutate({
                     mutation: setInbox,
-                    variables: { total: intents.length }
+                    variables: { total: filteredIntents.length }
                   });
                   // COMMITTED
-                  let allCommittedIntents = intents.filter(
+                  let allCommittedIntents = filteredIntents.filter(
                     int =>
                       int.provider ? int.provider.id === props.providerId : null
                   );
@@ -69,10 +86,9 @@ export default props => {
                     variables: { total: allCommittedIntents.length }
                   });
                   // MATCHED
-                  let allmatchedIntents = data.viewer.agent.commitmentsMatchingSkills
-                  let matched = allmatchedIntents.filter(
-                    i => !i.isFinished
-                  );
+                  let allmatchedIntents =
+                    data.viewer.agent.commitmentsMatchingSkills;
+                  let matched = allmatchedIntents.filter(i => !i.isFinished);
                   let matchedCompleted = allmatchedIntents.filter(
                     i => i.isFinished
                   );
@@ -80,13 +96,12 @@ export default props => {
                     mutation: setMatched,
                     variables: { total: allmatchedIntents.length }
                   });
-                  console.log(matched)
                   return (
                     <div>
                       <PropsRoute
                         exact
                         component={Todo}
-                        activeIntents={activeIntents}
+                        activeIntents={inbox}
                         completed={completed}
                         path={props.match.path}
                         onToggleSidebar={props.onToggleSidebar}
@@ -150,8 +165,7 @@ export default props => {
       </Wrapper>
     </Body>
   );
-};
-
+});
 
 const Wrapper = styled.div`
   display: flex;
