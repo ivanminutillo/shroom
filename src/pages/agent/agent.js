@@ -18,8 +18,8 @@ import setCommitted from "../../mutations/setCommitted";
 export default props => {
   return (
     <Body>
-    <Sidebar isOpen={props.isOpen} param={props.match.params.id} />
-    <Wrapper isOpen={props.isOpen}>
+    <Sidebar isopen={props.isopen} param={props.match.params.id} />
+    <Wrapper isopen={props.isopen}>
        <Content> 
         <Inside>
               <Query
@@ -152,7 +152,7 @@ const Wrapper = styled.div`
   position: relative;
   flex: 1;
   ${media.lessThan("medium")`
-    display: ${props => (props.isOpen ? "none" : "flex")}
+    display: ${props => (props.isopen ? "none" : "flex")}
   `};
 `;
 

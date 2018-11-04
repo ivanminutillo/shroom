@@ -96,10 +96,10 @@ const AppTemplate = props => {
             <LeftPanel
               data={data.viewer.myAgent}
               togglePanel={props.onTogglePanel}
-              active={props.isOpen}
+              active={props.isopen}
               toggleSettings={props.onToggleSettings}
             />
-            {props.isOpen ? <Overlay onClick={props.onTogglePanel} /> : null}
+            {props.isopen ? <Overlay onClick={props.onTogglePanel} /> : null}
             <SettingModal
               modalIsOpen={props.isSettingsOpen}
               toggleModal={props.onToggleSettings}
@@ -145,7 +145,7 @@ export default compose(
   withState("validationModalIsOpen", "toggleValidationModalIsOpen", false),
   withState("validationModalId", "selectValidationModalId", null),
   withState("group", "onGroup", "all"),
-  withState("isOpen", "togglePanel", false),
+  withState("isopen", "togglePanel", false),
   withState("isSidebarOpen", "toggleSidebar", false),
   withState("isSettingsOpen", "toggleSettings", false),
   withState("intentModalIsOpen", "toggleIntentModalIsOpen", false),
@@ -172,14 +172,14 @@ export default compose(
     },
     onToggleSettings: props => () => {
       props.toggleSettings(!props.isSettingsOpen);
-      if (props.isOpen && props.isSidebarOpen) {
+      if (props.isopen && props.isSidebarOpen) {
         return props.toggleSidebar(!props.isSidebarOpen);
       }
       return null;
     },
     onTogglePanel: props => () => {
-      props.togglePanel(!props.isOpen);
-      if (props.isOpen && props.isSidebarOpen) {
+      props.togglePanel(!props.isopen);
+      if (props.isopen && props.isSidebarOpen) {
         return props.toggleSidebar(!props.isSidebarOpen);
       }
       return null;

@@ -195,7 +195,7 @@ const WrapperSelect = s.div`
     margin-top: 3px;
     margin-left: 8px;
     position: relative;
-    z-index: 9999999999999999;
+    z-index: 9999999;
   `;
 
 const HeaderWrapper = s.div`

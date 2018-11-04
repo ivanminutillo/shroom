@@ -13,6 +13,8 @@ import ProcessSelect from "./processSelect";
 import withNotif from "../notification";
 import CreateCommitment from "../../mutations/CreateCommitment";
 import getCommitments from "../../queries/getCommitments";
+import gql from "graphql-tag";
+
 const customStyles = {
   control: base => ({
     ...base,
@@ -33,11 +35,30 @@ const customStyles = {
   })
 };
 
+
+const agentRelationships = gql`
+  query($token: String) {
+    viewer(token: $token) {
+      myAgent {
+        id
+        agentRelationships {
+          object {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+
+
 export default compose(
   withNotif("Commitment is successfully created", "Commitment is not created"),
   graphql(CreateCommitment, { name: "createCommitment" }),
   withFormik({
     mapPropsToValues: props => ({
+      scope: null,
       plan: null,
       process: "",
       action: "",
@@ -49,6 +70,7 @@ export default compose(
     }),
     validationSchema: Yup.object().shape({
       action: Yup.object().required(),
+      scope: Yup.object().required(),
       note: Yup.string(),
       numericValue: Yup.number(),
       unit: Yup.object().required(),
@@ -71,7 +93,7 @@ export default compose(
         inputOfId: values.process ? values.process.value : null,
         outputOfId: values.process ? values.process.value : null,
         planId: values.plan ? values.plan.value : null,
-        scopeId: props.scopeId
+        scopeId: values.scope.value
       };
       return props.createCommitment({
         variables: MutationVariables,
@@ -117,15 +139,33 @@ export default compose(
           query: getPlans,
           variables: {
             token: localStorage.getItem("oce_token"),
-            id: scopeId
+            id: values.scope.value
           }
         })
         .then(res => {
-          console.log(res);
           let options = res.data.viewer.agent.agentPlans
             .map(plan => ({
               value: plan.id,
               label: plan.name
+            }))
+            .filter(i => i.label.toLowerCase().includes(val.toLowerCase()));
+          return options;
+        });
+    };
+    const promiseGroupOptions = (client, val) => {
+      return client
+        .query({
+          query: agentRelationships,
+          variables: {
+            token: localStorage.getItem("oce_token"),
+          }
+        })
+        .then(res => {
+          console.log(res);
+          let options = res.data.viewer.myAgent.agentRelationships
+            .map(plan => ({
+              value: plan.object.id,
+              label: plan.object.name
             }))
             .filter(i => i.label.toLowerCase().includes(val.toLowerCase()));
           return options;
@@ -136,6 +176,30 @@ export default compose(
       <div style={{ padding: "16px", paddingBottom: 0, marginBottom: "-20px" }}>
         <Title>Create a new requirement</Title>
         <Wrapper>
+          <ApolloConsumer>
+            {client => (
+              <Field
+                name="scope"
+                render={({ field }) => (
+                  <AsyncSelect
+                    placeholder={"Select a group..."}
+                    defaultOptions
+                    cacheOptions
+                    styles={customStyles}
+                    value={field.label}
+                    onChange={val =>
+                      setFieldValue("scope", {
+                        value: val.value,
+                        label: val.label
+                      })
+                    }
+                    loadOptions={val => promiseGroupOptions(client, val)}
+                  />
+                )}
+              />
+            )}
+          </ApolloConsumer>
+          {values.scope ? 
           <ApolloConsumer>
             {client => (
               <Field
@@ -159,6 +223,7 @@ export default compose(
               />
             )}
           </ApolloConsumer>
+        : null}
           {values.plan ? (
             <SelectContainer>
               <Field
@@ -204,7 +269,6 @@ const Title = styled.h3`
 `;
 
 const Actions = styled.div`
-  background: #434a5b;
   margin-left: -16px;
   margin-bottom: -16px;
   margin-right: -16px;

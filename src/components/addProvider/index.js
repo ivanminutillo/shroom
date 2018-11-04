@@ -7,7 +7,6 @@ import { compose } from "recompose";
 import UPDATE_COMMITMENT from "../../mutations/updateCommitment";
 import gql from "graphql-tag";
 import withNotif from "../notification";
-import { clearFix } from "polished";
 
 export default compose(
   withNotif("Provider is successfully updated", "Provider is not updated")
@@ -109,14 +108,6 @@ export const DeleteProvider = compose(
   );
 });
 
-const Wrapper = styled.div`
-  ${clearFix()};
-  float: left;
-  cursor: pointer;
-  background: #dedede;
-  border-radius: 2px;
-  margin-right: 4px;
-`;
 const Span = styled.span`
   display: inline-block;
   vertical-align: sub;

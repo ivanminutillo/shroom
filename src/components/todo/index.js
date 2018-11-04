@@ -7,7 +7,7 @@ export default props => {
     <EventsInfo>
       <WrapperIntents>
         <HeaderTitle
-          isOpen={props.isCommittedOpen}
+          isopen={props.isCommittedOpen}
           action={props.handleCommittedOpen}
           title={`Inbox (${props.activeIntents.length})`}
         />
@@ -32,7 +32,7 @@ export default props => {
       </WrapperIntents>
       <WrapperIntents>
         <HeaderTitle
-          isOpen={props.isCompletedOpen}
+          isopen={props.isCompletedOpen}
           action={props.handleCompletedOpen}
           title={`Completed (${props.completed.length})`}
         />

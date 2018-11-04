@@ -29,9 +29,9 @@ right: -20px;
 top: 1px;
 `;
 
-export default ({ title, action, isOpen }) => (
+export default ({ title, action, isopen }) => (
   <Header onClick={action}>
     <SectionTitle>{title}</SectionTitle>
-    <Right>{isOpen ? <Icons.Down width='18' height='18' color='#9ab4ce' /> : <Icons.Right width='18' height='18' color='#9ab4ce' />}</Right>
+    <Right>{isopen ? <Icons.Down width='18' height='18' color='#9ab4ce' /> : <Icons.Right width='18' height='18' color='#9ab4ce' />}</Right>
   </Header>
 );

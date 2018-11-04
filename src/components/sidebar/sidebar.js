@@ -25,7 +25,7 @@ query getMatched {
 
 const Sidebar = (props) => {
   return (
-    <Wrapper isOpen={props.isOpen}>
+    <Wrapper isopen={props.isOpen}>
       <List>
       <ListTitle>Events</ListTitle>
       <Item>
@@ -144,7 +144,7 @@ const Wrapper = styled.div`
   ${media.lessThan("medium")`
   margin-left: -270px
   ${props =>
-    props.isOpen &&
+    props.isopen &&
     css`
     margin-left: 0px
       width: 100%;
