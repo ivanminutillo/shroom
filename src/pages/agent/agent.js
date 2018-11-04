@@ -4,52 +4,24 @@ import Header from "./header";
 import media from "styled-media-query";
 import SmartSentence from "../../components/smartSentence";
 import { ApolloConsumer } from "react-apollo";
-import { compose, withState, withHandlers } from "recompose";
-import ValidationModal from "../../components/modalValidation";
-import NewRequirementModal from "../../components/newRequirementModal";
-import HeaderTitle from "../../components/agentSectionHeader";
-import Intent from "../../components/agentintents/intents";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import getCommitments from "../../queries/getCommitments";
+import setInbox from "../../mutations/setInbox";
+import Todo from '../../components/todo'
+import { PropsRoute } from "../../helpers/router";
 import Sidebar from "../../components/sidebar/sidebar";
-const Body = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-`;
+
+import setCommitted from "../../mutations/setCommitted";
 
 
-const Agent = props => {
+export default props => {
   return (
     <Body>
-      <Sidebar
-        isOpen={props.isSidebarOpen}
-        param={props.match.params.id}
-      />
+    <Sidebar isOpen={props.isOpen} param={props.match.params.id} />
     <Wrapper isOpen={props.isOpen}>
-      <Header
-        id={props.match.params.id}
-        toggleLeftPanel={props.toggleLeftPanel}
-        togglePanel={props.togglePanel}
-      />
-      {props.id ? null : (
-        <ApolloConsumer>
-          {client => (
-            <SmartSentence
-              client={client}
-              providerId={props.providerId}
-              providerImage={props.providerImage}
-              providerName={props.providerName}
-              scopeId={props.match.params.id}
-            />
-          )}
-        </ApolloConsumer>
-      )}
-       <Content>
+       <Content> 
         <Inside>
-          <Overview>
-
               <Query
               query={getCommitments}
               variables={{
@@ -61,109 +33,117 @@ const Agent = props => {
                 if (loading) return <LoadingMini />
                 if (error) return <ErrorMini refetch={refetch} message={`Error! ${error.message}`}/>
                 let intents = data.viewer.agent.agentCommitments
-                let activeIntents = intents.filter(i => !i.isFinished)
-                let completed = intents.filter(i => i.isFinished)
+               // INBOX
+               let activeIntents = intents.filter(i => !i.isFinished);
+               let completed = intents.filter(i => i.isFinished);
+               client.mutate({
+                 mutation: setInbox,
+                 variables: { total: intents.length }
+               });
+               // COMMITTED
+               let allCommittedIntents = intents.filter(int =>
+                 int.provider ? int.provider.id === props.providerId : null);
+               let committed = allCommittedIntents.filter(i => !i.isFinished);
+               let committedCompleted = allCommittedIntents.filter(i => i.isFinished);
+               client.mutate({
+                 mutation: setCommitted,
+                 variables: { total: allCommittedIntents.length }
+               });
                 return (
-                  <EventsInfo>
-                    <WrapperIntents>
-                      <HeaderTitle title={`Inbox (${activeIntents.length})`} />
-                      <ContentIntents>
-                        {activeIntents.map((intent, i) => (
-                          <Intent
-                            handleAddEvent={props.handleAddEvent}
-                            addEvent={props.addEvent}
-                            toggleModal={props.toggleModal}
-                            key={i}
-                            data={intent}
-                            client={client}
-                            scopeId={intent.scope.id}
-                            myId={props.providerId}
-                            providerImage={props.providerImage}
-                          />
-                        ))}
-                      </ContentIntents>
-                    </WrapperIntents>
-                    <WrapperIntents>
-                      <HeaderTitle title={`Completed (${completed.length})`} />
-                      <ContentIntents>
-                        {completed.map((intent, i) => (
-                          <Intent
-                            handleAddEvent={props.handleAddEvent}
-                            addEvent={props.addEvent}
-                            toggleModal={props.toggleModal}
-                            key={i}
-                            data={intent}
-                            client={client}
-                            scopeId={intent.scope.id}
-                            myId={props.providerId}
-                            providerImage={props.providerImage}
-                          />
-                        ))}
-                      </ContentIntents>
-                    </WrapperIntents>
-                  </EventsInfo>
+                  <Overview>
+                  <Header
+                  image={data.viewer.agent.image}
+                  name={data.viewer.agent.name}
+                  toggleLeftPanel={props.toggleLeftPanel}
+                  togglePanel={props.togglePanel}
+                />
+               {/* {props.id ? null : (
+                  <ApolloConsumer>
+                    {client => (
+                      <SmartSentence
+                        client={client}
+                        providerId={props.providerId}
+                        providerImage={props.providerImage}
+                        providerName={props.providerName}
+                        scopeId={props.match.params.id}
+                      />
+                    )}
+                  </ApolloConsumer>
+                )}  */}
+                    <PropsRoute
+                      exact
+                      component={Todo}
+                      activeIntents={activeIntents}
+                      completed={completed}
+                      path={props.match.path}
+                      onToggleSidebar={props.onToggleSidebar}
+                      togglePanel={props.togglePanel}
+                      isSidebarOpen={props.isSidebarOpen}
+                      client={client}
+                      providerId={props.providerId}
+                      providerImage={props.providerImage}
+                      providerName={props.providerName}
+                      toggleValidationModal={props.toggleValidationModal}
+                      isCommittedOpen={props.isCommittedOpen}
+                      handleCommittedOpen={props.handleCommittedOpen}
+                      isCompletedOpen={props.isCompletedOpen}
+                      handleCompletedOpen={props.handleCompletedOpen}
+                    />
+                    <PropsRoute
+                      component={Todo}
+                      exact
+                      path={`/agent/${props.match.params.id}/committed`}
+                      activeIntents={committed}
+                      completed={committedCompleted}
+                      onToggleSidebar={props.onToggleSidebar}
+                      togglePanel={props.togglePanel}
+                      isSidebarOpen={props.isSidebarOpen}
+                      client={client}
+                      providerId={props.providerId}
+                      providerImage={props.providerImage}
+                      providerName={props.providerName}
+                      toggleValidationModal={props.toggleValidationModal}
+                      isCommittedOpen={props.isCommittedOpen}
+                      handleCommittedOpen={props.handleCommittedOpen}
+                      isCompletedOpen={props.isCompletedOpen}
+                      handleCompletedOpen={props.handleCompletedOpen}
+                    />
+                    <PropsRoute
+                      component={Todo}
+                      exact
+                      path={`/agent/${props.match.params.id}/matched`}
+                      activeIntents={activeIntents}
+                      completed={completed}
+                      onToggleSidebar={props.onToggleSidebar}
+                      togglePanel={props.togglePanel}
+                      isSidebarOpen={props.isSidebarOpen}
+                      client={client}
+                      providerId={props.providerId}
+                      providerImage={props.providerImage}
+                      providerName={props.providerName}
+                      toggleValidationModal={props.toggleValidationModal}
+                      isCommittedOpen={props.isCommittedOpen}
+                      handleCommittedOpen={props.handleCommittedOpen}
+                      isCompletedOpen={props.isCompletedOpen}
+                      handleCompletedOpen={props.handleCompletedOpen}
+                    />
+                  </Overview>
                 );
               }}
             </Query>
-          </Overview>
         </Inside>
       </Content>
-      <ValidationModal
-        modalIsOpen={props.validationModalIsOpen}
-        toggleModal={props.toggleValidationModal}
-        contributionId={props.validationModalId}
-        myId={props.providerId}
-        handleChange={props.handleChange}
-      />
-      <NewRequirementModal
-        modalIsOpen={props.newRequirementModalIsOpen}
-        toggleModal={props.togglenewRequirementModal}
-        scopeId={props.match.params.id}
-      />
     </Wrapper>
-    </Body>
+  </Body>
   );
 };
 
 
-
-const WrapperIntents = styled.div`
-  position: relative;
+const Body = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
 `;
-
-const ContentIntents = styled.div`
-  overflow-y: scroll;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-`;
-
-
-export default compose(
-  withState(
-    "newRequirementModalIsOpen",
-    "togglenewRequirementModalIsOpen",
-    false
-  ),
-  withState("intentModalIsOpen", "toggleIntentModalIsOpen", false),
-  withState("validationModalIsOpen", "toggleValidationModalIsOpen", false),
-  withState("intentModalIsOpen", "toggleIntentModalIsOpen", false),
-  withState("validationModalId", "selectValidationModalId", null),
-  withState("intentModal", "selectIntentModal", null),
-  withHandlers({
-    togglenewRequirementModal: props => () => {
-      props.togglenewRequirementModalIsOpen(!props.newRequirementModalIsOpen);
-    },
-    toggleValidationModal: props => contributionId => {
-      props.selectValidationModalId(contributionId);
-      props.toggleValidationModalIsOpen(!props.validationModalIsOpen);
-    },
-    toggleIntentModal: props => contributionId => {
-      props.selectIntentModal(contributionId);
-      props.toggleIntentModalIsOpen(!props.intentModalIsOpen);
-    }
-  })
-)(Agent);
 
 const Wrapper = styled.div`
   display: flex;
@@ -199,12 +179,4 @@ const Overview = styled.div`
   ${media.lessThan("medium")`
   width: 100%;
   `};
-`;
-
-const EventsInfo = styled.div`
-  display: grid;
-  column-gap: 16px;
-  // grid-template-columns: 1fr 2fr
-  padding: 16px;
-  padding-top: 0;
 `;

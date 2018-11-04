@@ -1,10 +1,27 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { Icons } from "oce-components/build";
-// import { Img, AvatarTitle, AvatarWrapper } from "../../atoms/avatar";
 import { NavLink } from "react-router-dom";
 import media from "styled-media-query";
-// import { placeholder } from "polished";
+import {Query} from 'react-apollo'
+import gql from "graphql-tag";
+
+const getInbox = gql`
+query getInbox {
+  inbox @client
+}
+`
+const getCommitted = gql`
+query getCommitted {
+  committed @client
+}
+`
+const getMatched = gql`
+query getMatched {
+  matched @client
+}
+`
+
 
 const Sidebar = (props) => {
   return (
@@ -29,6 +46,11 @@ const Sidebar = (props) => {
             <Icons.Inbox width="14" height="14" color="#f0f0f0bd" />
           </SpanIcon>
           Inbox
+        <Query query={getInbox}>
+            {({ data: { inbox } }) => {
+              return <Total>{inbox}</Total>
+            }}
+        </Query>
         </NavLink>
       </Item>
       <Item>
@@ -52,33 +74,56 @@ const Sidebar = (props) => {
             <Icons.Star width="14" height="14" color="#f0f0f0bd" />
           </SpanIcon>
           Committed
+        <Query query={getCommitted}>
+            {({ data: { committed } }) => {
+              return <Total>{committed}</Total>
+            }}
+        </Query>
         </NavLink>
       </Item>
+      {props.profile ? 
       <Item>
-        <NavLink
-          {...props}
-          isActive={(match, location) => location.pathname.includes("/matched")}
-          to={
-            props.param
-              ? `/agent/${props.param}/matched`
-              : `/matched`
-          }
-          activeStyle={{
-            position: "relative",
-            marginLeft: "24px",
-            color: "#f0f0f0"
+      <NavLink
+        {...props}
+        isActive={(match, location) => location.pathname.includes("/matched")}
+        to={
+          props.param
+            ? `/agent/${props.param}/matched`
+            : `/matched`
+        }
+        activeStyle={{
+          position: "relative",
+          marginLeft: "24px",
+          color: "#f0f0f0"
+        }}
+      >
+        <SpanIcon>
+          <Icons.Eye width="14" height="14" color="#f0f0f0bd" />
+        </SpanIcon>
+        Matched
+      <Query query={getMatched}>
+          {({ data: { matched } }) => {
+            return <Total>{matched}</Total>
           }}
-        >
-          <SpanIcon>
-            <Icons.Eye width="14" height="14" color="#f0f0f0bd" />
-          </SpanIcon>
-          Matched
-        </NavLink>
-      </Item>
+      </Query>
+      </NavLink>
+    </Item>
+      : 
+      null}
+      
     </List>
     </Wrapper>
   );
 };
+
+
+const Total = styled.span`
+float: right;
+margin-top: 0px;
+font-size: 13px;
+color: #3497ff;
+font-weight: 300;
+`
 
 const Wrapper = styled.div`
   display: flex;

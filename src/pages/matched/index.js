@@ -8,6 +8,7 @@ import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import getSkillsCommitments from "../../queries/getSkillsCommitments";
 import Sidebar from "../../components/sidebar/sidebar";
+import setMatched from "../../mutations/setMatched";
 const Body = styled.div`
   flex: 1;
   display: flex;
@@ -47,6 +48,10 @@ export default props => {
                 );
                 let activeIntents = allIntents.filter(i => !i.isFinished)
                 let completed = allIntents.filter(i => i.isFinished)
+                client.mutate({
+                  mutation: setMatched,
+                  variables: { total: allIntents.length }
+                });
                 return (
                   <EventsInfo>
                     <WrapperIntents>

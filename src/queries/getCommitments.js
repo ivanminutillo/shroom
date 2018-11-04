@@ -6,6 +6,8 @@ export default gql`
     viewer(token: $token) {
       agent(id: $id) {
         id
+        name
+        image
         agentCommitments(latestNumberOfDays: 30) {
           id
           isDeletable

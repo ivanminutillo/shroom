@@ -6,6 +6,47 @@ export default gql`
     viewer(token: $token) {
       agent(id: $id) {
         id
+        commitmentsMatchingSkills {
+          id
+          isDeletable
+          isFinished
+          scope {
+            id
+            name
+          }
+          fulfilledBy {
+            fulfilledBy {
+              ...BasicEvent
+            }
+          }
+          provider {
+            id
+            image
+            name
+          }
+          inputOf {
+            id
+            name
+          }
+          outputOf {
+            id
+            name
+          }
+          note
+          action
+          committedQuantity {
+            numericValue
+            unit {
+              id
+              name
+            }
+          }
+          due
+          resourceClassifiedAs {
+            name
+            id
+          }
+        }
         agentRelationships {
           object {
               id

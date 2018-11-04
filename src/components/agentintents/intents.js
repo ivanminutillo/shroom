@@ -76,7 +76,7 @@ export default compose(
                 ) : null}
                 {`${data.action} ${data.committedQuantity.numericValue} ${
                   data.committedQuantity.unit.name
-                } of ${data.resourceClassifiedAs.name} in ${data.scope.name}`}
+                } of ${data.resourceClassifiedAs.name} in ${data.scope ? data.scope.name : null}`}
               </Sentence>
             )}
             <Note>

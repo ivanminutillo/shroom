@@ -4,6 +4,9 @@ export const defaults = {
   notifications: [],
   agentPanel: "feed",
   plans: "active",
+  inbox: null,
+  committed: null,
+  matched: null,
   txs: [
     {
       id: "3938483834",
@@ -43,6 +46,39 @@ let nextNotifId = 0;
 
 export const resolvers = {
   Mutation: {
+    setInbox:(_, {total}, {cache}) => {
+      const query = gql`
+        query getInbox {
+          inbox @client
+        }
+      `
+      const newinbox = {
+        inbox: total
+      };
+      cache.writeQuery({query, data: newinbox})
+    },
+    setCommitted:(_, {total}, {cache}) => {
+      const query = gql`
+        query getCommitted {
+          committed @client
+        }
+      `
+      const newTotal = {
+        committed: total
+      };
+      cache.writeQuery({query, data: newTotal})
+    },
+    setMatched:(_, {total}, {cache}) => {
+      const query = gql`
+        query getMatched {
+          matched @client
+        }
+      `
+      const newTotal = {
+        matched: total
+      };
+      cache.writeQuery({query, data: newTotal})
+    },
     addNotification: (_, { message, type }, { cache }) => {
       let newId = nextNotifId++;
       const query = gql`

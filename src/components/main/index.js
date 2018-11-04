@@ -39,7 +39,6 @@ export default props => {
             providerId={props.providerId}
             providerImage={props.providerImage}
             providerName={props.providerName}
-
             toggleValidationModal={props.toggleValidationModal}
           />
           <PropsRoute

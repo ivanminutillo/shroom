@@ -136,15 +136,12 @@ ReactDOM.render(
               return <EhnanchedNotifications notifications={notifications} />;
             }}
           </Query>
-          <Switch>
             <Route path="/login" component={Login} />
             <PrivateRoute
               path="/"
               component={AppTemplate}
               redirectTo="/login"
             />
-            <Route component={NoMatch} />
-          </Switch>
         </div>
       </Router>
     </ApolloProvider>

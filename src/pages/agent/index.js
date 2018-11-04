@@ -13,19 +13,11 @@ const Wrapper = styled.div`
 `;
 
 const Agent = props => {
-  const { match, data, id, providerId, scopeId } = props;
+  const { match, data, id } = props;
   return (
     <Wrapper>
       <Component
-        match={match}
-        id={id}
-        togglePanel={props.onTogglePanel}
-        toggleLeftPanel={props.toggleLeftPanel}
-        isOpen={data.isOpen}
-        scopeId={scopeId}
-        providerId={providerId}
-        providerName={data.data.name}
-        providerImage={data.data.image}
+        {...props}
       />
       <RightPanel
         id={id}
