@@ -13,7 +13,8 @@ import Home from "../../pages/home";
 import { PropsRoute } from "../../helpers/router";
 import Agent from "../../pages/agent/agent";
 import { Switch } from "react-router-dom";
-
+import Plan from '../../pages/plan'
+import NewProcessModal from '../../components/newProcessModal'
 const Surface = styled.div`
   height: 100%;
   display: flex;
@@ -56,9 +57,14 @@ const AppTemplate = props => {
               providerName={data.viewer.myAgent.name}
               togglePanel={props.onTogglePanel}
               togglenewRequirementModal={props.togglenewRequirementModal}
+              togglenewProcessModal={props.togglenewProcessModal}
               toggleValidationModal={props.toggleValidationModal}
             />
             <Switch>
+              <PropsRoute
+                component={Plan}
+                path={"/plan"}
+              />
               <PropsRoute
                 component={Agent}
                 onToggleSidebar={props.onToggleSidebar}
@@ -92,6 +98,7 @@ const AppTemplate = props => {
                 isCompletedOpen={props.isCompletedOpen}
                 handleCompletedOpen={props.handleCompletedOpen}
               />
+              
             </Switch>
             <LeftPanel
               data={data.viewer.myAgent}
@@ -115,7 +122,10 @@ const AppTemplate = props => {
             <NewRequirementModal
               modalIsOpen={props.newRequirementModalIsOpen}
               toggleModal={props.togglenewRequirementModal}
-              scopeId={props.match.params.id}
+            />
+            <NewProcessModal
+              modalIsOpen={props.newProcessModalIsOpen}
+              toggleModal={props.togglenewProcessModal}
             />
           </Surface>
         );
@@ -140,6 +150,11 @@ export default compose(
   withState(
     "newRequirementModalIsOpen",
     "togglenewRequirementModalIsOpen",
+    false
+  ),
+  withState(
+    "newProcessModalIsOpen",
+    "togglenewProcessIsOpen",
     false
   ),
   withState("validationModalIsOpen", "toggleValidationModalIsOpen", false),
@@ -187,6 +202,9 @@ export default compose(
     onToggleSidebar: props => () => props.toggleSidebar(!props.isSidebarOpen),
     togglenewRequirementModal: props => () => {
       props.togglenewRequirementModalIsOpen(!props.newRequirementModalIsOpen);
+    },
+    togglenewProcessModal: props => () => {
+      props.togglenewProcessIsOpen(!props.newProcessModalIsOpen);
     },
     toggleValidationModal: props => contributionId => {
       props.selectValidationModalId(contributionId);

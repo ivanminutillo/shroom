@@ -11,10 +11,15 @@ import setInbox from "../../mutations/setInbox";
 import Todo from "../../components/todo";
 import { PropsRoute } from "../../helpers/router";
 import Sidebar from "../../components/sidebar/sidebar";
-
+import { compose, withState, withHandlers } from "recompose";
 import setCommitted from "../../mutations/setCommitted";
 
-export default props => {
+export default compose(
+  withState('event', 'onEvent', 'all'),
+  withHandlers({
+    handleEvent: props => (val) => (props.onEvent(val.value))
+  })
+)(props => {
   return (
     <Body>
       <Sidebar isopen={props.isopen} param={props.match.params.id} />
@@ -38,15 +43,21 @@ export default props => {
                     />
                   );
                 let intents = data.viewer.agent.agentCommitments;
+                let filteredIntents = []
+                if (props.event !== 'all') {
+                  filteredIntents = intents.filter(i => i.action === props.event)
+                } else {
+                  filteredIntents = intents
+                }
                 // INBOX
-                let activeIntents = intents.filter(i => !i.isFinished);
-                let completed = intents.filter(i => i.isFinished);
+                let inbox = filteredIntents.filter(i => !i.isFinished);
+                let completed = filteredIntents.filter(i => i.isFinished);
                 client.mutate({
                   mutation: setInbox,
-                  variables: { total: intents.length }
+                  variables: { total: filteredIntents.length }
                 });
                 // COMMITTED
-                let allCommittedIntents = intents.filter(
+                let allCommittedIntents = filteredIntents.filter(
                   int =>
                     int.provider ? int.provider.id === props.providerId : null
                 );
@@ -65,6 +76,7 @@ export default props => {
                       name={data.viewer.agent.name}
                       toggleLeftPanel={props.toggleLeftPanel}
                       togglePanel={props.togglePanel}
+                      handleEvent={props.handleEvent}
                     />
                     {/* {props.id ? null : (
                   <ApolloConsumer>
@@ -82,7 +94,7 @@ export default props => {
                     <PropsRoute
                       exact
                       component={Todo}
-                      activeIntents={activeIntents}
+                      activeIntents={inbox}
                       completed={completed}
                       path={props.match.path}
                       onToggleSidebar={props.onToggleSidebar}
@@ -121,7 +133,7 @@ export default props => {
                       component={Todo}
                       exact
                       path={`/agent/${props.match.params.id}/matched`}
-                      activeIntents={activeIntents}
+                      activeIntents={inbox}
                       completed={completed}
                       onToggleSidebar={props.onToggleSidebar}
                       togglePanel={props.togglePanel}
@@ -145,7 +157,7 @@ export default props => {
       </Wrapper>
     </Body>
   );
-};
+});
 
 const Body = styled.div`
   flex: 1;

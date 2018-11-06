@@ -21,7 +21,7 @@ export default ({ toggleLeftPanel, togglePanel,handleEvent,  name, image }) => (
       </HeaderRight> */}
     </Header>
     <Filter>
-      <Item>
+      {/* <Item>
         <Select
           styles={customStyles}
           options={[
@@ -30,7 +30,7 @@ export default ({ toggleLeftPanel, togglePanel,handleEvent,  name, image }) => (
           ]}
           
         />
-      </Item>
+      </Item> */}
       <Item>
         <Select
           styles={customStyles}

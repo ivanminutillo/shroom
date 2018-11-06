@@ -14,8 +14,17 @@ export default ({
   togglePanel,
   providerImage,
   togglenewRequirementModal,
+  togglenewProcessModal,
   providerName
-}) => (
+}) => {
+  const openStuff = (val) => {
+    if (val.value === 'requirement') {
+      return togglenewRequirementModal()
+    } else if (val.value === 'process') {
+      return togglenewProcessModal()
+    }
+  }
+  return (
   <HeaderWrapper>
     <Header>
       <Span onClick={togglePanel}>
@@ -75,12 +84,18 @@ export default ({
         }}
       </Query>
     </WrapperSelect>
-    <WrapperNew onClick={togglenewRequirementModal}>
-      <SpanNew><Icons.Plus width='18' height='18' color='#f0f0f0' /></SpanNew>
-      <Title>Add new requirement</Title>
+    <WrapperNew>
+        <Select
+          styles={customStylesTwo}
+          onChange={openStuff}
+          value={{value: null, label: 'Add new...'}}
+          options={[{value: 'requirement', label: 'Add a new requirement'}, {value: 'process', label: 'Add a new process'}, {value: 'plan', label: 'Add a new plan'}, {value: 'exchange', label: 'Add a new exchange'}, {value: 'tx', label: 'Add a new transaction'}]}
+        />
+      {/* <SpanNew><Icons.Plus width='18' height='18' color='#f0f0f0' /></SpanNew>
+      <Title>Add new requirement</Title> */}
     </WrapperNew>
   </HeaderWrapper>
-);
+)};
 
 const agentRelationships = gql`
   query($token: String) {
@@ -124,16 +139,11 @@ const SpanNew = s.div`
   cursor: pointer;
   float: right;
   margin-right: 16px;
-  height: 26px;
-  margin-top: 5px;
-  border-radius: 4px;
-  padding: 0 8px;
+  margin-top: 3px;
   box-sizing: border-box;
-  border: 1px solid transparent;
-  &:hover {
-    background: #2d81d9;
-    border: 1px solid #396ea6;
-  }
+  width: 180px;
+  position: relative;
+  z-index: 99999;
 `
 const Title = s.h3`
 font-size: 13px;
@@ -183,6 +193,46 @@ const customStyles = {
   placeholder: base => ({
     ...base,
     color: "#3B99FC",
+    fontWeight: 500,
+    fontSize: "13px"
+  })
+};
+const customStylesTwo = {
+  control: base => ({
+    ...base,
+    background: '#2d81d9',
+    border: '1px solid #396ea6',
+    color: "#f0f0f0",
+    fontWeight: 500,
+    fontSize: "13px",
+    minHeight: "30px",
+    height: "30px",
+    borderRadius: "6px"
+  }),
+  input: base => ({
+    ...base,
+    color: "#f0f0f0",
+    fontWeight: 500,
+    fontSize: "13px",
+    height: "30px"
+  }),
+  singleValue: base => ({
+    ...base,
+    color: "#f0f0f0",
+    fontWeight: 500,
+    fontSize: "13px"
+  }),
+  option: base => ({
+    ...base,
+    fontSize: "13px"
+  }),
+  menuList: base => ({
+    ...base,
+    fontSize: "13px"
+  }),
+  placeholder: base => ({
+    ...base,
+    color: "#f0f0f0",
     fontWeight: 500,
     fontSize: "13px"
   })

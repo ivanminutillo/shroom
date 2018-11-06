@@ -112,6 +112,44 @@ const Sidebar = (props) => {
       null}
       
     </List>
+    {props.profile ? null :
+    <List>
+      <ListTitle>Plans</ListTitle>
+      <Item>
+        <NavLink
+          {...props}
+          isActive={(match, location) => {
+            return location.pathname === `/plans/${props.param}/active` || location.pathname === `/plans/${props.param}/active/`
+          }
+          }
+          to={`/plans/${props.param}/active`}
+          activeStyle={{
+            position: "relative",
+            marginLeft: "24px",
+            color: "#f0f0f0"
+          }}
+        >
+          Active
+        </NavLink>
+      </Item>
+      <Item>
+        <NavLink
+          {...props}
+          isActive={(match, location) => {
+            return location.pathname === `/plans/${props.param}/closed` || location.pathname === `/plans/${props.param}/closed/`
+          }
+          }
+          to={`/plans/${props.param}/closed`}
+          activeStyle={{
+            position: "relative",
+            marginLeft: "24px",
+            color: "#f0f0f0"
+          }}
+        >
+          Closed
+        </NavLink>
+      </Item>
+    </List>}
     </Wrapper>
   );
 };
