@@ -51,6 +51,24 @@ export default compose(
     return (
       <Intent isFinished={data.isFinished}>
         <Wrapper>
+          <Infos>
+            {data.inputOf ? (
+              <ProcessContainer>
+                <ContainerTitle>
+                  <Icons.UpLeft width="13" height="13" color="#3B99FC" />
+                </ContainerTitle>
+                <Content>#{data.inputOf.name}</Content>
+              </ProcessContainer>
+            ) : null}
+            {data.outputOf ? (
+              <ProcessContainer>
+                <ContainerTitle>
+                  <Icons.UpRight width="13" height="13" color="#3B99FC" />
+                </ContainerTitle>
+                <Content>#{data.outputOf.name}</Content>
+              </ProcessContainer>
+            ) : null}
+          </Infos>
           <First>
             {isSentenceOpen ? (
               <EditSentence
@@ -70,13 +88,15 @@ export default compose(
                   />
                 ) : null}
                 {!data.provider ? (
-                    <AddProvider providerId={myId} intentId={data.id} />
+                  <AddProvider providerId={myId} intentId={data.id} />
                 ) : data.provider && data.provider.id === myId ? (
-                    <DeleteProvider intentId={data.id} />
+                  <DeleteProvider intentId={data.id} />
                 ) : null}
                 {`${data.action} ${data.committedQuantity.numericValue} ${
                   data.committedQuantity.unit.name
-                } of ${data.resourceClassifiedAs.name} in ${data.scope ? data.scope.name : null}`}
+                } of ${data.resourceClassifiedAs.name} in ${
+                  data.scope ? data.scope.name : null
+                }`}
               </Sentence>
             )}
             <Note>
@@ -89,24 +109,6 @@ export default compose(
           </First>
           <Second>
             <FirstInfo>
-              <Infos>
-                {data.inputOf ? (
-                  <ProcessContainer>
-                    <ContainerTitle>
-                      <Icons.UpLeft width="13" height="13" color="#f0f0f0" />
-                    </ContainerTitle>
-                    <Content>#{data.inputOf.name}</Content>
-                  </ProcessContainer>
-                ) : null}
-                {data.outputOf ? (
-                  <ProcessContainer>
-                    <ContainerTitle>
-                      <Icons.UpRight width="13" height="13" color="#f0f0f0" />
-                    </ContainerTitle>
-                    <Content>#{data.outputOf.name}</Content>
-                  </ProcessContainer>
-                ) : null}
-              </Infos>
               <EditDueDate due={data.due} intentId={data.id} />
               <Agents>
                 <span style={{ verticalAlign: "middle", position: "relative" }}>
@@ -175,20 +177,20 @@ export default compose(
         <Actions>
           {addEvent ? (
             <WrapperLogEvent>
-            <LogEvent
-              commitmentId={data.id}
-              providerId={myId}
-              scopeId={scopeId}
-              action={data.action}
-              unit={data.committedQuantity.unit.name}
-              unitId={data.committedQuantity.unit.id}
-              resourceId={data.resourceClassifiedAs.id}
-              resource={data.resourceClassifiedAs.name}
-              closeLogEvent={handleAddEvent}
-            />
+              <LogEvent
+                commitmentId={data.id}
+                providerId={myId}
+                scopeId={scopeId}
+                action={data.action}
+                unit={data.committedQuantity.unit.name}
+                unitId={data.committedQuantity.unit.id}
+                resourceId={data.resourceClassifiedAs.id}
+                resource={data.resourceClassifiedAs.name}
+                closeLogEvent={handleAddEvent}
+              />
             </WrapperLogEvent>
           ) : (
-            <div style={{ marginLeft: "8px" }}>
+            <div style={{ marginLeft: "8px", marginBottom: "8px" }}>
               <ImgProvider
                 style={{ backgroundImage: `url(${providerImage})` }}
               />{" "}
@@ -207,9 +209,12 @@ const B = styled.b`
 `;
 
 const WrapperLogEvent = styled.div`
-background: #f2f2f2;
+background: #f6f8f9;
 padding: 10px 0;
-`
+margin: 10px;
+border-radius: 4px;
+box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
+`;
 
 const FeedItem = styled.div`
   font-size: ${props => props.theme.fontSize.h3};
@@ -217,7 +222,7 @@ const FeedItem = styled.div`
 `;
 
 const Actions = styled.div`
-  padding-bottom: 8px;
+  padding-bottom: 0px;
 `;
 
 const Popup = styled.div`
@@ -279,8 +284,8 @@ const Intent = styled.div`
   ${props =>
     props.isFinished &&
     css`
-    background: #7cff8a14;
-    border: 1px solid #007a1c;
+      background: #7cff8a14;
+      border: 1px solid #007a1c;
     `};
 `;
 const Events = styled.div`
@@ -326,7 +331,7 @@ const FirstInfo = styled.div`
 
 const ProcessContainer = styled.div`
   ${clearFix()};
-  background: ${props => props.theme.color.b100};
+  border: 1px solid ${props => props.theme.color.b100};
   display: inline-block;
   border-radius: 2px;
   padding: 0 6px;
@@ -341,7 +346,7 @@ const ContainerTitle = styled.h3`
 const Content = styled.div`
   ${clearFix()};
   display: inline-block;
-  color: #f0f0f0;
+  color: ${props => props.theme.color.b100};;
   font-size: 13px;
   margin-left: 4px;
   line-height: 24px;
@@ -369,7 +374,7 @@ const Sentence = styled.h3`
 const Infos = styled.div`
   font-weight: 400;
   line-height: 20px;
-  float: left;
+  margin-bottom: 8px;
   margin-rigth: 4px;
 `;
 const Date = styled.h3`

@@ -36,6 +36,11 @@ ${props => props.alert && css`
 ${props => props.gray && css`
   background: #d2d2d3;;
   color: #4c4c4c;
+  `}
+  ${props => props.outline && css`
+  border: 1px solid #C3C3C3;
+  background: transparent;
+  color: #4c4c4c;
 `}
 ${props => props.small && css`
   height: 28px;

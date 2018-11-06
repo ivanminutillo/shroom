@@ -149,6 +149,7 @@ const LogEvent = props => {
             </Log.Log>
             {/* </div> */}
             <Log.Note>
+              <NoteIcon><Icons.Text width='16' height='16' color='#b7bfc6' /></NoteIcon>
               <Field
                 name="note"
                 render={({ field }) => (
@@ -171,7 +172,7 @@ const LogEvent = props => {
                 touched={touched.start}
               />
               <Button  type="submit">Publish</Button>
-              <Button gray onClick={props.closeLogEvent}>Cancel</Button>
+              <Button outline onClick={props.closeLogEvent}>Cancel</Button>
             </Log.PublishActions>
           </Log.Module>
         </Form>
@@ -208,6 +209,12 @@ const Row = styled.div`
   }
 `;
 
+
+const NoteIcon = styled.div`
+    position: absolute;
+    top: 17px;
+    left: 0px;`
+
 const StartDate = props => {
   const handleChange = value => {
     props.onChange("date", value);
@@ -215,7 +222,7 @@ const StartDate = props => {
   return (
     <Log.ItemDate>
       <span>
-        <Icons.Calendar width="18" height="18" color="#3B99FC" />
+        <Icons.Calendar  width='16' height='16' color='#b7bfc6' />
       </span>
       <DatePicker
         selected={props.value}

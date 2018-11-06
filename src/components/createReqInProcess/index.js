@@ -42,12 +42,10 @@ export default compose(
         )
       })
     }),
-    withState('inputs', 'onInput', []),
     withHandlers({
       onAdd: props => (e) => {
         e.preventDefault()
-        console.log(props)
-        let input = {
+        let i = {
           action: props.action,
           date: props.values.date,
           note: props.values.note,
@@ -55,8 +53,9 @@ export default compose(
           unit: props.values.unit,
           affectedResourceClassifiedAsId: props.values.affectedResourceClassifiedAsId
         }
-        let updatedInputs = props.inputs.push(input)
-        return props.onInput(updatedInputs)
+        props.inputs.push(i)
+        props.onInput(props.inputs)
+        return props.closeTab()
       }
     })
   )(({
@@ -69,7 +68,6 @@ export default compose(
   action,
   onAdd
 }) => {
-  console.log(onAdd)
   return (
     <ApolloConsumer>
       {client => (

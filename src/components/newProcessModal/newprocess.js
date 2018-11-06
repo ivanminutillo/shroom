@@ -4,7 +4,7 @@ import { clearFix } from "polished";
 import LogEvent from "../createReqInProcess/";
 import AsyncSelect from "react-select/lib/Async";
 import Select from "react-select";
-import { compose } from "recompose";
+import { compose, withState } from "recompose";
 import getPlans from "../../queries/getPlans";
 import { withFormik, Field } from "formik";
 import * as Yup from "yup";
@@ -13,10 +13,11 @@ import { ApolloConsumer, graphql } from "react-apollo";
 import withNotif from "../notification";
 import CreateCommitment from "../../mutations/CreateCommitment";
 import getCommitments from "../../queries/getCommitments";
-import gql from "graphql-tag";
+
 import Input from "../../atoms/input";
 import Textarea from "../../atoms/textarea";
 import Alert from "../alert";
+import { getRelationships } from "../../helpers/asyncQueries";
 
 const customStyles = {
   control: base => ({
@@ -38,129 +39,44 @@ const customStyles = {
   })
 };
 
-const agentRelationships = gql`
-  query($token: String) {
-    viewer(token: $token) {
-      myAgent {
-        id
-        agentRelationships {
-          object {
-            id
-            name
-          }
-        }
-      }
-    }
-  }
-`;
-
 export default compose(
-  withNotif("Commitment is successfully created", "Commitment is not created"),
-  graphql(CreateCommitment, { name: "createCommitment" }),
+  withState("inputs", "onInput", []),
+  withState("outputs", "onOutput", []),
   withFormik({
     mapPropsToValues: props => ({
       scope: null,
-      plan: null,
-      process: "",
-      action: null,
-      note: "",
-      numericValue: "00.00" || "",
-      unit: "",
-      date: moment(),
-      affectedResourceClassifiedAsId: ""
+      inputAction: null,
+      outputAction: null,
+      note: ""
     }),
     validationSchema: Yup.object().shape({
-      action: Yup.string().required(),
       scope: Yup.object().required(),
-      note: Yup.string(),
-      numericValue: Yup.number(),
-      unit: Yup.object().required(),
-      date: Yup.string(),
-      affectedResourceClassifiedAsId: Yup.object().required(
-        "Classification is a required field"
-      )
+      note: Yup.string()
     }),
-    handleSubmit: (values, { props, resetForm, setErrors, setSubmitting }) => {
-      let date = moment(values.date).format("YYYY-MM-DD");
-      setSubmitting(true);
-      let MutationVariables = {
-        token: localStorage.getItem("oce_token"),
-        action: values.action.toLowerCase(),
-        due: date,
-        note: values.note,
-        committedResourceClassifiedAsId:
-        values.affectedResourceClassifiedAsId.value,
-        committedUnitId: values.unit.value,
-        committedNumericValue: values.numericValue,
-        inputOfId: values.process ? values.process.value : null,
-        outputOfId: values.process ? values.process.value : null,
-        scopeId: values.scope.value
-      };
-      return props
-        .createCommitment({
-          variables: MutationVariables,
-          update: (store, { data }) => {
-            let comm = store.readQuery({
-              query: getCommitments,
-              variables: {
-                token: localStorage.getItem("oce_token"),
-                id: props.scopeId
-              }
-            });
-            comm.viewer.agent.agentCommitments.push(
-              data.createCommitment.commitment
-            );
-            store.writeQuery({
-              query: getCommitments,
-              data: comm,
-              variables: {
-                token: localStorage.getItem("oce_token"),
-                id: props.scopeId
-              }
-            });
-          }
-        })
-        .then(res => props.onSuccess())
-        .catch(err => props.onError());
-    }
+    handleSubmit: (values, { props, resetForm, setErrors, setSubmitting }) => {}
   })
 )(
   ({
-    intent,
     providerId,
     scopeId,
     errors,
     touched,
     setFieldValue,
-    setFieldTouched,
+    inputs,
+    outputs,
+    onInput,
+    onOutput,
     values,
     toggleModal,
     addIntent
   }) => {
-    const promiseGroupOptions = (client, val) => {
-      return client
-        .query({
-          query: agentRelationships,
-          variables: {
-            token: localStorage.getItem("oce_token")
-          }
-        })
-        .then(res => {
-          console.log(res);
-          let options = res.data.viewer.myAgent.agentRelationships
-            .map(plan => ({
-              value: plan.object.id,
-              label: plan.object.name
-            }))
-            .filter(i => i.label.toLowerCase().includes(val.toLowerCase()));
-          return options;
-        });
-    };
+    console.log(inputs);
+
     return (
       <div>
         <Title>Create a new process</Title>
         <Wrapper>
-        <ApolloConsumer>
+          <ApolloConsumer>
             {client => (
               <Field
                 name="scope"
@@ -178,7 +94,7 @@ export default compose(
                         label: val.label
                       })
                     }
-                    loadOptions={val => promiseGroupOptions(client, val)}
+                    loadOptions={val => getRelationships(client, val)}
                   />
                 )}
               />
@@ -189,80 +105,130 @@ export default compose(
             <Input placeholder="Type the name of the process..." />
             <Textarea placeholder="Type the note of the process" />
           </PlanWrapper>
-          
-          {values.scope ? 
-          <Actions>
-          <CommitmentWrapper>
-            <Field
-              name="action"
-              render={({ field }) => (
-                <Select
-                  isClearable
-                  name={field.name}
-                  onChange={val =>
-                    setFieldValue("action", val ? val.value : null)
-                  }
-                  placeholder="Add an input requirement"
-                  options={[
-                    {
-                      value: "work",
-                      label: "Add a work type requirement"
-                    },
-                    {
-                      value: "use",
-                      label: "Add a use type requirement"
-                    },
-                    {
-                      value: "consume",
-                      label: "Add a consume type requirement"
-                    },
-                    {
-                      value: "prepare",
-                      label: "Add a prepare type requirement"
-                    },
-                    {
-                      value: "cite",
-                      label: "Add a cite type requirement"
-                    }
-                  ]}
-                />
-              )}
-            />
-            {errors.action &&
-              touched.action && <Alert>{errors.action}</Alert>}
-          </CommitmentWrapper>
-          {values.action ? (
+
+          {values.scope ? (
             <Actions>
-              <LogEvent
-                action={values.action}
-                providerId={providerId}
-                scopeId={scopeId}
-                addIntent={addIntent}
-                closeLogEvent={toggleModal}
-              />
+              <CommitmentWrapper>
+                <Field
+                  name="inputAction"
+                  render={({ field }) => (
+                    <Select
+                      isClearable
+                      name={field.name}
+                      onChange={val =>
+                        setFieldValue("inputAction", val ? val.value : null)
+                      }
+                      placeholder="Add an input requirement"
+                      options={[
+                        {
+                          value: "work",
+                          label: "Add a work type requirement"
+                        },
+                        {
+                          value: "use",
+                          label: "Add a use type requirement"
+                        },
+                        {
+                          value: "consume",
+                          label: "Add a consume type requirement"
+                        },
+                        {
+                          value: "prepare",
+                          label: "Add a prepare type requirement"
+                        },
+                        {
+                          value: "cite",
+                          label: "Add a cite type requirement"
+                        }
+                      ]}
+                    />
+                  )}
+                />
+                {errors.inputAction &&
+                  touched.inputAction && <Alert>{errors.inputAction}</Alert>}
+              </CommitmentWrapper>
+              {values.inputAction ? (
+                <Actions>
+                  <LogEvent
+                    closeTab={() => setFieldValue("inputAction", null)}
+                    action={values.inputAction}
+                    providerId={providerId}
+                    scopeId={scopeId}
+                    addIntent={addIntent}
+                    closeLogEvent={toggleModal}
+                    inputs={inputs}
+                    onInput={onInput}
+                  />
+                </Actions>
+              ) : null}
+              {inputs.map((i, j) => (
+                <SentenceTemporary key={j}>
+                  <Sentence>
+                    {`${i.action} ${i.numericValue} ${i.unit.label} of ${
+                      i.affectedResourceClassifiedAsId.label
+                    }`}
+                  </Sentence>
+                  <SentenceNote>{i.note}</SentenceNote>
+                </SentenceTemporary>
+              ))}
+              {outputs.map((i, j) => (
+                <SentenceTemporary key={j}>
+                  <Sentence>
+                    {`${i.action} ${i.numericValue} ${i.unit.label} of ${
+                      i.affectedResourceClassifiedAsId.label
+                    }`}
+                  </Sentence>
+                  <SentenceNote>{i.note}</SentenceNote>
+                </SentenceTemporary>
+              ))}
+
+              <CommitmentWrapper>
+                <Field
+                  name="outputAction"
+                  render={({ field }) => (
+                    <Select
+                      isClearable
+                      name={field.name}
+                      onChange={val =>
+                        setFieldValue("outputAction", val ? val.value : null)
+                      }
+                      placeholder="Add an output requirement"
+                      options={[
+                        {
+                          value: "produce",
+                          label: "Add a produce type requirement"
+                        },
+                        {
+                          value: "give",
+                          label: "Add a give type requirement"
+                        },
+                        {
+                          value: "transfer",
+                          label: "Add a transfer type requirement"
+                        }
+                      ]}
+                    />
+                  )}
+                />
+                {errors.inputAction &&
+                  touched.inputAction && <Alert>{errors.inputAction}</Alert>}
+              </CommitmentWrapper>
+              {values.outputAction ? (
+                <Actions>
+                  <LogEvent
+                    closeTab={() => setFieldValue("outputAction", null)}
+                    action={values.outputAction}
+                    providerId={providerId}
+                    scopeId={scopeId}
+                    addIntent={addIntent}
+                    closeLogEvent={toggleModal}
+                    inputs={inputs}
+                    onInput={onInput}
+                  />
+                </Actions>
+              ) : null}
             </Actions>
           ) : null}
-          <CommitmentWrapper>
-            <Select
-              placeholder="Add an output requirement"
-              options={[
-                {
-                  value: "produce",
-                  label: "Add a produce type requirement"
-                },
-                {
-                  value: "give",
-                  label: "Add a give type requirement"
-                },
-                {
-                  value: "transfer",
-                  label: "Add a transfer type requirement"
-                }
-              ]}
-            />
-          </CommitmentWrapper>
-        </Actions>
-        : null}
         </Wrapper>
       </div>
     );
@@ -286,6 +252,50 @@ const TitleWrapper = styled.h3`
 
 const Actions = styled.div`
   ${clearFix()};
+`;
+const SentenceTemporary = styled.div`
+  background: #323b44d6;
+  padding: 0 8px;
+  color: #f0f0f0;
+  margin-top: 8px;
+  margin-left: 40px;
+  position: relative;
+  &: before {
+    position: absolute;
+    content: "";
+    left: -30px;
+    top: 0px;
+    width: 14px;
+    height: 14px;
+    border-radius: 100px;
+    display: block;
+    background: green;
+  }
+  &: after {
+    position: absolute;
+    content: "";
+    left: -24px;
+    top: 10px;
+    width: 1px;
+    bottom: -20px;
+    display: block;
+    background: green;
+  }
+`;
+const SentenceNote = styled.div`
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 300;
+  font-style: italic;
+  color: #f0f0f0c9;
+`;
+
+const Sentence = styled.div`
+  height: 30px;
+  line-height: 30px;
+  font-weight: 500;
+  border-bottom: 1px solid #fafafa4d;
+  font-size: 14px;
 `;
 
 const CommitmentWrapper = styled.div`
