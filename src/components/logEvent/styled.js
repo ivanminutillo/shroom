@@ -18,9 +18,9 @@ const Log = styled.div`
   margin-top: 0px;
   padding: 0 10px;
   & input {
-    background: transparent;
     width: 70px;
     float: left;
+    background-color: hsl(0,0%,98%);
     ${placeholder({ color: "#f0f0f0" })};
     font-size: 18px;
   }

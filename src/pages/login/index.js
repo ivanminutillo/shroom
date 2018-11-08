@@ -134,7 +134,7 @@ export default compose(
               });
             localStorage.setItem("oce_token", data.data.createToken.token);
             localStorage.setItem("agent_id", data.data.createToken.id);
-            props.history.replace("/");
+            return props.history.replace("/");
           },
           e => {
             const errors = e.graphQLErrors.map(error => error.message);

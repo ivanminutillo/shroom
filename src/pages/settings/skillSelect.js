@@ -9,6 +9,7 @@ import removeSkill from "../../mutations/removeSkill";
 import { graphql } from "react-apollo";
 import withNotif from "../../components/notification";
 import gql from "graphql-tag";
+import {getAllResources} from '../../helpers/asyncQueries';
 
 const GET_SKILLS = gql`
   query($token: String) {
@@ -59,27 +60,6 @@ export default compose(
   ),
   graphql(addSkill, { name: "addSkillMutation" }),
   graphql(removeSkill, { name: "removeSkillMutation" }),
-  withHandlers({
-    promiseOptions: props => (client, val) => {
-      return client
-        .query({
-          query: getResourcesQuery,
-          variables: { token: localStorage.getItem("oce_token") }
-        })
-        .then(res => {
-          let options = res.data.viewer.allResourceClassifications.map(
-            resource => ({
-              value: resource.id,
-              label: resource.name
-            })
-          );
-          let newOpt = options.filter(i =>
-            i.label.toLowerCase().includes(val.toLowerCase())
-          );
-          return newOpt;
-        });
-    }
-  }),
   withFormik({
     mapPropsToValues: props => ({
       agentSkills: props.skills
@@ -99,7 +79,6 @@ export default compose(
     data,
     providerId,
     removeSkillMutation,
-    promiseOptions
   }) => {
     const editSkills = val => {
       let removed = values.agentSkills.filter(
@@ -153,7 +132,7 @@ export default compose(
         })
           .then(res => {
               setFieldValue("agentSkills", val);
-              onSuccess()
+              return onSuccess()
           })
           .catch(err => onError());
       }
@@ -171,7 +150,7 @@ export default compose(
             value={field.value}
             styles={customStyles}
             onChange={val => editSkills(val)}
-            loadOptions={val => promiseOptions(client, val)}
+            loadOptions={val => getAllResources(client, val)}
           />
         )}
       />

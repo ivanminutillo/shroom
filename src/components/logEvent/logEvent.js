@@ -13,42 +13,21 @@ import styled from "styled-components";
 import Units from "./unit";
 import Events from "./events";
 import AsyncSelect from "react-select/lib/Async";
-import getResourcesQuery from "../../queries/getResources";
 import Alert from "../alert";
+import {getAllResources} from '../../helpers/asyncQueries'
 require("react-datepicker/dist/react-datepicker-cssmodules.css");
 
 
-const LogEvent = props => {
-  const promiseOptions = (client, val) => {
-    return client
-      .query({
-        query: getResourcesQuery,
-        variables: { token: localStorage.getItem("oce_token") }
-      })
-      .then(res => {
-        let options = res.data.viewer.allResourceClassifications.map(
-          resource => ({
-            value: resource.id,
-            label: resource.name
-          })
-        );
-        let newOpt = options.filter(i =>
-          i.label.toLowerCase().includes(val.toLowerCase())
-        );
-        return newOpt;
-      });
-  };
-
-  const {
-    values,
-    setFieldValue,
-    handleMenuSelection,
-    errors,
-    touched,
-    setFieldTouched,
-    menuSelected
-  } = props;
-  return (
+const LogEvent = ({
+  values,
+  setFieldValue,
+  handleMenuSelection,
+  errors,
+  touched,
+  closeLogEvent,
+  setFieldTouched,
+  menuSelected
+}) => (
     <ApolloConsumer>
       {client => (
         <Form>
@@ -62,7 +41,7 @@ const LogEvent = props => {
                       return (
                         <Select
                           onChange={val =>
-                            props.setFieldValue("action", {
+                            setFieldValue("action", {
                               value: val.value,
                               label: val.label
                             })
@@ -105,7 +84,7 @@ const LogEvent = props => {
                       return (
                         <Select
                           onChange={val =>
-                            props.setFieldValue("unit", {
+                            setFieldValue("unit", {
                               value: val.value,
                               label: val.label
                             })
@@ -131,12 +110,12 @@ const LogEvent = props => {
                         value={field.value}
                         // styles={customStyles}
                         onChange={val =>
-                          props.setFieldValue(
+                          setFieldValue(
                             "affectedResourceClassifiedAsId",
                             { value: val.value, label: val.label }
                           )
                         }
-                        loadOptions={val => promiseOptions(client, val)}
+                        loadOptions={val => getAllResources(client, val)}
                       />
                     )}
                   />
@@ -172,14 +151,13 @@ const LogEvent = props => {
                 touched={touched.start}
               />
               <Button  type="submit">Publish</Button>
-              <Button outline onClick={props.closeLogEvent}>Cancel</Button>
+              <Button outline onClick={closeLogEvent}>Cancel</Button>
             </Log.PublishActions>
           </Log.Module>
         </Form>
       )}
     </ApolloConsumer>
   );
-};
 
 const Action = styled.div``;
 const Qty = styled.div`

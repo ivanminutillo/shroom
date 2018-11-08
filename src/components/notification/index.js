@@ -30,7 +30,7 @@ export default (onSuccessMessage, onErrorMessage) => BaseComponent => {
               })
               .then(res =>
                 setTimeout(() => {
-                  client.mutate({
+                  return client.mutate({
                     mutation: deleteNotification,
                     variables: { id: res.data.addNotification.id }
                   });
@@ -56,7 +56,7 @@ export default (onSuccessMessage, onErrorMessage) => BaseComponent => {
               })
               .then(res =>
                 setTimeout(() => {
-                  client.mutate({
+                  return client.mutate({
                     mutation: deleteNotification,
                     variables: { id: res.data.addNotification.id }
                   });

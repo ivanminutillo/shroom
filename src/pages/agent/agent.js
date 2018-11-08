@@ -78,7 +78,7 @@ export default compose(
                       togglePanel={props.togglePanel}
                       handleEvent={props.handleEvent}
                     />
-                    {/* {props.id ? null : (
+                    {props.id ? null : (
                   <ApolloConsumer>
                     {client => (
                       <SmartSentence
@@ -90,7 +90,7 @@ export default compose(
                       />
                     )}
                   </ApolloConsumer>
-                )}  */}
+                )} 
                     <PropsRoute
                       exact
                       component={Todo}

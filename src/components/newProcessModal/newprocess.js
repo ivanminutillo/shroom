@@ -1,111 +1,91 @@
 import React from "react";
-import styled from "styled-components";
-import { clearFix } from "polished";
+import styled, { css } from "styled-components";
+import { clearFix, placeholder } from "polished";
 import LogEvent from "../createReqInProcess/";
-import AsyncSelect from "react-select/lib/Async";
 import Select from "react-select";
 import { compose, withState } from "recompose";
-import getPlans from "../../queries/getPlans";
-import { withFormik, Field } from "formik";
+import { withFormik, Field, Form } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
-import { ApolloConsumer, graphql } from "react-apollo";
-import withNotif from "../notification";
-import CreateCommitment from "../../mutations/CreateCommitment";
-import getCommitments from "../../queries/getCommitments";
-
+import { graphql } from "react-apollo";
+import { Icons } from "oce-components/build";
 import Input from "../../atoms/input";
 import Textarea from "../../atoms/textarea";
 import Alert from "../alert";
-import { getRelationships } from "../../helpers/asyncQueries";
+import { outputReqs, inputReqs } from "./options";
+import Button from "../../atoms/button";
+import withNotif from "../notification";
+import CreateProcess from "../../mutations/createProcess";
+import CreateCommitment from "../../mutations/CreateCommitment";
+import DateRangeSelect from '../dateRangeSelect'
+import GroupSelect from "../groupSelect";
 
-const customStyles = {
-  control: base => ({
-    ...base,
-    color: "#333"
-  }),
-  input: base => ({
-    ...base,
-    color: "#333"
-  }),
-  singleValue: base => ({
-    ...base,
-    color: "#333"
-  }),
-  placeholder: base => ({
-    ...base,
-    color: "#333",
-    fontSize: "14px"
-  })
-};
 
-export default compose(
-  withState("inputs", "onInput", []),
-  withState("outputs", "onOutput", []),
-  withFormik({
-    mapPropsToValues: props => ({
-      scope: null,
-      inputAction: null,
-      outputAction: null,
-      note: ""
-    }),
-    validationSchema: Yup.object().shape({
-      scope: Yup.object().required(),
-      note: Yup.string()
-    }),
-    handleSubmit: (values, { props, resetForm, setErrors, setSubmitting }) => {}
-  })
-)(
-  ({
-    providerId,
-    scopeId,
-    errors,
-    touched,
-    setFieldValue,
-    inputs,
-    outputs,
-    onInput,
-    onOutput,
-    values,
-    toggleModal,
-    addIntent
-  }) => {
-    console.log(inputs);
-
+class NewProcess extends React.Component {
+  render() {
+    const {
+      providerId,
+      scopeId,
+      errors,
+      touched,
+      focusedInput,
+      onFocusedInput,
+      setFieldValue,
+      inputs,
+      outputs,
+      onInput,
+      onOutput,
+      values,
+      toggleModal,
+      addIntent
+    } = this.props;
     return (
-      <div>
-        <Title>Create a new process</Title>
+      <Form>
+        <PlanWrapper>
+          <ProcessInput>
+            <Field
+              name="title"
+              render={({ field }) => (
+                <Input
+                  name={field.name}
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Type the name of the process..."
+                />
+              )}
+            />
+            {errors.title && touched.title && <Alert>{errors.title}</Alert>}
+          </ProcessInput>
+          <ClearFix>
+            <GroupSelect
+              setFieldValue={setFieldValue}
+            />
+            <DateRangeSelect 
+              setFieldValue={setFieldValue}
+              start={values.start}
+              due={values.due}
+              errors={errors}
+              touched={touched}
+            />
+          </ClearFix>
+          <Note>
+            <NoteIcon>
+              <Icons.Text width="16" height="16" color="#b7bfc6" />
+            </NoteIcon>
+            <Field
+              name="note"
+              render={({ field }) => (
+                <Textarea
+                  name={field.name}
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Type the note of the process"
+                />
+              )}
+            />
+          </Note>
+        </PlanWrapper>
         <Wrapper>
-          <ApolloConsumer>
-            {client => (
-              <Field
-                name="scope"
-                render={({ field }) => (
-                  <AsyncSelect
-                    placeholder={"Select a group..."}
-                    defaultOptions
-                    cacheOptions
-                    isClearable
-                    styles={customStyles}
-                    value={field.label}
-                    onChange={val =>
-                      setFieldValue("scope", {
-                        value: val.value,
-                        label: val.label
-                      })
-                    }
-                    loadOptions={val => getRelationships(client, val)}
-                  />
-                )}
-              />
-            )}
-          </ApolloConsumer>
-
-          <PlanWrapper>
-            <Input placeholder="Type the name of the process..." />
-            <Textarea placeholder="Type the note of the process" />
-          </PlanWrapper>
-
           {values.scope ? (
             <Actions>
               <CommitmentWrapper>
@@ -119,28 +99,7 @@ export default compose(
                         setFieldValue("inputAction", val ? val.value : null)
                       }
                       placeholder="Add an input requirement"
-                      options={[
-                        {
-                          value: "work",
-                          label: "Add a work type requirement"
-                        },
-                        {
-                          value: "use",
-                          label: "Add a use type requirement"
-                        },
-                        {
-                          value: "consume",
-                          label: "Add a consume type requirement"
-                        },
-                        {
-                          value: "prepare",
-                          label: "Add a prepare type requirement"
-                        },
-                        {
-                          value: "cite",
-                          label: "Add a cite type requirement"
-                        }
-                      ]}
+                      options={inputReqs}
                     />
                   )}
                 />
@@ -148,7 +107,7 @@ export default compose(
                   touched.inputAction && <Alert>{errors.inputAction}</Alert>}
               </CommitmentWrapper>
               {values.inputAction ? (
-                <Actions>
+                <Actions style={{ margin: "0 10px" }}>
                   <LogEvent
                     closeTab={() => setFieldValue("inputAction", null)}
                     action={values.inputAction}
@@ -172,8 +131,8 @@ export default compose(
                 </SentenceTemporary>
               ))}
               {outputs.map((i, j) => (
-                <SentenceTemporary key={j}>
-                  <Sentence>
+                <SentenceTemporary output={"true"} key={j}>
+                  <Sentence output>
                     {`${i.action} ${i.numericValue} ${i.unit.label} of ${
                       i.affectedResourceClassifiedAsId.label
                     }`}
@@ -193,20 +152,7 @@ export default compose(
                         setFieldValue("outputAction", val ? val.value : null)
                       }
                       placeholder="Add an output requirement"
-                      options={[
-                        {
-                          value: "produce",
-                          label: "Add a produce type requirement"
-                        },
-                        {
-                          value: "give",
-                          label: "Add a give type requirement"
-                        },
-                        {
-                          value: "transfer",
-                          label: "Add a transfer type requirement"
-                        }
-                      ]}
+                      options={outputReqs}
                     />
                   )}
                 />
@@ -214,7 +160,7 @@ export default compose(
                   touched.inputAction && <Alert>{errors.inputAction}</Alert>}
               </CommitmentWrapper>
               {values.outputAction ? (
-                <Actions>
+                <Actions style={{ margin: "0 10px" }}>
                   <LogEvent
                     closeTab={() => setFieldValue("outputAction", null)}
                     action={values.outputAction}
@@ -222,54 +168,202 @@ export default compose(
                     scopeId={scopeId}
                     addIntent={addIntent}
                     closeLogEvent={toggleModal}
-                    inputs={inputs}
-                    onInput={onInput}
+                    inputs={outputs}
+                    onInput={onOutput}
                   />
                 </Actions>
               ) : null}
             </Actions>
           ) : null}
         </Wrapper>
-      </div>
+        <ActionsProcess>
+          <Button type='submit'>Publish</Button>
+          <Button outline>Cancel</Button>
+        </ActionsProcess>
+      </Form>
     );
   }
-);
+}
 
-const Title = styled.h3`
-  color: ${props => props.theme.color.p900};
-  letter-spacing: 0.5px;
-  margin-bottom: 16px;
-  margin-left: 10px;
-  margin-top: 20px;
+export default compose(
+  withNotif(
+    "Process created successfully!",
+    "Error! Process has not been created."
+  ),
+  withState("inputs", "onInput", []),
+  withState("outputs", "onOutput", []),
+  withState("focusedInput", "onFocusedInput", "startDate"),
+  graphql(CreateProcess, { name: "createProcessMutation" }),
+  graphql(CreateCommitment, { name: "CreateCommitmentMutation" }),
+  withFormik({
+    mapPropsToValues: props => ({
+      scope: null,
+      inputAction: null,
+      outputAction: null,
+      note: "",
+      title: "",
+      start: null,
+      due: null
+    }),
+    validationSchema: Yup.object().shape({
+      scope: Yup.object().required(),
+      note: Yup.string(),
+      due: Yup.object(),
+      start: Yup.object(),
+      title: Yup.string().required()
+    }),
+    handleSubmit: (values, { props, resetForm, setErrors, setSubmitting }) => {
+      let due = moment(values.due).format("YYYY-MM-DD");
+      let start = moment(values.start).format("YYYY-MM-DD");
+
+      setSubmitting(true);
+      let vars = {
+        token: localStorage.getItem("oce_token"),
+        name: values.title,
+        note: values.note,
+        scope: values.scope.value,
+        due: due,
+        start: start
+      };
+      return props
+        .createProcessMutation({
+          variables: vars
+        })
+        .then(res => {
+          return Promise.all(
+            props.inputs.map(input => {
+            let date = moment(input.date).format("YYYY-MM-DD");
+            let inputVars = {
+              token: localStorage.getItem("oce_token"),
+              action: input.action.toLowerCase(),
+              due: date,
+              note: input.note,
+              committedResourceClassifiedAsId:
+                input.affectedResourceClassifiedAsId.value,
+              committedUnitId: input.unit.value,
+              committedNumericValue: input.numericValue,
+              inputOfId: res.data.createProcess.process.id,
+              scopeId: values.scope.value
+            };
+            return props.CreateCommitmentMutation({
+              variables: inputVars,
+            })
+          }).concat(props.outputs.map(input => {
+            let date = moment(input.date).format("YYYY-MM-DD");
+            let inputVars = {
+              token: localStorage.getItem("oce_token"),
+              action: input.action.toLowerCase(),
+              due: date,
+              note: input.note,
+              committedResourceClassifiedAsId:
+                input.affectedResourceClassifiedAsId.value,
+              committedUnitId: input.unit.value,
+              committedNumericValue: input.numericValue,
+              outputOfId: res.data.createProcess.process.id,
+              scopeId: values.scope.value
+            };
+            props.CreateCommitmentMutation({
+              variables: inputVars,
+            })
+          })))
+        })
+        .then(res => {
+          console.log(res)
+          return props.onSuccess()
+        })
+        .catch(err => {
+          console.log(err);
+          return props.onError();
+        });
+    }
+  })
+)(NewProcess);
+
+
+const NoteIcon = styled.div`
+  position: absolute;
+  top: 17px;
+  left: 0px;
 `;
 
-const TitleWrapper = styled.h3`
-  color: ${props => props.theme.color.p900};
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
-  margin-top: 16px;
+const Note = styled.div`
+position: relative;
+border-top: 1px solid #e0e6e8;;
+margin-bottom: 0px;
+margin-top: 4px;
+display: flex;
+${clearFix()}
+  & textarea {
+    margin-left: 20px;
+    margin-top: 10px;
+    outline: none;
+    float: left
+    min-height: 30px;
+    resize: none;
+    font-size: 14px;
+    line-height: 20px;
+    clear: both;
+    font-weight: 400;
+    overflow: hidden;
+    word-wrap: break-word;
+    color: #333;
+    border: none;
+    margin: 0;
+    background: transparent;
+    box-sizing: border-box;
+    text-indent: 10px;
+    margin-top: 10px;
+    margin-left: 20px;
+    padding-left: 0;
+    flex: 1;
+    border: 1px solid transparent;
+    &:hover {
+      border: 1px solid #cccccc;
+    }
+    ${placeholder({ color: "#b2b2bc6" })};
+  }
 `;
 
 const Actions = styled.div`
   ${clearFix()};
 `;
+
+const ActionsProcess = styled.div`
+  ${clearFix()};
+  margin: 8px 0;
+  margin-right: 8px;
+  & button {
+    float: right;
+    margin-left: 8px;
+  }
+`;
+const ClearFix = styled.div`
+  ${clearFix()};
+`;
 const SentenceTemporary = styled.div`
-  background: #323b44d6;
+  background: ${props => props.theme.color.b100};
   padding: 0 8px;
   color: #f0f0f0;
   margin-top: 8px;
   margin-left: 40px;
+  margin-right: 10px;
   position: relative;
+  border-radius: 4px;
+  ${props =>
+    props.output &&
+    css`
+      background: #3871ac;
+    `};
   &: before {
     position: absolute;
     content: "";
     left: -30px;
-    top: 0px;
+    top: 5px;
     width: 14px;
     height: 14px;
     border-radius: 100px;
     display: block;
-    background: green;
+    background: #dee1e4;
   }
   &: after {
     position: absolute;
@@ -279,7 +373,7 @@ const SentenceTemporary = styled.div`
     width: 1px;
     bottom: -20px;
     display: block;
-    background: green;
+    background: #dee1e4;
   }
 `;
 const SentenceNote = styled.div`
@@ -294,38 +388,60 @@ const Sentence = styled.div`
   height: 30px;
   line-height: 30px;
   font-weight: 500;
-  border-bottom: 1px solid #fafafa4d;
   font-size: 14px;
+  position: relative;
+  ${props =>
+    props.output &&
+    css`
+      &:before {
+        border-right: 10px solid #3871ac !important;
+      }
+    `};
+  &:before {
+    position: absolute;
+    content: "";
+    width: 0;
+    left: -16px;
+    height: 0;
+    top: 4px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 10px solid #3497ff;
+}
+  }
 `;
 
 const CommitmentWrapper = styled.div`
-  margin-top: 8px;
+  margin: 10px;
 `;
+
+const ProcessInput = styled.div``;
 
 const PlanWrapper = styled.div`
   ${clearFix()};
   margin-top: 10px;
+  display: flex;
+  margin-left: 10px;
+  flex-direction: column;
   & input {
-    background: #f5f5f5;
-    border: 1px solid #d7d7d7;
-    border-radius: 0;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+    background: transparent;
+    border: 1px solid transparent;
+    font-size: 16px;
+    color: #282b30;
+    letter-spacing: 1px;
+    ${placeholder({
+      color: "#282B30",
+      fontSize: "16px",
+      letterSpacing: "1px"
+    })};
   }
   & textarea {
-    margin-top: -1px;
-    border-radius: 0;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-    background: #f5f5f5;
-    border: 1px solid #d7d7d7;
   }
 `;
 
 const Wrapper = styled.div`
   ${clearFix()};
-  margin: 0 10px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   position: relative;
   z-index: 999999;
 `;

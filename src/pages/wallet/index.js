@@ -319,7 +319,7 @@ export default compose(
         .then(res => {
           let txs = res.transactions.map(o => props.addTx(data.viewer.agent.agentRelationships, o));
           let newTxs = txs.filter(tx => tx.provider && tx.receiver);
-          props.onTxs(newTxs);
+          return props.onTxs(newTxs);
         })
         .catch(err => console.log(err));
     }

@@ -1,15 +1,16 @@
-import React from 'react'
-import Wrapper from './newprocess'
-import Modal from '../modal'
+import React from "react";
+import Wrapper from "./newprocess";
+import Modal from "../modal";
 
-export default ({toggleModal, modalIsOpen}) => (
-  <Modal
-    isOpen={modalIsOpen}
-    toggleModal={toggleModal}
-    >
-      <Wrapper
-        toggleModal={toggleModal}
-      />
-  </Modal>
-)
+class ProcessModal extends React.Component {
+  render() {
+    const { toggleModal, modalIsOpen } = this.props;
+    return (
+      <Modal isOpen={modalIsOpen} toggleModal={toggleModal}>
+        <Wrapper toggleModal={toggleModal} />
+      </Modal>
+    );
+  }
+}
 
+export default ProcessModal;

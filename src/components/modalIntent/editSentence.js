@@ -78,7 +78,8 @@ export default compose(
           i.label.toLowerCase().includes(val.toLowerCase())
         );
         return newOpt;
-      });
+      })
+      .catch(err => console.log(err));
   };
   return (
     <Mutation

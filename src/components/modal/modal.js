@@ -21,7 +21,7 @@ const Dialog = styled.div`
   width: 700px;
   box-shadow: 0 2px 8px 3px rgba(0, 0, 0, 0.3);
   z-index: 9999999999;
-  background-color: #edeff0;
+  background-color: #FFFFFF;
   padding: 0;
   margin: 40px auto;
   position: absolute;
@@ -48,7 +48,9 @@ const Content = styled.div`
   ${clearFix()};
 `;
 
-const Modal = ({ isOpen, toggleModal, content, children }) => {
+class Modal extends React.Component  {
+  render() {
+  const { isOpen, toggleModal, content, children } = this.props
   return isOpen ? (
     <div>
       <Background onClick={toggleModal} />
@@ -62,6 +64,7 @@ const Modal = ({ isOpen, toggleModal, content, children }) => {
       </Dialog>
     </div>
   ) : null;
+  }
 };
 
 export default Modal;

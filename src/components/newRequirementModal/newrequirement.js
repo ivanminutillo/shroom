@@ -14,6 +14,7 @@ import withNotif from "../notification";
 import CreateCommitment from "../../mutations/CreateCommitment";
 import getCommitments from "../../queries/getCommitments";
 import gql from "graphql-tag";
+import GroupSelect from "../groupSelect";
 
 const customStyles = {
   control: base => ({
@@ -177,7 +178,10 @@ export default compose(
       <div>
         <Title>Create a new requirement</Title>
         <Wrapper>
-          <ApolloConsumer>
+          <GroupSelect
+              setFieldValue={setFieldValue}
+          />
+          {/* <ApolloConsumer>
             {client => (
               <Field
                 name="scope"
@@ -199,7 +203,7 @@ export default compose(
                 )}
               />
             )}
-          </ApolloConsumer>
+          </ApolloConsumer> */}
           {values.scope ?
           <PlanWrapper>
           <ApolloConsumer>

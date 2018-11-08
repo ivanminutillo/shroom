@@ -50,7 +50,6 @@ export default compose(
   }) => {
     return (
       <Intent isFinished={data.isFinished}>
-        <Wrapper>
           <Infos>
             {data.inputOf ? (
               <ProcessContainer>
@@ -69,6 +68,7 @@ export default compose(
               </ProcessContainer>
             ) : null}
           </Infos>
+        <Wrapper>
           <First>
             {isSentenceOpen ? (
               <EditSentence
@@ -331,17 +331,15 @@ const FirstInfo = styled.div`
 
 const ProcessContainer = styled.div`
   ${clearFix()};
-  border: 1px solid ${props => props.theme.color.b100};
-  display: inline-block;
-  border-radius: 2px;
-  padding: 0 6px;
-  height: 24px;
+  background: #40444c;
+  height: 30px;
+  padding: 0 8px;
 `;
 const ContainerTitle = styled.h3`
   ${clearFix()};
   display: inline-block;
   vertical-align: middle;
-  line-height: 24px;
+  line-height: 30px;
 `;
 const Content = styled.div`
   ${clearFix()};
@@ -349,7 +347,7 @@ const Content = styled.div`
   color: ${props => props.theme.color.b100};;
   font-size: 13px;
   margin-left: 4px;
-  line-height: 24px;
+  line-height: 30px;
 `;
 
 const Sentence = styled.h3`

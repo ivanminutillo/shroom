@@ -116,7 +116,7 @@ const wrapperComponent = compose(
         })
         .then(res => {
           props.onSuccess()
-          props.closeLogEvent()
+          return props.closeLogEvent()
         })
         .catch(err => props.onError());
     }
