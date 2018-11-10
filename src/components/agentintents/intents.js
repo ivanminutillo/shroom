@@ -18,6 +18,7 @@ export default compose(
   withState("popup", "isOpen", false),
   withState("addEvent", "onAddEvent", false),
   withState("isNoteOpen", "onNoteOpen", false),
+  withState("isFeedOpen", "onFeedOpen", false),
   withState("isSentenceOpen", "onSentenceOpen", false),
   withHandlers({
     handlePopup: props => () => props.isOpen(!props.popup),
@@ -25,6 +26,9 @@ export default compose(
     handleNoteOpen: props => () => {
       props.isOpen(false);
       props.onNoteOpen(!props.isNoteOpen);
+    },
+    handleFeedOpen: props => () => {
+      props.onFeedOpen(!props.isFeedOpen);
     },
     handleSentenceOpen: props => () => {
       props.isOpen(false);
@@ -42,6 +46,8 @@ export default compose(
     isSentenceOpen,
     handleSentenceOpen,
     popup,
+    handleFeedOpen,
+    isFeedOpen,
     toggleValidationModal,
     scopeId,
     myId,
@@ -50,24 +56,24 @@ export default compose(
   }) => {
     return (
       <Intent isFinished={data.isFinished}>
-          <Infos>
-            {data.inputOf ? (
-              <ProcessContainer>
-                <ContainerTitle>
-                  <Icons.UpLeft width="13" height="13" color="#3B99FC" />
-                </ContainerTitle>
-                <Content>#{data.inputOf.name}</Content>
-              </ProcessContainer>
-            ) : null}
-            {data.outputOf ? (
-              <ProcessContainer>
-                <ContainerTitle>
-                  <Icons.UpRight width="13" height="13" color="#3B99FC" />
-                </ContainerTitle>
-                <Content>#{data.outputOf.name}</Content>
-              </ProcessContainer>
-            ) : null}
-          </Infos>
+        <Infos>
+          {data.inputOf ? (
+            <ProcessContainer>
+              <ContainerTitle>
+                <Icons.UpLeft width="13" height="13" color="#F0F0F060" />
+              </ContainerTitle>
+              <Content>{data.inputOf.name}</Content>
+            </ProcessContainer>
+          ) : null}
+          {data.outputOf ? (
+            <ProcessContainer>
+              <ContainerTitle>
+                <Icons.UpRight width="13" height="13" color="#F0F0F060" />
+              </ContainerTitle>
+              <Content>{data.outputOf.name}</Content>
+            </ProcessContainer>
+          ) : null}
+        </Infos>
         <Wrapper>
           <First>
             {isSentenceOpen ? (
@@ -143,37 +149,46 @@ export default compose(
             </FirstInfo>
           </Second>
         </Wrapper>
-        <Events>
-          {data.fulfilledBy.map((ev, i) => (
-            <Feed
-              scopeId={scopeId}
-              image={ev.fulfilledBy.provider.image}
-              commitmentId={data.id}
-              key={i}
-              id={ev.fulfilledBy.id}
-              loggedUserId={myId}
-              providerId={ev.fulfilledBy.provider.id}
-              withValidation
-              withDelete
-              validations={ev.fulfilledBy.validations}
-              openValidationModal={toggleValidationModal}
-              primary={
-                <FeedItem>
-                  <B>{ev.fulfilledBy.provider.name}</B>{" "}
-                  {ev.fulfilledBy.action +
-                    " " +
-                    ev.fulfilledBy.affectedQuantity.numericValue +
-                    " " +
-                    ev.fulfilledBy.affectedQuantity.unit.name +
-                    " of "}
-                  <i>{ev.fulfilledBy.affects.resourceClassifiedAs.name}</i>
-                </FeedItem>
-              }
-              secondary={ev.fulfilledBy.note}
-              date={moment(ev.fulfilledBy.start).format("DD MMM")}
-            />
-          ))}
-        </Events>
+        {isFeedOpen ? (
+          <Events>
+            {data.fulfilledBy.map((ev, i) => (
+              <Feed
+                scopeId={scopeId}
+                image={ev.fulfilledBy.provider.image}
+                commitmentId={data.id}
+                key={i}
+                id={ev.fulfilledBy.id}
+                loggedUserId={myId}
+                providerId={ev.fulfilledBy.provider.id}
+                withValidation
+                withDelete
+                validations={ev.fulfilledBy.validations}
+                openValidationModal={toggleValidationModal}
+                primary={
+                  <FeedItem>
+                    <B>{ev.fulfilledBy.provider.name}</B>{" "}
+                    {ev.fulfilledBy.action +
+                      " " +
+                      ev.fulfilledBy.affectedQuantity.numericValue +
+                      " " +
+                      ev.fulfilledBy.affectedQuantity.unit.name +
+                      " of "}
+                    <i>{ev.fulfilledBy.affects.resourceClassifiedAs.name}</i>
+                  </FeedItem>
+                }
+                secondary={ev.fulfilledBy.note}
+                date={moment(ev.fulfilledBy.start).format("DD MMM")}
+              />
+            ))}
+            <CloseFeed onClick={handleFeedOpen}>
+              <Icons.Arrowup width="18" height="18" color="#fff" />
+            </CloseFeed>
+          </Events>
+        ) : data.fulfilledBy.length > 0 ? (
+          <Fool onClick={handleFeedOpen}>
+            Read all events ({data.fulfilledBy.length})
+          </Fool>
+        ) : null}
         <Actions>
           {addEvent ? (
             <WrapperLogEvent>
@@ -190,11 +205,18 @@ export default compose(
               />
             </WrapperLogEvent>
           ) : (
-            <div style={{ marginLeft: "8px", marginBottom: "8px" }}>
+            <div
+              style={{
+                paddingLeft: "8px",
+                paddingBottom: "8px",
+                background: "#40444C"
+              }}
+            >
               <ImgProvider
                 style={{ backgroundImage: `url(${providerImage})` }}
               />{" "}
               <Button onClick={handleAddEvent}>Log an event</Button>
+              <Button onClick={handleAddEvent}>Comment</Button>
             </div>
           )}
         </Actions>
@@ -208,12 +230,28 @@ const B = styled.b`
   color: ${props => props.theme.color.p100};
 `;
 
+const Fool = styled.div`
+  height: 30px;
+  color: #f0f0f061;
+  text-align: center;
+  font-size: 13px;
+  text-decoration: underline;
+  line-height: 30px;
+  background: #565862;
+  letter-spacing: 1px;
+  font-weight: 400;
+  cursor: pointer;
+  &:hover {
+    color: #f0f0f0;
+  }
+`;
+
 const WrapperLogEvent = styled.div`
-background: #f6f8f9;
-padding: 10px 0;
-margin: 10px;
-border-radius: 4px;
-box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
+  background: #f6f8f9;
+  padding: 10px 0;
+  margin: 10px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
 `;
 
 const FeedItem = styled.div`
@@ -223,6 +261,25 @@ const FeedItem = styled.div`
 
 const Actions = styled.div`
   padding-bottom: 0px;
+`;
+
+const CloseFeed = styled.div`
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 100px;
+  background: #114357; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    #114357,
+    #f29492
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(#114357, #f29492);
+  text-align: center;
+  padding-top: 11px;
+  box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
 `;
 
 const Popup = styled.div`
@@ -271,7 +328,7 @@ const Button = styled.button`
   margin-right: 28px;
   border: none;
   letter-spacing: 0.5px;
-  background: #484b54;
+  background: transparent;
   border-radius: 34px;
 `;
 
@@ -290,6 +347,7 @@ const Intent = styled.div`
 `;
 const Events = styled.div`
   ${clearFix()};
+  position: relative;
 `;
 const Agents = styled.div`
   ${clearFix()};
@@ -331,8 +389,8 @@ const FirstInfo = styled.div`
 
 const ProcessContainer = styled.div`
   ${clearFix()};
-  background: #40444c;
-  height: 30px;
+  background: #353841;
+  height: 40px;
   padding: 0 8px;
 `;
 const ContainerTitle = styled.h3`
@@ -344,10 +402,12 @@ const ContainerTitle = styled.h3`
 const Content = styled.div`
   ${clearFix()};
   display: inline-block;
-  color: ${props => props.theme.color.b100};;
+  color: #f0f0f060;
   font-size: 13px;
   margin-left: 4px;
-  line-height: 30px;
+  border-bottom: 3px solid;
+  line-height: 26px;
+  margin-top: 4px;
 `;
 
 const Sentence = styled.h3`
@@ -372,36 +432,10 @@ const Sentence = styled.h3`
 const Infos = styled.div`
   font-weight: 400;
   line-height: 20px;
-  margin-bottom: 8px;
-  margin-rigth: 4px;
 `;
-const Date = styled.h3`
-  float: left;
-  color: #99adc6;
-  font-weight: 500;
-  font-size: 12px;
-  letter-spacing: 1px;
-  margin: 0;
-  height: 24px;
-  line-height: 24px;
-  border-radius: 2px;
-  margin-left: 4px;
-  ${props =>
-    props.deadline === "soon" &&
-    css`
-      color: #ffffff;
-      background: #ffab00;
-      padding: 0 5px;
-    `} ${props =>
-    props.deadline === "expired" &&
-    css`
-      color: #ffffff;
-      background: #ff5630;
-      padding: 0 5px;
-    `};
-`;
+
 const Note = styled.h3`
-  margin-top: 0px;
+  margin-top: 5px;
   font-weight: 400;
   line-height: 18px;
   font-size: 13px;

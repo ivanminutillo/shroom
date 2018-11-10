@@ -18,82 +18,93 @@ import { compose, withHandlers, withState } from "recompose";
 import moment from "moment";
 import { withFormik } from "formik";
 import * as Yup from "yup";
+import DateRangeSelect from "../dateRangeSelect";
+
 require("react-datepicker/dist/react-datepicker-cssmodules.css");
 
-
 export default compose(
-    withFormik({
-      mapPropsToValues: props => ({
-        action: props.action,
-        note: "",
-        numericValue: "00.00" || "",
-        unit: null,
-        date: moment(),
-        affectedResourceClassifiedAsId: null
-      }),
-      validationSchema: Yup.object().shape({
-        action: Yup.object().required(),
-        note: Yup.string(),
-        numericValue: Yup.number(),
-        unit: Yup.object().required(),
-        date: Yup.string(),
-        affectedResourceClassifiedAsId: Yup.object().required(
-          "Classification is a required field"
-        )
-      })
+  withFormik({
+    mapPropsToValues: props => ({
+      action: props.action,
+      note: "",
+      numericValue: "00.00" || "",
+      unit: null,
+      due: moment(),
+      start: moment(),
+      affectedResourceClassifiedAsId: null
     }),
-    withHandlers({
-      onAdd: props => (e) => {
-        e.preventDefault()
-        let i = {
-          action: props.action,
-          date: props.values.date,
-          note: props.values.note,
-          numericValue: props.values.numericValue,
-          unit: props.values.unit,
-          affectedResourceClassifiedAsId: props.values.affectedResourceClassifiedAsId
-        }
-        props.inputs.push(i)
-        props.onInput(props.inputs)
-        return props.closeTab()
-      }
+    validationSchema: Yup.object().shape({
+      action: Yup.object().required(),
+      note: Yup.string(),
+      numericValue: Yup.number(),
+      unit: Yup.object().required(),
+      due: Yup.string(),
+      start: Yup.string(),
+      affectedResourceClassifiedAsId: Yup.object().required(
+        "Classification is a required field"
+      )
     })
-  )(({
-  values,
-  setFieldValue,
-  errors,
-  touched,
-  setFieldTouched,
-  closeLogEvent,
-  action,
-  onAdd
-}) => {
-  return (
-    <ApolloConsumer>
-      {client => (
-        <div>
-          <Module>
-            <Row>
-              <Qty>
-                <Field
-                  name="numericValue"
-                  render={({ field }) => (
-                    <Input
-                      name={field.name}
-                      onChange={field.onChange}
-                      type="number"
-                      min="00.00"
-                      max="100.00"
-                      step="0.1"
-                      placeholder="00.00"
+  }),
+  withHandlers({
+    onAdd: props => e => {
+      e.preventDefault();
+      let i = {
+        action: props.action,
+        start: props.values.start,
+        due: props.values.due,
+        note: props.values.note,
+        numericValue: props.values.numericValue,
+        unit: props.values.unit,
+        affectedResourceClassifiedAsId:
+          props.values.affectedResourceClassifiedAsId,
+        type: props.type
+      };
+      props.inputs.push(i);
+      props.onInput(props.inputs);
+      return props.closeTab();
+    }
+  })
+)(
+  ({
+    values,
+    setFieldValue,
+    errors,
+    touched,
+    setFieldTouched,
+    closeLogEvent,
+    action,
+    onAdd,
+    type
+  }) => {
+    return (
+      <ApolloConsumer>
+        {client => (
+          <div>
+            <Module>
+              <Row>
+                <Qty>
+                  <Value>
+                    <Field
+                      name="numericValue"
+                      render={({ field }) => (
+                        <Input
+                          name={field.name}
+                          onChange={field.onChange}
+                          type="number"
+                          min="00.00"
+                          max="100.00"
+                          step="0.1"
+                          placeholder="00.00"
+                        />
+                      )}
                     />
-                  )}
-                />
+                  </Value>
+                  {values.unit ? <Unit>{values.unit.label}</Unit> : null}
+                </Qty>
                 {errors.numericValue &&
                   touched.numericValue && <Alert>{errors.numericValue}</Alert>}
-              </Qty>
-              <Unit>
-                <Field
+                {/* <Unit> */}
+                {/* <Field
                   name={"unit"}
                   render={({ field }) => {
                     return (
@@ -112,78 +123,94 @@ export default compose(
                     );
                   }}
                 />
-                {errors.unit && touched.unit && <Alert>{errors.unit}</Alert>}
-              </Unit>
-              <Resource>
+                {errors.unit && touched.unit && <Alert>{errors.unit}</Alert>} */}
+                {/* </Unit> */}
+                <Resource>
+                  <Field
+                    name="affectedResourceClassifiedAsId"
+                    render={({ field }) => (
+                      <AsyncSelect
+                        placeholder="Select a classification..."
+                        defaultOptions
+                        cacheOptions
+                        value={field.value}
+                        onChange={val => {
+                          setFieldValue("unit", {
+                            value: val.value.unitId,
+                            label: val.value.unitName
+                          });
+                          return setFieldValue(
+                            "affectedResourceClassifiedAsId",
+                            {
+                              value: val.value.value,
+                              label: val.label
+                            }
+                          );
+                        }}
+                        loadOptions={val =>
+                          getResourcesByAction(client, action, val)
+                        }
+                      />
+                    )}
+                  />
+                  {errors.affectedResourceClassifiedAsId &&
+                    touched.affectedResourceClassifiedAsId && (
+                      <Alert>{errors.affectedResourceClassifiedAsId}</Alert>
+                    )}
+                </Resource>
+              </Row>
+              <Note>
+                <NoteIcon>
+                  <Icons.Text width="16" height="16" color="#b7bfc6" />
+                </NoteIcon>
                 <Field
-                  name="affectedResourceClassifiedAsId"
+                  name="note"
                   render={({ field }) => (
-                    <AsyncSelect
-                      placeholder="Select a classification..."
-                      defaultOptions
-                      cacheOptions
+                    <Textarea
                       value={field.value}
-                      onChange={val =>
-                        setFieldValue("affectedResourceClassifiedAsId", {
-                          value: val.value,
-                          label: val.label
-                        })
-                      }
-                      loadOptions={val =>
-                        getResourcesByAction(client, action, val)
-                      }
+                      name={field.name}
+                      onChange={field.onChange}
+                      placeholder={"Type a note..."}
                     />
                   )}
                 />
-                {errors.affectedResourceClassifiedAsId &&
-                  touched.affectedResourceClassifiedAsId && (
-                    <Alert>{errors.affectedResourceClassifiedAsId}</Alert>
-                  )}
-              </Resource>
-            </Row>
-            <Note>
-            <NoteIcon><Icons.Text width='16' height='16' color='#b7bfc6' /></NoteIcon>
-              <Field
-                name="note"
-                render={({ field }) => (
-                  <Textarea
-                    value={field.value}
-                    name={field.name}
-                    onChange={field.onChange}
-                    placeholder={"Type a note..."}
-                  />
-                )}
-              />
-            </Note>
+              </Note>
 
-            <PublishActions>
-              <StartDate
+              <PublishActions>
+                <DateRangeSelect
+                  setFieldValue={setFieldValue}
+                  start={values.start}
+                  due={values.due}
+                  errors={errors}
+                  touched={touched}
+                />
+                {/* <StartDate
                 value={values.date}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
                 error={errors.start}
                 touched={touched.start}
-              />
-              <Button onClick={onAdd} type="submit">
-                Publish
-              </Button>
-              <Button outline onClick={closeLogEvent}>
-                Cancel
-              </Button>
-            </PublishActions>
-          </Module>
-        </div>
-      )}
-    </ApolloConsumer>
-  );
-});
-
+              /> */}
+                <Button onClick={onAdd} type="submit">
+                  Publish
+                </Button>
+                <Button outline onClick={closeLogEvent}>
+                  Cancel
+                </Button>
+              </PublishActions>
+            </Module>
+          </div>
+        )}
+      </ApolloConsumer>
+    );
+  }
+);
 
 const NoteIcon = styled.div`
-    position: absolute;
-    top: 17px;
-    left: 0px;`
-
+  position: absolute;
+  top: 17px;
+  left: 0px;
+`;
 
 const Module = styled.div`
   ${clearFix()};
@@ -191,7 +218,7 @@ const Module = styled.div`
   padding: 10px;
   margin: 10px 0;
   border-radius: 4px;
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
   position: relative;
   ${media.lessThan("medium")`
     width: 100%;
@@ -213,28 +240,45 @@ const PublishActions = styled.div`
   }
 `;
 
-const Action = styled.div``;
+const Value = styled.div``;
+
 const Qty = styled.div`
-  border-radius: 3px;
   max-height: 36px;
   text-align: center;
-  ${placeholder({ color: "red" })};
+  display: flex;
+  box-sizing: border-box;
   & input {
     width: 100%;
-    text-align: center;
+    float: left;
+    text-align: left;
     color: #333;
-    height: 38px;
-    border: 1px solid #7d849a50;
-    ${placeholder({ color: "red" })};
+    height: 34px;
+    border: 0px solid #7d849a50;
+    background: transparent;
+    font-size: 16px;
+    ${placeholder({ color: "hsl(0,0%,50%) !important", fontSize: "16px" })};
   }
 `;
-const Unit = styled.div``;
+
+const Unit = styled.div`
+  height: 34px;
+  line-height: 34px;
+  text-align: left;
+  width: auto;
+  flex: 1;
+  font-size: 14px;
+  padding: 0 12px;
+  color: hsl(0, 0%, 100%);
+  background: #0a3649;
+  border-radius: 100px;
+`;
+
 const Resource = styled.div`
   margin-bottom: 8px;
 `;
 const Row = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 3fr;
+  grid-template-columns: 1fr 4fr;
   grid-column-gap: 4px;
   & input {
     ${placeholder({ color: "#333" })};
@@ -277,26 +321,6 @@ ${clearFix()}
     ${placeholder({ color: "#b2b2bc6" })};
   }
 `;
-
-const StartDate = props => {
-  const handleChange = value => {
-    props.onChange("date", value);
-  };
-  return (
-    <ItemDate>
-      <span>
-        <Icons.Calendar width="18" height="18" color="#3B99FC" />
-      </span>
-      <DatePicker
-        selected={props.value}
-        onChange={handleChange}
-        dateFormat={"DD MMM"}
-        withPortal
-      />
-      {/* {props.error && props.touched && <Alert>{props.error}</Alert>} */}
-    </ItemDate>
-  );
-};
 
 const ItemDate = styled.div`
   background: transparent;
@@ -374,4 +398,3 @@ const ItemDate = styled.div`
     font-weight: 400;
   }
 `;
-

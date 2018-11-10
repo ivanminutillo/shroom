@@ -3,165 +3,279 @@ import styled, { css } from "styled-components";
 import { Icons } from "oce-components/build";
 import { NavLink } from "react-router-dom";
 import media from "styled-media-query";
-import {Query} from 'react-apollo'
+import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 const getInbox = gql`
-query getInbox {
-  inbox @client
-}
-`
+  query getInbox {
+    inbox @client
+  }
+`;
 const getCommitted = gql`
-query getCommitted {
-  committed @client
-}
-`
+  query getCommitted {
+    committed @client
+  }
+`;
 const getMatched = gql`
-query getMatched {
-  matched @client
-}
-`
+  query getMatched {
+    matched @client
+  }
+`;
 
-
-const Sidebar = (props) => {
+const Sidebar = props => {
   return (
     <Wrapper isopen={props.isOpen}>
       <List>
-      <ListTitle>Events</ListTitle>
-      <Item>
-        <NavLink
-          {...props}
-          isActive={(match, location) => {
-            return location.pathname === `/agent/${props.param}/` || location.pathname === '/' || location.pathname === `/agent/${props.param}`
-          }
-          }
-          to={props.param ? `/agent/${props.param}/` : `/`}
-          activeStyle={{
-            position: "relative",
-            marginLeft: "24px",
-            color: "#f0f0f0"
-          }}
-        >
-          <SpanIcon>
-            <Icons.Inbox width="14" height="14" color="#f0f0f0bd" />
-          </SpanIcon>
-          Inbox
-        <Query query={getInbox}>
-            {({ data: { inbox } }) => {
-              return <Total>{inbox}</Total>
+        <ListTitle>Requirements</ListTitle>
+        <Item>
+          <NavLink
+            {...props}
+            isActive={(match, location) => {
+              return (
+                location.pathname === `/agent/${props.param}/` ||
+                location.pathname === "/" ||
+                location.pathname === `/agent/${props.param}`
+              );
             }}
-        </Query>
-        </NavLink>
-      </Item>
-      <Item>
-        <NavLink
-          {...props}
-          to={
-            props.param
-              ? `/agent/${props.param}/committed`
-              : `/committed`
-          }
-          isActive={(match, location) =>
-            location.pathname.includes("/committed")
-          }
-          activeStyle={{
-            position: "relative",
-            marginLeft: "24px",
-            color: "#f0f0f0"
-          }}
-        >
-          <SpanIcon>
-            <Icons.Star width="14" height="14" color="#f0f0f0bd" />
-          </SpanIcon>
-          Committed
-        <Query query={getCommitted}>
-            {({ data: { committed } }) => {
-              return <Total>{committed}</Total>
+            to={props.param ? `/agent/${props.param}/` : `/`}
+            activeStyle={{
+              position: "relative",
+              marginLeft: "24px",
+              color: "#f0f0f0"
             }}
-        </Query>
-        </NavLink>
-      </Item>
-      {props.profile ? 
-      <Item>
-      <NavLink
-        {...props}
-        isActive={(match, location) => location.pathname.includes("/matched")}
-        to={
-          props.param
-            ? `/agent/${props.param}/matched`
-            : `/matched`
-        }
-        activeStyle={{
-          position: "relative",
-          marginLeft: "24px",
-          color: "#f0f0f0"
-        }}
-      >
-        <SpanIcon>
-          <Icons.Eye width="14" height="14" color="#f0f0f0bd" />
-        </SpanIcon>
-        Matched
-      <Query query={getMatched}>
-          {({ data: { matched } }) => {
-            return <Total>{matched}</Total>
-          }}
-      </Query>
-      </NavLink>
-    </Item>
-      : 
-      null}
-      
-    </List>
-    {props.profile ? null :
-    <List>
-      <ListTitle>Plans</ListTitle>
-      <Item>
-        <NavLink
-          {...props}
-          isActive={(match, location) => {
-            return location.pathname === `/plans/${props.param}/active` || location.pathname === `/plans/${props.param}/active/`
-          }
-          }
-          to={`/plans/${props.param}/active`}
-          activeStyle={{
-            position: "relative",
-            marginLeft: "24px",
-            color: "#f0f0f0"
-          }}
-        >
-          Active
-        </NavLink>
-      </Item>
-      <Item>
-        <NavLink
-          {...props}
-          isActive={(match, location) => {
-            return location.pathname === `/plans/${props.param}/closed` || location.pathname === `/plans/${props.param}/closed/`
-          }
-          }
-          to={`/plans/${props.param}/closed`}
-          activeStyle={{
-            position: "relative",
-            marginLeft: "24px",
-            color: "#f0f0f0"
-          }}
-        >
-          Closed
-        </NavLink>
-      </Item>
-    </List>}
+          >
+            <SpanIcon>
+              <Icons.Inbox width="14" height="14" color="#f0f0f0bd" />
+            </SpanIcon>
+            Inbox
+            <Query query={getInbox}>
+              {({ data: { inbox } }) => {
+                return <Total>{inbox}</Total>;
+              }}
+            </Query>
+          </NavLink>
+        </Item>
+        <Item>
+          <NavLink
+            {...props}
+            to={props.param ? `/agent/${props.param}/committed` : `/committed`}
+            isActive={(match, location) =>
+              location.pathname.includes("/committed")
+            }
+            activeStyle={{
+              position: "relative",
+              marginLeft: "24px",
+              color: "#f0f0f0"
+            }}
+          >
+            <SpanIcon>
+              <Icons.Star width="14" height="14" color="#f0f0f0bd" />
+            </SpanIcon>
+            Committed
+            <Query query={getCommitted}>
+              {({ data: { committed } }) => {
+                return <Total>{committed}</Total>;
+              }}
+            </Query>
+          </NavLink>
+        </Item>
+        {props.profile ? (
+          <Item>
+            <NavLink
+              {...props}
+              isActive={(match, location) =>
+                location.pathname.includes("/matched")
+              }
+              to={props.param ? `/agent/${props.param}/matched` : `/matched`}
+              activeStyle={{
+                position: "relative",
+                marginLeft: "24px",
+                color: "#f0f0f0"
+              }}
+            >
+              <SpanIcon>
+                <Icons.Eye width="14" height="14" color="#f0f0f0bd" />
+              </SpanIcon>
+              Matched
+              <Query query={getMatched}>
+                {({ data: { matched } }) => {
+                  return <Total>{matched}</Total>;
+                }}
+              </Query>
+            </NavLink>
+          </Item>
+        ) : null}
+      </List>
+        <List>
+          <ListTitle>Active Plans</ListTitle>
+          <ItemFull>
+            <NavLink
+              {...props}
+              isActive={(match, location) => {
+                return (
+                  location.pathname === `/plans/${props.param}/active` ||
+                  location.pathname === `/plans/${props.param}/active/`
+                );
+              }}
+              to={`/plans/${props.param}/active`}
+              activeStyle={{
+                position: "relative",
+                marginLeft: "24px",
+                color: "#f0f0f0"
+              }}
+            >
+              Process name bal bla eoras stack
+            </NavLink>
+          </ItemFull>
+          <ItemFull>
+            <NavLink
+              {...props}
+              isActive={(match, location) => {
+                return (
+                  location.pathname === `/plans/${props.param}/closed` ||
+                  location.pathname === `/plans/${props.param}/closed/`
+                );
+              }}
+              to={`/plans/${props.param}/closed`}
+              activeStyle={{
+                position: "relative",
+                marginLeft: "24px",
+                color: "#f0f0f0"
+              }}
+            >
+              Process name bal bla eoras stack
+            </NavLink>
+          </ItemFull>
+          <ItemFull>
+            <NavLink
+              {...props}
+              isActive={(match, location) => {
+                return (
+                  location.pathname === `/plans/${props.param}/closed` ||
+                  location.pathname === `/plans/${props.param}/closed/`
+                );
+              }}
+              to={`/plans/${props.param}/closed`}
+              activeStyle={{
+                position: "relative",
+                marginLeft: "24px",
+                color: "#f0f0f0"
+              }}
+            >
+              Process name bal bla eoras stack
+            </NavLink>
+          </ItemFull>
+          <ItemFull>
+            <NavLink
+              {...props}
+              isActive={(match, location) => {
+                return (
+                  location.pathname === `/plans/${props.param}/closed` ||
+                  location.pathname === `/plans/${props.param}/closed/`
+                );
+              }}
+              to={`/plans/${props.param}/closed`}
+              activeStyle={{
+                position: "relative",
+                marginLeft: "24px",
+                color: "#f0f0f0"
+              }}
+            >
+              Process name bal bla eoras stack
+            </NavLink>
+          </ItemFull>
+        </List>
+        <List>
+          <ListTitle>Active Processes</ListTitle>
+          <ItemFull>
+            <NavLink
+              {...props}
+              isActive={(match, location) => {
+                return (
+                  location.pathname === `/plans/${props.param}/active` ||
+                  location.pathname === `/plans/${props.param}/active/`
+                );
+              }}
+              to={`/plans/${props.param}/active`}
+              activeStyle={{
+                position: "relative",
+                marginLeft: "24px",
+                color: "#f0f0f0"
+              }}
+            >
+              Process name bal bla eoras stack
+            </NavLink>
+          </ItemFull>
+          <ItemFull>
+            <NavLink
+              {...props}
+              isActive={(match, location) => {
+                return (
+                  location.pathname === `/plans/${props.param}/closed` ||
+                  location.pathname === `/plans/${props.param}/closed/`
+                );
+              }}
+              to={`/plans/${props.param}/closed`}
+              activeStyle={{
+                position: "relative",
+                marginLeft: "24px",
+                color: "#f0f0f0"
+              }}
+            >
+              Process name bal bla eoras stack
+            </NavLink>
+          </ItemFull>
+          <ItemFull>
+            <NavLink
+              {...props}
+              isActive={(match, location) => {
+                return (
+                  location.pathname === `/plans/${props.param}/closed` ||
+                  location.pathname === `/plans/${props.param}/closed/`
+                );
+              }}
+              to={`/plans/${props.param}/closed`}
+              activeStyle={{
+                position: "relative",
+                marginLeft: "24px",
+                color: "#f0f0f0"
+              }}
+            >
+              Process name bal bla eoras stack
+            </NavLink>
+          </ItemFull>
+          <ItemFull>
+            <NavLink
+              {...props}
+              isActive={(match, location) => {
+                return (
+                  location.pathname === `/plans/${props.param}/closed` ||
+                  location.pathname === `/plans/${props.param}/closed/`
+                );
+              }}
+              to={`/plans/${props.param}/closed`}
+              activeStyle={{
+                position: "relative",
+                marginLeft: "24px",
+                color: "#f0f0f0"
+              }}
+            >
+              Process name bal bla eoras stack
+            </NavLink>
+          </ItemFull>
+        </List>
     </Wrapper>
   );
 };
 
-
 const Total = styled.span`
-float: right;
-margin-top: 0px;
-font-size: 13px;
-color: #3497ff;
-font-weight: 300;
-`
+  float: right;
+  margin-top: 0px;
+  font-size: 13px;
+  color: #3497ff;
+  font-weight: 300;
+`;
+
 
 const Wrapper = styled.div`
   display: flex;
@@ -178,7 +292,7 @@ const Wrapper = styled.div`
   min-height: 100vh;
   margin-bottom: -40px;
   border-right: 1px solid #121315;
-  box-shadow: 1px 0 0 rgba(255,255,255, .1);
+  box-shadow: 1px 0 0 rgba(255, 255, 255, 0.1);
   ${media.lessThan("medium")`
   margin-left: -270px
   ${props =>
@@ -200,13 +314,11 @@ const SpanIcon = styled.div`
 const List = styled.div`
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 16px;
-  padding: 16px;
-  margin-top: 8px;
+  margin: 16px;
   & a {
     display: block;
   }
 `;
-
 
 const ListTitle = styled.h3`
   text-transform: uppercase;
@@ -221,6 +333,30 @@ const Item = styled.h3`
   & a {
     text-decoration: none;
     color: #f0f0f0bd;
+    &:after {
+      position: absolute;
+      content: "";
+      width: 20px;
+      height: 2px;
+      background: ${props => props.theme.color.b100};
+      display: block;
+      top: 5px;
+      left: -24px;
+    }
+  }
+`;
+const ItemFull = styled.h3`
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  background: #383c41;
+  border-radius: 3px;
+  padding: 2px;
+  & a {
+    text-decoration: none;
+    color: #f0f0f09c;
+    font-size: 13px;
+    font-weight: 300;
     &:after {
       position: absolute;
       content: "";

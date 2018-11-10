@@ -1,5 +1,3 @@
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
 import React from "react";
 import ReactDOM from "react-dom";
 import Login from "./pages/login";
@@ -20,6 +18,7 @@ import Dark from "./style/themeDark";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Fira+Sans:300,400,400i,500,500i,700');
+  * {box-sizing: border-box}
   body {
     padding: 0;
     margin: 0;

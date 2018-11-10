@@ -8,6 +8,10 @@ query ($token: String) {
       category
       processCategory
       id
+      unit {
+        id
+        name
+      }
     }
   }
 }`;
@@ -20,6 +24,10 @@ query ($token: String, $action: Action) {
       category
       processCategory
       id
+      unit {
+        id
+        name
+      }
     }
   }
 }

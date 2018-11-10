@@ -18,10 +18,7 @@ export const inputReqs = [
     {
       value: "cite",
       label: "Add a cite type requirement"
-    }
-  ]
-
-  export const outputReqs = [
+    },
     {
       value: "produce",
       label: "Add a produce type requirement"
