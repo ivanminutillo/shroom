@@ -1,7 +1,7 @@
 import * as React from "react";
 import gql from "graphql-tag";
 import { compose, withHandlers, withState } from "recompose";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import LeftPanel from "../../components/leftPanel/leftPanel";
 import SettingModal from "../../pages/settings";
@@ -15,6 +15,7 @@ import Agent from "../../pages/agent/agent";
 import { Switch } from "react-router-dom";
 import Plan from '../../pages/plan'
 import NewProcessModal from '../../components/newProcessModal'
+import Process from "../../pages/process";
 const Surface = styled.div`
   height: 100%;
   display: flex;
@@ -64,6 +65,16 @@ const AppTemplate = props => {
               <PropsRoute
                 component={Plan}
                 path={"/plan"}
+              />
+              <PropsRoute
+                component={Process}
+                path={"/process"}
+                onToggleSidebar={props.onToggleSidebar}
+                togglePanel={props.onTogglePanel}
+                isSidebarOpen={props.isSidebarOpen}
+                providerId={data.viewer.myAgent.id}
+                providerImage={data.viewer.myAgent.image}
+                providerName={data.viewer.myAgent.name}
               />
               <PropsRoute
                 component={Agent}

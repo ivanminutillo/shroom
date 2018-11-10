@@ -107,17 +107,17 @@ const Sidebar = props => {
         ) : null}
       </List>
         <List>
-          <ListTitle>Active Plans</ListTitle>
+          <ListTitle>Active Process</ListTitle>
           <ItemFull>
             <NavLink
               {...props}
               isActive={(match, location) => {
                 return (
-                  location.pathname === `/plans/${props.param}/active` ||
-                  location.pathname === `/plans/${props.param}/active/`
+                  location.pathname === `/process/${props.param}/active` ||
+                  location.pathname === `/process/${props.param}/active/`
                 );
               }}
-              to={`/plans/${props.param}/active`}
+              to={`/process/${props.param}/active`}
               activeStyle={{
                 position: "relative",
                 marginLeft: "24px",
