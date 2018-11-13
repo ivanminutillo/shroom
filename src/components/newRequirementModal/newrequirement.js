@@ -1,131 +1,100 @@
 import React from "react";
 import styled from "styled-components";
 import { clearFix } from "polished";
-import LogEvent from "../logEvent/logEvent";
-import AsyncSelect from "react-select/lib/Async";
-import { compose } from "recompose";
-import getPlans from "../../queries/getPlans";
+import LogEvent from "../createReqInProcess/logEvent";
+import { compose, withState } from "recompose";
 import { withFormik, Field } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
-import { ApolloConsumer, graphql } from "react-apollo";
+import { graphql } from "react-apollo";
 import ProcessSelect from "./processSelect";
 import withNotif from "../notification";
 import CreateCommitment from "../../mutations/CreateCommitment";
 import getCommitments from "../../queries/getCommitments";
-import gql from "graphql-tag";
 import GroupSelect from "../groupSelect";
-
-const customStyles = {
-  control: base => ({
-    ...base,
-    color: "#333"
-  }),
-  input: base => ({
-    ...base,
-    color: "#333"
-  }),
-  singleValue: base => ({
-    ...base,
-    color: "#333"
-  }),
-  placeholder: base => ({
-    ...base,
-    color: "#333",
-    fontSize: "14px"
-  })
-};
-
-
-const agentRelationships = gql`
-  query($token: String) {
-    viewer(token: $token) {
-      myAgent {
-        id
-        agentRelationships {
-          object {
-            id
-            name
-          }
-        }
-      }
-    }
-  }
-`;
-
+import { inputReqs } from "../newProcessModal/options";
+import { Icons } from "oce-components/build";
+import Select from "react-select";
 
 export default compose(
   withNotif("Commitment is successfully created", "Commitment is not created"),
   graphql(CreateCommitment, { name: "createCommitment" }),
+  withState("inputs", "onInput", []),
   withFormik({
     mapPropsToValues: props => ({
       scope: null,
-      plan: null,
       process: "",
-      action: "",
+      action: null,
       note: "",
       numericValue: "00.00" || "",
       unit: "",
-      date: moment(),
+      start: moment(),
+      due: moment(),
       affectedResourceClassifiedAsId: ""
     }),
     validationSchema: Yup.object().shape({
-      action: Yup.object().required(),
-      scope: Yup.object().required(),
+      action: Yup.string(),
+      scope: Yup.object(),
       note: Yup.string(),
       numericValue: Yup.number(),
-      unit: Yup.object().required(),
+      unit: Yup.object(),
       date: Yup.string(),
-      affectedResourceClassifiedAsId: Yup.object().required(
-        "Classification is a required field"
-      )
+      affectedResourceClassifiedAsId: Yup.object()
     }),
     handleSubmit: (values, { props, resetForm, setErrors, setSubmitting }) => {
-      let date = moment(values.date).format("YYYY-MM-DD");
+
+      let date = moment(values.due).format("YYYY-MM-DD");
+      let start = moment(values.start).format("YYYY-MM-DD");
       setSubmitting(true);
       let MutationVariables = {
         token: localStorage.getItem("oce_token"),
-        action: values.action.value.toLowerCase(),
+        action: values.action.toLowerCase(),
+        start: start,
         due: date,
         note: values.note,
-        committedResourceClassifiedAsId: values.affectedResourceClassifiedAsId.value,
+        committedResourceClassifiedAsId:
+          values.affectedResourceClassifiedAsId.value,
         committedUnitId: values.unit.value,
         committedNumericValue: values.numericValue,
         inputOfId: values.process ? values.process.value : null,
         outputOfId: values.process ? values.process.value : null,
-        planId: values.plan ? values.plan.value : null,
         scopeId: values.scope.value
       };
-      return props.createCommitment({
-        variables: MutationVariables,
-        update: (store, { data }) => {
-          let comm = store.readQuery({
-            query: getCommitments,
-            variables: {
-              token: localStorage.getItem("oce_token"),
-              id: props.scopeId
-            }
-          });
-          comm.viewer.agent.agentCommitments.push(data.createCommitment.commitment)
-          store.writeQuery({
-            query: getCommitments,
-            data: comm,
-            variables: {
-              token: localStorage.getItem("oce_token"),
-              id: props.scopeId
-            }
-          });
-
-        }
-      })
-      .then(res => props.onSuccess())
-      .catch(err => props.onError());
+      return props
+        .createCommitment({
+          variables: MutationVariables,
+          update: (store, { data }) => {
+            let comm = store.readQuery({
+              query: getCommitments,
+              variables: {
+                token: localStorage.getItem("oce_token"),
+                id: props.scopeId
+              }
+            });
+            comm.viewer.agent.agentCommitments.push(
+              data.createCommitment.commitment
+            );
+            store.writeQuery({
+              query: getCommitments,
+              data: comm,
+              variables: {
+                token: localStorage.getItem("oce_token"),
+                id: props.scopeId
+              }
+            });
+          }
+        })
+        .then(res => props.onSuccess())
+        .catch(err => props.onError());
     }
   })
 )(
   ({
-    intent,
+    inputs,
+    onInput,
     providerId,
+    isValidating,
+    isSubmitting,
     scopeId,
     errors,
     touched,
@@ -133,142 +102,95 @@ export default compose(
     setFieldTouched,
     values,
     toggleModal,
-    addIntent
+    addIntent,
+    handleSubmit
   }) => {
-    const promiseOptions = (client, val) => {
-      return client
-        .query({
-          query: getPlans,
-          variables: {
-            token: localStorage.getItem("oce_token"),
-            id: values.scope.value
-          }
-        })
-        .then(res => {
-          let options = res.data.viewer.agent.agentPlans
-            .map(plan => ({
-              value: plan.id,
-              label: plan.name
-            }))
-            .filter(i => i.label.toLowerCase().includes(val.toLowerCase()));
-          return options;
-        });
-    };
-    const promiseGroupOptions = (client, val) => {
-      return client
-        .query({
-          query: agentRelationships,
-          variables: {
-            token: localStorage.getItem("oce_token"),
-          }
-        })
-        .then(res => {
-          console.log(res);
-          let options = res.data.viewer.myAgent.agentRelationships
-            .map(plan => ({
-              value: plan.object.id,
-              label: plan.object.name
-            }))
-            .filter(i => i.label.toLowerCase().includes(val.toLowerCase()));
-          return options;
-        });
-    };
-
     return (
       <div>
         <Title>Create a new requirement</Title>
         <Wrapper>
-          <GroupSelect
-              setFieldValue={setFieldValue}
-          />
-          {/* <ApolloConsumer>
-            {client => (
-              <Field
-                name="scope"
-                render={({ field }) => (
-                  <AsyncSelect
-                    placeholder={"Select a group..."}
-                    defaultOptions
-                    cacheOptions
-                    styles={customStyles}
-                    value={field.label}
-                    onChange={val =>
-                      setFieldValue("scope", {
-                        value: val.value,
-                        label: val.label
-                      })
-                    }
-                    loadOptions={val => promiseGroupOptions(client, val)}
-                  />
-                )}
-              />
-            )}
-          </ApolloConsumer> */}
-          {values.scope ?
+          <GroupSelect setFieldValue={setFieldValue} />
           <PlanWrapper>
-          <ApolloConsumer>
-            {client => (
-              <Field
-                name="plan"
-                render={({ field }) => (
-                  <AsyncSelect
-                    placeholder={"Select a plan..."}
-                    defaultOptions
-                    cacheOptions
-                    styles={customStyles}
-                    value={field.label}
-                    onChange={val =>
-                      setFieldValue("plan", {
-                        value: val.value,
-                        label: val.label
-                      })
-                    }
-                    loadOptions={val => promiseOptions(client, val)}
-                  />
-                )}
-              />
-            )}
-          </ApolloConsumer>
-          </PlanWrapper> 
-        : null}
-          {values.plan ? (
-            <SelectContainer>
-              <Field
-                name="process"
-                render={({ field }) => (
-                  <ProcessSelect
-                    planId={values.plan.value}
-                    setFieldValue={setFieldValue}
-                    field={field}
-                  />
-                )}
-              />
-            </SelectContainer>
-          ) : null}
+            {values.scope ? (
+              <SelectContainer>
+                <Field
+                  name="process"
+                  render={({ field }) => (
+                    <ProcessSelect
+                      scopeId={values.scope.value}
+                      setFieldValue={setFieldValue}
+                      field={field}
+                    />
+                  )}
+                />
+              </SelectContainer>
+            ) : null}
+          </PlanWrapper>
         </Wrapper>
-        <Actions>
-          <LogEvent
-            errors={errors}
-            values={values}
-            setFieldValue={setFieldValue}
-            commitmentId={intent}
-            providerId={providerId}
-            scopeId={scopeId}
-            addIntent={addIntent}
-            touched={touched}
-            setFieldTouched={setFieldTouched}
-            action={intent}
-            unit={intent}
-            unitId={intent}
-            resourceId={intent}
-            resource={intent}
-            closeLogEvent={toggleModal}
-          />
-        </Actions>
+        {values.scope ? (
+          <div>
+            <CommitmentWrapper>
+              <Span>
+                <Icons.Plus width="20" height="20" color="f0f0f020" />
+              </Span>
+              <SelectInput>
+                <Field
+                  name="action"
+                  render={({ field }) => (
+                    <Select
+                      isClearable
+                      name={field.name}
+                      onChange={val =>
+                        setFieldValue("action", val ? val.value : null)
+                      }
+                      placeholder="Add a new requirement"
+                      options={inputReqs}
+                    />
+                  )}
+                />
+              </SelectInput>
+            </CommitmentWrapper>
+            {values.action ? (
+              <Actions style={{ margin: "0 10px" }}>
+                <LogEvent
+                  closeTab={() => setFieldValue("action", null)}
+                  action={values.action}
+                  providerId={providerId}
+                  scopeId={scopeId}
+                  addIntent={addIntent}
+                  closeLogEvent={toggleModal}
+                  inputs={inputs}
+                  onInput={onInput}
+                  type={values.action ? "input" : "output"}
+                  values={values}
+                  setFieldValue={setFieldValue}
+                  errors={errors}
+                  touched={touched}
+                  setFieldTouched={setFieldTouched}
+                  handleSubmit={() => handleSubmit()}
+                />
+              </Actions>
+            ) : null}
+          </div>)
+        : null}
       </div>
     );
   }
 );
+
+
+const SelectInput = styled.div`
+  flex: 1;
+  margin-left: 8px;
+`;
+
+
+const CommitmentWrapper = styled.div`
+  margin: 10px;
+  display: flex;
+  align-items: center;
+`;
+
 
 const Title = styled.h3`
   color: ${props => props.theme.color.p900};
@@ -284,7 +206,7 @@ const Actions = styled.div`
 
 const PlanWrapper = styled.div`
   ${clearFix()};
-  margin-top: 10px;
+  padding-top: 5px;
 `;
 
 const Wrapper = styled.div`
@@ -297,7 +219,28 @@ const Wrapper = styled.div`
 
 const SelectContainer = styled.div`
   ${clearFix()};
-  margin-top: 8px;
   position: relative;
   z-index: 9999;
+`;
+
+const Span = styled.span`
+  ${clearFix()};
+  box-sizing: border-box;
+  color: #848f99;
+  fill: #848f99;
+  flex: 0 0 auto;
+  font-size: 13px;
+  height: 30px;
+  line-height: 1;
+  transition: 200ms box-shadow, 200ms color, 200ms background, 200ms fill;
+  width: 30px;
+  background: #fff;
+  border: 1px solid #b7bfc6;
+  border-radius: 50%;
+  align-items: center;
+  border-style: dashed;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  transition: none;
 `;

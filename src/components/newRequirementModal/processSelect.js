@@ -1,16 +1,16 @@
 import React from "react";
-import getProcessesByPlan from "../../queries/getProcessesByPlan";
+import getProcessesByAgent from "../../queries/getProcessesByAgent";
 import { LoadingMini, ErrorMini } from "../loading";
 import { Query } from "react-apollo";
 import Select from "react-select";
 
-export default ({ planId, setFieldValue, field }) => {
+export default ({ scopeId, setFieldValue, field }) => {
   return (
     <Query
-      query={getProcessesByPlan}
+      query={getProcessesByAgent}
       variables={{
         token: localStorage.getItem("oce_token"),
-        id: planId
+        id: scopeId
       }}
     >
       {({ loading, error, data, refetch }) => {
@@ -25,7 +25,7 @@ export default ({ planId, setFieldValue, field }) => {
               setFieldValue("process", { value: val.value, label: val.label })
             }
             value={field.value}
-            options={data.viewer.plan.planProcesses.map(process => ({
+            options={data.viewer.agent.agentProcesses.map(process => ({
               value: process.id,
               label: process.name
             }))}

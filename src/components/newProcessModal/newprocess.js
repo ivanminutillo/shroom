@@ -18,8 +18,9 @@ import CreateCommitment from "../../mutations/CreateCommitment";
 import DateRangeSelect from "../dateRangeSelect";
 import GroupSelect from "../groupSelect";
 import AddNote from "../addNote";
-import Gantt from "../gantt";
+// import Gantt from "../gantt";
 import { Icons } from "oce-components/build";
+import Timeline from "./timeline";
 
 class NewProcess extends React.Component {
   render() {
@@ -37,7 +38,7 @@ class NewProcess extends React.Component {
       addIntent
     } = this.props;
     console.log(inputs);
-    
+
     return (
       <Form>
         <PlanWrapper>
@@ -71,7 +72,7 @@ class NewProcess extends React.Component {
           {/* <Gantt /> */}
           {values.scope ? (
             <Actions>
-              {inputs.map((i, j) => (
+              {/* {inputs.map((i, j) => (
                 <SentenceTemporary key={j}>
                   <Sentence>
                     {`${i.action} ${i.numericValue} ${i.unit.label} of ${
@@ -82,7 +83,7 @@ class NewProcess extends React.Component {
                   <span onClick={() => deleteReq(j)}><Icons.Trash width='16' height='16' color="#ffffff78" /></span>
                 </SentenceTemporary>
               ))}
-              
+               */}
               <CommitmentWrapper>
                 <Span>
                   <Icons.Plus width="20" height="20" color="f0f0f020" />
@@ -107,25 +108,27 @@ class NewProcess extends React.Component {
               {values.inputAction ? (
                 <Actions style={{ margin: "0 10px" }}>
                   <LogEvent
-                    closeTab={() => setFieldValue("inputAction", null)}
+                    closeLogEvent={() => setFieldValue("inputAction", null)}
                     action={values.inputAction}
                     providerId={providerId}
                     scopeId={scopeId}
                     addIntent={addIntent}
-                    closeLogEvent={toggleModal}
                     inputs={inputs}
                     onInput={onInput}
                     type={values.inputAction ? "input" : "output"}
                   />
                 </Actions>
               ) : null}
+              {inputs.length > 0 ? <Timeline onInput={onInput} start={values.start} end={values.due} deleteReq={deleteReq} inputs={inputs} /> : null}
             </Actions>
           ) : null}
         </Wrapper>
 
         <ActionsProcess>
           <Button type="submit">Publish</Button>
-          <Button outline>Cancel</Button>
+          <Button outline onClick={toggleModal}>
+            Cancel
+          </Button>
         </ActionsProcess>
       </Form>
     );
@@ -140,10 +143,10 @@ export default compose(
   withState("inputs", "onInput", []),
   withState("outputs", "onOutput", []),
   withHandlers({
-    deleteReq: props => (i) => {
-      props.inputs.splice(i, 1)
-      return props.onInput(props.inputs)
-    }
+    deleteReq: props => i => {
+      props.inputs.splice(i, 1);
+      return props.onInput(props.inputs);
+    },
   }),
   graphql(CreateProcess, { name: "createProcessMutation" }),
   graphql(CreateCommitment, { name: "CreateCommitmentMutation" }),
@@ -183,25 +186,26 @@ export default compose(
         })
         .then(res => {
           return Promise.all(
-            props.inputs
-              .map(input => {
-                let date = moment(input.date).format("YYYY-MM-DD");
-                let inputVars = {
-                  token: localStorage.getItem("oce_token"),
-                  action: input.action.toLowerCase(),
-                  due: date,
-                  note: input.note,
-                  committedResourceClassifiedAsId:
-                    input.affectedResourceClassifiedAsId.value,
-                  committedUnitId: input.unit.value,
-                  committedNumericValue: input.numericValue,
-                  inputOfId: res.data.createProcess.process.id,
-                  scopeId: values.scope.value
-                };
-                return props.CreateCommitmentMutation({
-                  variables: inputVars
-                });
-              })
+            props.inputs.map(input => {
+              let due = moment(input.due).format("YYYY-MM-DD");
+              let start = moment(input.start).format("YYYY-MM-DD");
+              let inputVars = {
+                token: localStorage.getItem("oce_token"),
+                action: input.action.toLowerCase(),
+                due: due,
+                start: start,
+                note: input.note,
+                committedResourceClassifiedAsId:
+                  input.affectedResourceClassifiedAsId.value,
+                committedUnitId: input.unit.value,
+                committedNumericValue: input.numericValue,
+                inputOfId: res.data.createProcess.process.id,
+                scopeId: values.scope.value
+              };
+              return props.CreateCommitmentMutation({
+                variables: inputVars
+              });
+            })
           );
         })
         .then(res => {

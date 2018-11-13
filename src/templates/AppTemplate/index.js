@@ -13,7 +13,7 @@ import Home from "../../pages/home";
 import { PropsRoute } from "../../helpers/router";
 import Agent from "../../pages/agent/agent";
 import { Switch } from "react-router-dom";
-import Plan from '../../pages/plan'
+import ProcessList from '../../pages/processList'
 import NewProcessModal from '../../components/newProcessModal'
 import Process from "../../pages/process";
 const Surface = styled.div`
@@ -63,12 +63,18 @@ const AppTemplate = props => {
             />
             <Switch>
               <PropsRoute
-                component={Plan}
-                path={"/plan"}
+                component={Process}
+                path={"/process/:id"}
+                onToggleSidebar={props.onToggleSidebar}
+                togglePanel={props.onTogglePanel}
+                isSidebarOpen={props.isSidebarOpen}
+                providerId={data.viewer.myAgent.id}
+                providerImage={data.viewer.myAgent.image}
+                providerName={data.viewer.myAgent.name}
               />
               <PropsRoute
-                component={Process}
-                path={"/process"}
+                component={ProcessList}
+                path={"/processes"}
                 onToggleSidebar={props.onToggleSidebar}
                 togglePanel={props.onTogglePanel}
                 isSidebarOpen={props.isSidebarOpen}

@@ -2,19 +2,21 @@ import React from "react";
 import styled from "styled-components";
 import media from "styled-media-query";
 import {Icons} from 'oce-components'
-
+import {NavLink} from 'react-router-dom'
 export default props => (
     <Wrapper>
         <Box>
-            <ScopeImg />
-            <Scope>by Demo group</Scope>
-            <Plan>in New feature building</Plan>
+            <ScopeImg style={{backgroundImage: `url(${props.scope.image})`}} />
+            <NavLink to={`/agent/${props.scope.id}`}><Scope>by {props.scope.name}</Scope></NavLink>
+            {props.plan ? 
+            <Plan>in {props.plan.name}</Plan>
+            : null}
         </Box>
         <WrapperInfo>
-            <Title>Release the unit testing v.1.0.0 of shroom</Title>
-            <Note>Research in advertising is done in order to produce better advertisements that are more efficient in motivating customers to buy a product or a service.</Note>
+            <Title>{props.title}</Title>
+            <Note>{props.note}</Note>
             <WrapperAction>
-                <Date><span><Icons.Clock width='16' height='16' color='#F0F0F0' /></span> From 22 Jun to 12 Jul</Date>
+                <Date><span><Icons.Clock width='16' height='16' color='#F0F0F0' /></span> From {props.from} to {props.to}</Date>
             </WrapperAction>
         </WrapperInfo>
     </Wrapper>
@@ -23,14 +25,15 @@ export default props => (
 
 const Wrapper = styled.div`
 display: grid;
+margin-top: 26px;
 grid-template-columns: 1fr 4fr 1fr;
 grid-column-gap: 16px;
 `
 const Box = styled.div`
-  border-radius: 2px;
-  border: 1px solid rgba(255,255,255, .5);
-  padding: 10px;
-  height: 110px;
+  // border-radius: 2px;
+  border-right: 1px solid rgba(255,255,255, .2);
+  // padding: 10px;
+  // height: 110px;
 `
 const ScopeImg = styled.div`
   width: 38px;
@@ -43,6 +46,9 @@ const ScopeImg = styled.div`
 const Scope = styled.h3`
 font-weight: 500;
 margin-top: 4px;
+letter-spacing: 1px;
+line-height: 18px;
+
 `
 const Plan = styled.h3`
   color: #F0F0F070;
@@ -57,6 +63,7 @@ const Title = styled.h1`
   color: #E9EBED;
   letter-spacing: 1px;
   margin-bottom: 16px;
+  line-height: 40px;
 `
 const Note = styled.h2`
 font-size: 15px;

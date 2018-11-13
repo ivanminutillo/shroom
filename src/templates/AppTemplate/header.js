@@ -61,7 +61,8 @@ export default ({
           options.unshift({ value: "all", label: "All groups" });
           let defaultValue = history.location.pathname.replace(/\D/g, "");
           let defaultLabel;
-          if (defaultValue.length > 0) {
+          console.log(history)
+          if (defaultValue.length > 0 && history.location.pathname.includes('/agent/')) {
             defaultLabel = data.viewer.myAgent.agentRelationships.filter(
               a => a.object.id === defaultValue
             );

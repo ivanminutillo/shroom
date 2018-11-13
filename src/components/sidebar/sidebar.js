@@ -107,162 +107,60 @@ const Sidebar = props => {
         ) : null}
       </List>
         <List>
-          <ListTitle>Active Process</ListTitle>
-          <ItemFull>
-            <NavLink
-              {...props}
-              isActive={(match, location) => {
-                return (
-                  location.pathname === `/process/${props.param}/active` ||
-                  location.pathname === `/process/${props.param}/active/`
-                );
+          <ListTitle>Processes</ListTitle>
+          <Item>
+          <NavLink
+            {...props}
+            isActive={(match, location) => {
+              return (
+                location.pathname === `/agent/${props.param}/processes/` ||
+                location.pathname === "/processes" ||
+                location.pathname === `/agent/${props.param}/processes`
+              );
+            }}
+            to={props.param ? `/agent/${props.param}/processes` : `/processes`}
+            activeStyle={{
+              position: "relative",
+              marginLeft: "24px",
+              color: "#f0f0f0"
+            }}
+          >
+            <SpanIcon>
+              <Icons.Inbox width="14" height="14" color="#f0f0f0bd" />
+            </SpanIcon>
+            Inbox
+            {/* <Query query={getInbox}>
+              {({ data: { inbox } }) => {
+                return <Total>{inbox}</Total>;
               }}
-              to={`/process/${props.param}/active`}
-              activeStyle={{
-                position: "relative",
-                marginLeft: "24px",
-                color: "#f0f0f0"
+            </Query> */}
+          </NavLink>
+        </Item>
+        <Item>
+          <NavLink
+            {...props}
+            to={props.param ? `/agent/${props.param}/processes/closed` : `/processes/closed`}
+            isActive={(match, location) =>
+              location.pathname.includes("/closed")
+            }
+            activeStyle={{
+              position: "relative",
+              marginLeft: "24px",
+              color: "#f0f0f0"
+            }}
+          >
+            <SpanIcon>
+              <Icons.Star width="14" height="14" color="#f0f0f0bd" />
+            </SpanIcon>
+            Closed
+            {/* <Query query={getCommitted}>
+              {({ data: { committed } }) => {
+                return <Total>{committed}</Total>;
               }}
-            >
-              Process name bal bla eoras stack
-            </NavLink>
-          </ItemFull>
-          <ItemFull>
-            <NavLink
-              {...props}
-              isActive={(match, location) => {
-                return (
-                  location.pathname === `/plans/${props.param}/closed` ||
-                  location.pathname === `/plans/${props.param}/closed/`
-                );
-              }}
-              to={`/plans/${props.param}/closed`}
-              activeStyle={{
-                position: "relative",
-                marginLeft: "24px",
-                color: "#f0f0f0"
-              }}
-            >
-              Process name bal bla eoras stack
-            </NavLink>
-          </ItemFull>
-          <ItemFull>
-            <NavLink
-              {...props}
-              isActive={(match, location) => {
-                return (
-                  location.pathname === `/plans/${props.param}/closed` ||
-                  location.pathname === `/plans/${props.param}/closed/`
-                );
-              }}
-              to={`/plans/${props.param}/closed`}
-              activeStyle={{
-                position: "relative",
-                marginLeft: "24px",
-                color: "#f0f0f0"
-              }}
-            >
-              Process name bal bla eoras stack
-            </NavLink>
-          </ItemFull>
-          <ItemFull>
-            <NavLink
-              {...props}
-              isActive={(match, location) => {
-                return (
-                  location.pathname === `/plans/${props.param}/closed` ||
-                  location.pathname === `/plans/${props.param}/closed/`
-                );
-              }}
-              to={`/plans/${props.param}/closed`}
-              activeStyle={{
-                position: "relative",
-                marginLeft: "24px",
-                color: "#f0f0f0"
-              }}
-            >
-              Process name bal bla eoras stack
-            </NavLink>
-          </ItemFull>
-        </List>
-        <List>
-          <ListTitle>Active Processes</ListTitle>
-          <ItemFull>
-            <NavLink
-              {...props}
-              isActive={(match, location) => {
-                return (
-                  location.pathname === `/plans/${props.param}/active` ||
-                  location.pathname === `/plans/${props.param}/active/`
-                );
-              }}
-              to={`/plans/${props.param}/active`}
-              activeStyle={{
-                position: "relative",
-                marginLeft: "24px",
-                color: "#f0f0f0"
-              }}
-            >
-              Process name bal bla eoras stack
-            </NavLink>
-          </ItemFull>
-          <ItemFull>
-            <NavLink
-              {...props}
-              isActive={(match, location) => {
-                return (
-                  location.pathname === `/plans/${props.param}/closed` ||
-                  location.pathname === `/plans/${props.param}/closed/`
-                );
-              }}
-              to={`/plans/${props.param}/closed`}
-              activeStyle={{
-                position: "relative",
-                marginLeft: "24px",
-                color: "#f0f0f0"
-              }}
-            >
-              Process name bal bla eoras stack
-            </NavLink>
-          </ItemFull>
-          <ItemFull>
-            <NavLink
-              {...props}
-              isActive={(match, location) => {
-                return (
-                  location.pathname === `/plans/${props.param}/closed` ||
-                  location.pathname === `/plans/${props.param}/closed/`
-                );
-              }}
-              to={`/plans/${props.param}/closed`}
-              activeStyle={{
-                position: "relative",
-                marginLeft: "24px",
-                color: "#f0f0f0"
-              }}
-            >
-              Process name bal bla eoras stack
-            </NavLink>
-          </ItemFull>
-          <ItemFull>
-            <NavLink
-              {...props}
-              isActive={(match, location) => {
-                return (
-                  location.pathname === `/plans/${props.param}/closed` ||
-                  location.pathname === `/plans/${props.param}/closed/`
-                );
-              }}
-              to={`/plans/${props.param}/closed`}
-              activeStyle={{
-                position: "relative",
-                marginLeft: "24px",
-                color: "#f0f0f0"
-              }}
-            >
-              Process name bal bla eoras stack
-            </NavLink>
-          </ItemFull>
+            </Query> */}
+          </NavLink>
+        </Item>
+         
         </List>
     </Wrapper>
   );

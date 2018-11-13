@@ -13,6 +13,7 @@ import EditNote from "../modalIntent/editNote";
 import EditSentence from "../modalIntent/editSentence";
 import ButtonDeleteIntent from "../deleteIntent";
 import EditDueDate from "../editDueDate";
+import { NavLink } from "react-router-dom";
 
 export default compose(
   withState("popup", "isOpen", false),
@@ -59,18 +60,22 @@ export default compose(
         <Infos>
           {data.inputOf ? (
             <ProcessContainer>
-              <ContainerTitle>
-                <Icons.UpLeft width="13" height="13" color="#F0F0F060" />
-              </ContainerTitle>
-              <Content>{data.inputOf.name}</Content>
+              <NavLink to={`/process/${data.inputOf.id}`}>
+                <ContainerTitle>
+                  <Icons.UpLeft width="13" height="13" color="#F0F0F060" />
+                </ContainerTitle>
+                <Content>{data.inputOf.name}</Content>
+              </NavLink>
             </ProcessContainer>
           ) : null}
           {data.outputOf ? (
             <ProcessContainer>
-              <ContainerTitle>
-                <Icons.UpRight width="13" height="13" color="#F0F0F060" />
-              </ContainerTitle>
-              <Content>{data.outputOf.name}</Content>
+              <NavLink to={`/process/${data.outputOf.id}`}>
+                <ContainerTitle>
+                  <Icons.UpRight width="13" height="13" color="#F0F0F060" />
+                </ContainerTitle>
+                <Content>{data.outputOf.name}</Content>
+              </NavLink>
             </ProcessContainer>
           ) : null}
         </Infos>

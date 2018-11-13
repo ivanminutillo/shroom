@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import Login from "./pages/login";
 import { Query, graphql } from "react-apollo";
 import registerServiceWorker from "./registerServiceWorker";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { MemoryRouter as Router, Route, Switch } from "react-router-dom";
 import { compose } from "recompose";
 import { ApolloProvider } from "react-apollo";
 import { client } from "./store";
@@ -30,7 +30,9 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     padding: 0;
     background: ${props => props.theme.color.p900};
-    
+  }
+  .vis-timeline {
+    visibility: visible !important
   }
   a {
     color: ${props => props.theme.color.p100};

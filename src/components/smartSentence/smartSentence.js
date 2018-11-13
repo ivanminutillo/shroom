@@ -2,7 +2,7 @@ import React from "react";
 import { Icons } from "oce-components/build";
 import styled from "styled-components";
 import { clearFix } from "polished";
-import { MentionsInput, Mention } from "react-mentions";
+// import { MentionsInput, Mention } from "react-mentions";
 import defaultStyle from "./defaultStyle";
 
 const Wrapper = styled.div`
@@ -65,7 +65,7 @@ const SmartSentence = ({
           <SpanLeft onClick={toggleHelpModal}>
             <Icons.Grid width="20" color="#989BA0" />
           </SpanLeft>
-          <MentionsInput
+          {/* <MentionsInput
             value={value}
             style={defaultStyle}
             placeholder="Message"
@@ -93,7 +93,7 @@ const SmartSentence = ({
               onAdd={onAddEvent}
               style={{ backgroundColor: "#b5f6b4" }}
             />
-          </MentionsInput>
+          </MentionsInput> */}
         </Wrapper>
           <SpanRight onClick={toggleModal}>
             <Icons.Send width="20" color="#989BA0" />

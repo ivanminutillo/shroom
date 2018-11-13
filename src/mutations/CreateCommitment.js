@@ -8,6 +8,7 @@ const createCommitment = gql`
     $outputOfId: Int
     $committedUnitId: Int!
     $due: String!
+    $start: String!
     $action: String!
     $planId: Int
     $note: String
@@ -22,6 +23,7 @@ const createCommitment = gql`
       outputOfId: $outputOfId
       committedUnitId: $committedUnitId
       due: $due
+      plannedStart: $start
       action: $action
       note: $note
       committedResourceClassifiedAsId: $committedResourceClassifiedAsId

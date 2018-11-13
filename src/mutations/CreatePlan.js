@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-const createPlan = gql`
+export default gql`
 mutation($token: String!, $name: String!, $due: String!, $note: String) {
   createPlan(token: $token, name: $name, due: $due, note: $note) {
     plan {
@@ -11,6 +11,4 @@ mutation($token: String!, $name: String!, $due: String!, $note: String) {
     }
   }
 }
-`;
-
-export default createPlan
+`
