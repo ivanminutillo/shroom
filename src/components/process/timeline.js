@@ -4,29 +4,29 @@ import styled from "styled-components";
 import moment from 'moment'
 import "vis/dist/vis.min.css";
 
+
+
 export default ({
   inputs,
   start,
   end,
   deleteReq
 }) => {
-    console.log(start)
-    console.log(end)
-
   let items = inputs.map(i => ({
     id: i.id,
-    start: i.plannedStart ? i.plannedStart : new Date(),
-    end: i.due,
+    start: i.plannedStart ? moment(i.plannedStart) : moment(start),
+    end: i.due ? moment(i.due) : moment(end),
     note: i.note,
+    type: !i.plannedStart || !i.due || i.plannedStart === i.due ? 'box' : 'range',
     content: `${i.action} ${i.committedQuantity.numericValue} ${
       i.committedQuantity.unit.name
     } of ${i.resourceClassifiedAs.name}`
   }));
-  const setOption = () => ({
+  let options = {
     width: "100%",
-    start: start ? moment(start) : new Date(),
-    end: end ? moment(end) : new Date(),
-    type: "range",
+    start:  new Date(start),
+    end: new Date(end),
+    zoomMin: 100000,
     visibleFrameTemplate: function(item) {
       if (item.visibleFrameTemplate) {
         return item.visibleFrameTemplate;
@@ -34,18 +34,19 @@ export default ({
       return '<div class="progress-wrapper">' + item.note + "<label></div>";
     },
 
-    timeAxis: { scale: "day", step: 1 },
+    // timeAxis: { scale: "day" },
+    autoResize: false,
     format: {
-      minorLabels: {
-        minute: "h:mma",
-        hour: "ha"
+        minorLabels: {
+          minute: "h:mma",
+          hour: "ha"
+        }
       }
-    }
-  });
+  };
 
   return (
     <Wrapper>
-      <Timeline options={setOption(deleteReq)} items={items} />
+      <Timeline options={options} items={items} />
     </Wrapper>
   );
 };

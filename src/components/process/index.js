@@ -30,7 +30,7 @@ export default compose(
   })
 )(({ data, toggleTimeline, isTimelineOpen }) => {
   let inputs = data.committedInputs.concat(data.committedOutputs);
-  console.log(data);
+  console.log(inputs);
   return (
     <Intent>
       <Infos>
