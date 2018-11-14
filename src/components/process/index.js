@@ -30,7 +30,6 @@ export default compose(
   })
 )(({ data, toggleTimeline, isTimelineOpen }) => {
   let inputs = data.committedInputs.concat(data.committedOutputs);
-  console.log(inputs);
   return (
     <Intent>
       <Infos>
@@ -142,6 +141,9 @@ const Sentence = styled.h3`
   font-size: 14px;
   text-transform: capitalize;
   color: ${props => props.theme.color.p900};
+  display: inline-block;
+  background: aqua;
+  text-decoration: none;
   ${props =>
     props.isFinished &&
     css`
