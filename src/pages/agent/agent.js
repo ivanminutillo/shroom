@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import Header from "./header";
 import media from "styled-media-query";
-import SmartSentence from "../../components/smartSentence";
-import { ApolloConsumer } from "react-apollo";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import getCommitments from "../../queries/getCommitments";
@@ -20,7 +18,6 @@ export default compose(
     handleEvent: props => (val) => (props.onEvent(val.value))
   })
 )(props => {
-  console.log(props.location)
   return (
     <Body>
       <Sidebar isopen={props.isopen} location={props.location} param={props.match.params.id} />

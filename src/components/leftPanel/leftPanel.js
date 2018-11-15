@@ -99,12 +99,12 @@ const Sidebar = ({ togglePanel, toggleSettings, active, data, logout }) => (
         </Span>
         <Title>Network</Title>
       </Item> */}
-      <Item>
+      {/* <Item>
         <Span>
           <Icons.Edit2 color="#99ADC6" width="18" />
         </Span>
         <Title>Create a new plan</Title>
-      </Item>
+      </Item> */}
       {/* <Item>
         <Span>
           <Icons.Star color="#99ADC6" width="18" />

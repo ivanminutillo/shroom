@@ -26,67 +26,55 @@ const Sidebar = props => {
   return (
     <Wrapper isopen={props.isOpen}>
       <List>
-        <ListTitle>Requirements</ListTitle>
-        <Item>
-          <NavLink
-            {...props}
-            isActive={(match, location) => {
-              return (
-                location.pathname === `/agent/${props.param}/` ||
-                location.pathname === "/" ||
-                location.pathname === `/agent/${props.param}`
-              );
-            }}
-            to={props.param && props.location.pathname.includes('/agent/') ? `/agent/${props.param}/` : `/`}
-            activeStyle={{
-              position: "relative",
-              marginLeft: "24px",
-              color: "#f0f0f0"
-            }}
-          >
-            <SpanIcon>
-              <Icons.Inbox width="14" height="14" color="#f0f0f0bd" />
-            </SpanIcon>
-            Inbox
-            <Query query={getInbox}>
-              {({ data: { inbox } }) => {
-                return <Total>{inbox}</Total>;
+        <ListTitle>Overview</ListTitle>
+      </List>
+
+      {props.profile ? (
+        <List>
+          <ListTitle>Requirements</ListTitle>
+          <Item>
+            <NavLink
+              {...props}
+              isActive={(match, location) => {
+                return (
+                  location.pathname === `/agent/${props.param}/` ||
+                  location.pathname === "/" ||
+                  location.pathname === `/agent/${props.param}`
+                );
               }}
-            </Query>
-          </NavLink>
-        </Item>
-        <Item>
-          <NavLink
-            {...props}
-            to={props.param && props.location.pathname.includes('/agent/')  ? `/agent/${props.param}/committed` : `/committed`}
-            isActive={(match, location) =>
-              location.pathname.includes("/committed")
-            }
-            activeStyle={{
-              position: "relative",
-              marginLeft: "24px",
-              color: "#f0f0f0"
-            }}
-          >
-            <SpanIcon>
-              <Icons.Star width="14" height="14" color="#f0f0f0bd" />
-            </SpanIcon>
-            Committed
-            <Query query={getCommitted}>
-              {({ data: { committed } }) => {
-                return <Total>{committed}</Total>;
+              to={
+                props.param && props.location.pathname.includes("/agent/")
+                  ? `/agent/${props.param}/`
+                  : `/`
+              }
+              activeStyle={{
+                position: "relative",
+                marginLeft: "24px",
+                color: "#f0f0f0"
               }}
-            </Query>
-          </NavLink>
-        </Item>
-        {props.profile ? (
+            >
+              <SpanIcon>
+                <Icons.Star width="14" height="14" color="#f0f0f0bd" />
+              </SpanIcon>
+              Committed
+              <Query query={getCommitted}>
+                {({ data: { committed } }) => {
+                  return <Total>{committed}</Total>;
+                }}
+              </Query>
+            </NavLink>
+          </Item>
           <Item>
             <NavLink
               {...props}
               isActive={(match, location) =>
                 location.pathname.includes("/matched")
               }
-              to={props.param && props.location.pathname.includes('/agent/') ? `/agent/${props.param}/matched` : `/matched`}
+              to={
+                props.param && props.location.pathname.includes("/agent/")
+                  ? `/agent/${props.param}/matched`
+                  : `/matched`
+              }
               activeStyle={{
                 position: "relative",
                 marginLeft: "24px",
@@ -104,11 +92,74 @@ const Sidebar = props => {
               </Query>
             </NavLink>
           </Item>
-        ) : null}
-      </List>
-        <List>
-          <ListTitle>Processes</ListTitle>
-          <Item>
+        </List>
+      ) : <List>
+      <ListTitle>Requirements</ListTitle>
+      <Item>
+        <NavLink
+          {...props}
+          isActive={(match, location) => {
+            return (
+              location.pathname === `/agent/${props.param}/` ||
+              location.pathname === "/" ||
+              location.pathname === `/agent/${props.param}`
+            );
+          }}
+          to={
+            props.param && props.location.pathname.includes("/agent/")
+              ? `/agent/${props.param}/`
+              : `/`
+          }
+          activeStyle={{
+            position: "relative",
+            marginLeft: "24px",
+            color: "#f0f0f0"
+          }}
+        >
+          <SpanIcon>
+            <Icons.Inbox width="14" height="14" color="#f0f0f0bd" />
+          </SpanIcon>
+          Inbox
+          <Query query={getInbox}>
+            {({ data: { inbox } }) => {
+              return <Total>{inbox}</Total>;
+            }}
+          </Query>
+        </NavLink>
+      </Item>
+      <Item>
+        <NavLink
+          {...props}
+          to={
+            props.param && props.location.pathname.includes("/agent/")
+              ? `/agent/${props.param}/committed`
+              : `/committed`
+          }
+          isActive={(match, location) =>
+            location.pathname.includes("/committed")
+          }
+          activeStyle={{
+            position: "relative",
+            marginLeft: "24px",
+            color: "#f0f0f0"
+          }}
+        >
+          <SpanIcon>
+            <Icons.Star width="14" height="14" color="#f0f0f0bd" />
+          </SpanIcon>
+          Committed
+          <Query query={getCommitted}>
+            {({ data: { committed } }) => {
+              return <Total>{committed}</Total>;
+            }}
+          </Query>
+        </NavLink>
+      </Item>
+    </List>}
+
+      <List>
+        <ListTitle>Processes</ListTitle>
+        <Item>
           <NavLink
             {...props}
             isActive={(match, location) => {
@@ -118,7 +169,11 @@ const Sidebar = props => {
                 location.pathname === `/agent/${props.param}/processes`
               );
             }}
-            to={props.param  && props.location.pathname.includes('/agent/') ? `/agent/${props.param}/processes` : `/processes`}
+            to={
+              props.param && props.location.pathname.includes("/agent/")
+                ? `/agent/${props.param}/processes`
+                : `/processes`
+            }
             activeStyle={{
               position: "relative",
               marginLeft: "24px",
@@ -139,7 +194,11 @@ const Sidebar = props => {
         <Item>
           <NavLink
             {...props}
-            to={props.param  && props.location.pathname.includes('/agent/') ? `/agent/${props.param}/processes/closed` : `/processes/closed`}
+            to={
+              props.param && props.location.pathname.includes("/agent/")
+                ? `/agent/${props.param}/processes/closed`
+                : `/processes/closed`
+            }
             isActive={(match, location) =>
               location.pathname.includes("/closed")
             }
@@ -160,8 +219,7 @@ const Sidebar = props => {
             </Query> */}
           </NavLink>
         </Item>
-         
-        </List>
+      </List>
     </Wrapper>
   );
 };
@@ -173,7 +231,6 @@ const Total = styled.span`
   color: #3497ff;
   font-weight: 300;
 `;
-
 
 const Wrapper = styled.div`
   display: flex;

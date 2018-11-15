@@ -212,7 +212,7 @@ export default compose(
   withHandlers({
     handleGroup: props => val => {
       props.onGroup(val.value);
-      if (val.value !== "all") {
+      if (val.value !== "profile") {
         return props.history.push("/agent/" + val.value);
       } else {
         return props.history.push("/");

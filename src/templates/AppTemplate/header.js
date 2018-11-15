@@ -20,11 +20,6 @@ export default withRouter(compose(
   togglenewProcessModal,
   providerName
 }) => {
-  console.log(match)
-  console.log(location)
-  
-  console.log(history)
-  
   const openStuff = (val) => {
     if (val.value === 'requirement') {
       return togglenewRequirementModal()
@@ -38,18 +33,13 @@ export default withRouter(compose(
       <Span onClick={togglePanel}>
         <Icons.Menu width="18" color="#f0f0f0" />
       </Span>
-      <SpanInput>
+      {/* <SpanInput>
         <AvatarWrapper>
           <Img small src={`${providerImage}`} />
           <AvatarTitle>{providerName}</AvatarTitle>
         </AvatarWrapper>
-      </SpanInput>
-    </Header>
-    <Navigation>
-      <button disabled={history.entries.length > 1 ? false : true} onClick={() => history.goBack()}><Icons.Left width='18' height='18' color={history.entries.length > 1 ? '#f0f0f0' : '#f0f0f080'} /></button>
-      <button onClick={() => history.goForward()}><Icons.ArrowRight width='18' height='18' color='#f0f0f0' /></button>
-    </Navigation>
-    <WrapperSelect>
+      </SpanInput> */}
+      <WrapperSelect>
       <Query
         query={agentRelationships}
         variables={{
@@ -70,18 +60,18 @@ export default withRouter(compose(
             value: a.object.id,
             label: a.object.name
           }));
-          options.unshift({ value: "all", label: "All groups" });
+          options.unshift({ value: "profile", label: providerName });
           let defaultValue
           let defaultLabel;
+          console.log(location.pathname.includes('/agent/'))
           if (location.pathname.includes('/agent/')) {
-            console.log('sto dentro')
             defaultValue = history.location.pathname.replace(/\D/g, "");
             defaultLabel = data.viewer.myAgent.agentRelationships.filter(
               a => a.object.id === defaultValue
             );
             defaultLabel = defaultLabel[0].object.name;
           } else {
-            (defaultLabel = "All groups"), (defaultValue = "all");
+            (defaultLabel = providerName), (defaultValue = "profile");
           }
           let defaultOption = {
             value: defaultValue,
@@ -98,6 +88,12 @@ export default withRouter(compose(
         }}
       </Query>
     </WrapperSelect>
+    </Header>
+    <Navigation>
+      <button disabled={history.entries.length > 1 ? false : true} onClick={() => history.goBack()}><Icons.Left width='18' height='18' color={history.entries.length > 1 ? '#f0f0f0' : '#f0f0f080'} /></button>
+      <button onClick={() => history.goForward()}><Icons.ArrowRight width='18' height='18' color='#f0f0f0' /></button>
+    </Navigation>
+    
     <WrapperNew>
         <Select
           styles={customStylesTwo}
@@ -204,41 +200,41 @@ const SpanInput = s.div`
 const customStyles = {
   control: base => ({
     ...base,
-    background: "rgba(250,250,250, .8)",
+    background: "transparent",
     border: "none",
-    color: "#3B99FC",
+    color: "#f0f0f0",
     fontWeight: 500,
-    fontSize: "13px",
+    fontSize: "14px",
     minHeight: "30px",
     height: "30px",
-    borderRadius: "6px"
+    borderRadius: "0px"
   }),
   input: base => ({
     ...base,
-    color: "#3B99FC",
+    color: "#f0f0f0",
     fontWeight: 500,
-    fontSize: "13px",
+    fontSize: "14px",
     height: "30px"
   }),
   singleValue: base => ({
     ...base,
-    color: "#3B99FC",
+    color: "#f0f0f0",
     fontWeight: 500,
-    fontSize: "13px"
+    fontSize: "14px"
   }),
   option: base => ({
     ...base,
-    fontSize: "13px"
+    fontSize: "14px"
   }),
   menuList: base => ({
     ...base,
-    fontSize: "13px"
+    fontSize: "14px"
   }),
   placeholder: base => ({
     ...base,
     color: "#3B99FC",
     fontWeight: 500,
-    fontSize: "13px"
+    fontSize: "14px"
   })
 };
 const customStylesTwo = {
@@ -285,11 +281,14 @@ const customStylesTwo = {
 const WrapperSelect = s.div`
     float: left;
     margin: 0;
-    width: 200px;
+    width: 225px;
     margin-top: 3px;
     margin-left: 8px;
     position: relative;
     z-index: 9999999;
+    & span {
+      background-color: transparent !important;
+    }
   `;
 
 const HeaderWrapper = s.div`

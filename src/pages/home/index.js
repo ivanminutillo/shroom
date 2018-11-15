@@ -6,7 +6,7 @@ import setInbox from "../../mutations/setInbox";
 import setCommitted from "../../mutations/setCommitted";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
-import getAllCommitments from "../../queries/getAllCommitments";
+import getCommitments from "../../queries/getCommitments";
 import { PropsRoute } from "../../helpers/router";
 import Todo from "../../components/todo";
 import Sidebar from "../../components/sidebar/sidebar";
@@ -38,7 +38,7 @@ export default compose(
           <Inside>
             <Overview>
               <Query
-                query={getAllCommitments}
+                query={getCommitments}
                 variables={{
                   token: localStorage.getItem("oce_token"),
                   id: props.providerId
@@ -53,11 +53,7 @@ export default compose(
                         message={`Error! ${error.message}`}
                       />
                     );
-                  let intents = [].concat(
-                    ...data.viewer.agent.agentRelationships.map(
-                      a => a.object.agentCommitments
-                    )
-                  );
+                  let intents = data.viewer.agent.agentCommitments;
                   let filteredIntents = []
                   if (props.event !== 'all') {
                     filteredIntents = intents.filter(i => i.action === props.event)
