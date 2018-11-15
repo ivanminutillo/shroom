@@ -6,9 +6,15 @@ export default gql`
     viewer(token: $token) {
       agent(id: $id) {
         id
+        name
+        image
         agentEconomicEvents(latestNumberOfDays: 30) {
           ...BasicEvent
           inputOf {
+            name
+            id
+          }
+          outputOf {
             name
             id
           }

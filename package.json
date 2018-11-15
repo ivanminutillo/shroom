@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@nivo/calendar": "0.51.0",
     "apollo-boost": "0.1.16",
     "axios": "0.18.0",
     "compromise": "11.12.0",

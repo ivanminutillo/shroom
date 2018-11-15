@@ -4,8 +4,8 @@ import Header from "../agent/header";
 import media from "styled-media-query";
 import setInbox from "../../mutations/setInbox";
 import Feed from "../../components/FeedItem";
-import moment from 'moment'
-import {clearFix} from 'polished'
+import moment from "moment";
+import { clearFix } from "polished";
 import setCommitted from "../../mutations/setCommitted";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
@@ -33,47 +33,45 @@ export default compose(
         location={props.location}
       />
       <Wrapper isopen={props.isopen}>
-        <Header
-          image={props.providerImage}
-          name={props.providerName}
-          toggleLeftPanel={props.toggleLeftPanel}
-          togglePanel={props.togglePanel}
-          handleEvent={props.handleEvent}
-        />
         <Content>
           <Inside>
-            <Overview>
-              <Query
-                query={getFeed}
-                variables={{
-                  token: localStorage.getItem("oce_token"),
-                  id: props.providerId
-                }}
-              >
-                {({ loading, error, data, client, refetch }) => {
-                  if (loading) return <LoadingMini />;
-                  if (error)
-                    return (
-                      <ErrorMini
-                        refetch={refetch}
-                        message={`Error! ${error.message}`}
-                      />
-                    );
-                  let feed = data.viewer.agent.agentEconomicEvents;
-                  let filteredIntents = [];
-                  if (props.event !== "all") {
-                    filteredIntents = feed.filter(
-                      i => i.action === props.event
-                    );
-                  } else {
-                    filteredIntents = feed;
-                  }
-                  let feedChart = feed.map(f => ({
-                    day: f.start,
-                    value: 1
-                  }));
-
+            <Query
+              query={getFeed}
+              variables={{
+                token: localStorage.getItem("oce_token"),
+                id: props.match.params.id
+              }}
+            >
+              {({ loading, error, data, client, refetch }) => {
+                if (loading) return <LoadingMini />;
+                if (error)
                   return (
+                    <ErrorMini
+                      refetch={refetch}
+                      message={`Error! ${error.message}`}
+                    />
+                  );
+                let feed = data.viewer.agent.agentEconomicEvents;
+                let filteredIntents = [];
+                if (props.event !== "all") {
+                  filteredIntents = feed.filter(i => i.action === props.event);
+                } else {
+                  filteredIntents = feed;
+                }
+                let feedChart = feed.map(f => ({
+                  day: f.start,
+                  value: 1
+                }));
+
+                return (
+                  <Overview>
+                    <Header
+                      image={data.viewer.agent.image}
+                      name={data.viewer.agent.name}
+                      toggleLeftPanel={props.toggleLeftPanel}
+                      togglePanel={props.togglePanel}
+                      handleEvent={props.handleEvent}
+                    />
                     <Contribution>
                       <h3>{feed.length} contributions during this year</h3>
                       <CalendarWrapper>
@@ -97,7 +95,13 @@ export default compose(
                           <Feed
                             scopeId={ev.scope.id}
                             image={ev.provider.image}
-                            commitmentId={ev.inputOf ? ev.inputOf.id : ev.outputOf ? ev.outputOf.id : null}
+                            commitmentId={
+                              ev.inputOf
+                                ? ev.inputOf.id
+                                : ev.outputOf
+                                  ? ev.outputOf.id
+                                  : null
+                            }
                             key={i}
                             id={ev.id}
                             loggedUserId={props.providerId}
@@ -113,12 +117,7 @@ export default compose(
                                   " " +
                                   ev.affectedQuantity.unit.name +
                                   " of "}
-                                <i>
-                                  {
-                                    ev.affects.resourceClassifiedAs
-                                      .name
-                                  }
-                                </i>
+                                <i>{ev.affects.resourceClassifiedAs.name}</i>
                               </FeedItem>
                             }
                             secondary={ev.note}
@@ -127,10 +126,10 @@ export default compose(
                         ))}
                       </Events>
                     </Contribution>
-                  );
-                }}
-              </Query>
-            </Overview>
+                  </Overview>
+                );
+              }}
+            </Query>
           </Inside>
         </Content>
       </Wrapper>
@@ -191,6 +190,12 @@ const Tagline = styled.h3`
   margin-bottom: 10px;
 `;
 
+const Body = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+`;
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -218,19 +223,11 @@ const Inside = styled.div`
   position: relative;
   overflow-y: overlay;
   position: relative;
-  margin-top: 16px;
 `;
 
 const Overview = styled.div`
   flex: 1;
   ${media.lessThan("medium")`
   width: 100%;
-  margin-top: 16px;
   `};
-`;
-
-const Body = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: row;
 `;

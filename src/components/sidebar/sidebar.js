@@ -26,7 +26,33 @@ const Sidebar = props => {
   return (
     <Wrapper isopen={props.isOpen}>
       <List>
-        <ListTitle>Overview</ListTitle>
+        <ListTitle>
+          <NavLink
+            {...props}
+            isActive={(match, location) => {
+              return (
+                location.pathname === `/agent/${props.param}/` ||
+                location.pathname === "/" ||
+                location.pathname === `/agent/${props.param}`
+              );
+            }}
+            to={
+              props.param && props.location.pathname.includes("/agent/")
+                ? `/agent/${props.param}/`
+                : `/`
+            }
+            activeStyle={{
+              position: "relative",
+              marginLeft: "24px",
+              color: "#f0f0f0"
+            }}
+          >
+            <SpanIcon>
+              <Icons.User width="14" height="14" color="#f0f0f0bd" />
+            </SpanIcon>
+            Overview
+          </NavLink>
+        </ListTitle>
       </List>
 
       {props.profile ? (
@@ -35,17 +61,13 @@ const Sidebar = props => {
           <Item>
             <NavLink
               {...props}
-              isActive={(match, location) => {
-                return (
-                  location.pathname === `/agent/${props.param}/` ||
-                  location.pathname === "/" ||
-                  location.pathname === `/agent/${props.param}`
-                );
-              }}
+              isActive={(match, location) =>
+                location.pathname.includes("/committed")
+              }
               to={
                 props.param && props.location.pathname.includes("/agent/")
-                  ? `/agent/${props.param}/`
-                  : `/`
+                  ? `/agent/${props.param}/committed`
+                  : `/requirements/committed`
               }
               activeStyle={{
                 position: "relative",
@@ -73,7 +95,7 @@ const Sidebar = props => {
               to={
                 props.param && props.location.pathname.includes("/agent/")
                   ? `/agent/${props.param}/matched`
-                  : `/matched`
+                  : `/requirements/matched`
               }
               activeStyle={{
                 position: "relative",
@@ -93,69 +115,71 @@ const Sidebar = props => {
             </NavLink>
           </Item>
         </List>
-      ) : <List>
-      <ListTitle>Requirements</ListTitle>
-      <Item>
-        <NavLink
-          {...props}
-          isActive={(match, location) => {
-            return (
-              location.pathname === `/agent/${props.param}/` ||
-              location.pathname === "/" ||
-              location.pathname === `/agent/${props.param}`
-            );
-          }}
-          to={
-            props.param && props.location.pathname.includes("/agent/")
-              ? `/agent/${props.param}/`
-              : `/`
-          }
-          activeStyle={{
-            position: "relative",
-            marginLeft: "24px",
-            color: "#f0f0f0"
-          }}
-        >
-          <SpanIcon>
-            <Icons.Inbox width="14" height="14" color="#f0f0f0bd" />
-          </SpanIcon>
-          Inbox
-          <Query query={getInbox}>
-            {({ data: { inbox } }) => {
-              return <Total>{inbox}</Total>;
-            }}
-          </Query>
-        </NavLink>
-      </Item>
-      <Item>
-        <NavLink
-          {...props}
-          to={
-            props.param && props.location.pathname.includes("/agent/")
-              ? `/agent/${props.param}/committed`
-              : `/committed`
-          }
-          isActive={(match, location) =>
-            location.pathname.includes("/committed")
-          }
-          activeStyle={{
-            position: "relative",
-            marginLeft: "24px",
-            color: "#f0f0f0"
-          }}
-        >
-          <SpanIcon>
-            <Icons.Star width="14" height="14" color="#f0f0f0bd" />
-          </SpanIcon>
-          Committed
-          <Query query={getCommitted}>
-            {({ data: { committed } }) => {
-              return <Total>{committed}</Total>;
-            }}
-          </Query>
-        </NavLink>
-      </Item>
-    </List>}
+      ) : (
+        <List>
+          <ListTitle>Requirements</ListTitle>
+          <Item>
+            <NavLink
+              {...props}
+              isActive={(match, location) => {
+                return (
+                  location.pathname === `/agent/${props.param}/` ||
+                  location.pathname === "/" ||
+                  location.pathname === `/agent/${props.param}`
+                );
+              }}
+              to={
+                props.param && props.location.pathname.includes("/agent/")
+                  ? `/agent/${props.param}/`
+                  : `/`
+              }
+              activeStyle={{
+                position: "relative",
+                marginLeft: "24px",
+                color: "#f0f0f0"
+              }}
+            >
+              <SpanIcon>
+                <Icons.Inbox width="14" height="14" color="#f0f0f0bd" />
+              </SpanIcon>
+              Inbox
+              <Query query={getInbox}>
+                {({ data: { inbox } }) => {
+                  return <Total>{inbox}</Total>;
+                }}
+              </Query>
+            </NavLink>
+          </Item>
+          <Item>
+            <NavLink
+              {...props}
+              to={
+                props.param && props.location.pathname.includes("/agent/")
+                  ? `/agent/${props.param}/committed`
+                  : `/committed`
+              }
+              isActive={(match, location) =>
+                location.pathname.includes("/committed")
+              }
+              activeStyle={{
+                position: "relative",
+                marginLeft: "24px",
+                color: "#f0f0f0"
+              }}
+            >
+              <SpanIcon>
+                <Icons.Star width="14" height="14" color="#f0f0f0bd" />
+              </SpanIcon>
+              Committed
+              <Query query={getCommitted}>
+                {({ data: { committed } }) => {
+                  return <Total>{committed}</Total>;
+                }}
+              </Query>
+            </NavLink>
+          </Item>
+        </List>
+      )}
 
       <List>
         <ListTitle>Processes</ListTitle>
@@ -280,7 +304,23 @@ const ListTitle = styled.h3`
   font-size: 12px;
   letter-spacing: 0.4px;
   color: #bebebe;
+  & a {
+    font-size: 12px;
+    text-decoration: none;
+    color: #f0f0f0bd;
+    &:after {
+      position: absolute;
+      content: "";
+      width: 20px;
+      height: 2px;
+      background: ${props => props.theme.color.b100};
+      display: block;
+      top: 5px;
+      left: -24px;
+    }
+  }
 `;
+
 const Item = styled.h3`
   margin-top: 16px;
   letter-spacing: 0.5px;
@@ -300,29 +340,6 @@ const Item = styled.h3`
     }
   }
 `;
-const ItemFull = styled.h3`
-  margin-top: 8px;
-  letter-spacing: 0.5px;
-  font-weight: 400;
-  background: #383c41;
-  border-radius: 3px;
-  padding: 2px;
-  & a {
-    text-decoration: none;
-    color: #f0f0f09c;
-    font-size: 13px;
-    font-weight: 300;
-    &:after {
-      position: absolute;
-      content: "";
-      width: 20px;
-      height: 2px;
-      background: ${props => props.theme.color.b100};
-      display: block;
-      top: 5px;
-      left: -24px;
-    }
-  }
-`;
+
 
 export default Sidebar;

@@ -14,9 +14,12 @@ import { PropsRoute } from "../../helpers/router";
 import Agent from "../../pages/agent/agent";
 import { Switch } from "react-router-dom";
 import ProcessList from '../../pages/processList'
+import RequirementsList from '../../pages/requirementsList'
 import NewProcessModal from '../../components/newProcessModal'
 import Process from "../../pages/process";
 import agentProcesses from "../../pages/agentProcesses";
+import AgentOverview from '../../pages/agentOverview'
+
 const Surface = styled.div`
   height: 100%;
   display: flex;
@@ -106,6 +109,24 @@ const AppTemplate = props => {
                 component={Agent}
                 location={props.location}
                 onToggleSidebar={props.onToggleSidebar}
+                path="/agent/:id/requirements"
+                data={props}
+                togglePanel={props.onTogglePanel}
+                isSidebarOpen={props.isSidebarOpen}
+                client={client}
+                providerId={data.viewer.myAgent.id}
+                providerImage={data.viewer.myAgent.image}
+                providerName={data.viewer.myAgent.name}
+                toggleValidationModal={props.toggleValidationModal}
+                isCommittedOpen={props.isCommittedOpen}
+                handleCommittedOpen={props.handleCommittedOpen}
+                isCompletedOpen={props.isCompletedOpen}
+                handleCompletedOpen={props.handleCompletedOpen}
+              />
+              <PropsRoute
+                component={AgentOverview}
+                location={props.location}
+                onToggleSidebar={props.onToggleSidebar}
                 path="/agent/:id"
                 data={props}
                 togglePanel={props.onTogglePanel}
@@ -121,6 +142,24 @@ const AppTemplate = props => {
                 handleCompletedOpen={props.handleCompletedOpen}
               />
               
+              
+              <PropsRoute
+                component={RequirementsList}
+                path={'/requirements'}
+                location={props.location}
+                onToggleSidebar={props.onToggleSidebar}
+                togglePanel={props.onTogglePanel}
+                isSidebarOpen={props.isSidebarOpen}
+                client={client}
+                providerId={data.viewer.myAgent.id}
+                providerImage={data.viewer.myAgent.image}
+                providerName={data.viewer.myAgent.name}
+                toggleValidationModal={props.toggleValidationModal}
+                isCommittedOpen={props.isCommittedOpen}
+                handleCommittedOpen={props.handleCommittedOpen}
+                isCompletedOpen={props.isCompletedOpen}
+                handleCompletedOpen={props.handleCompletedOpen}
+              />
               <PropsRoute
                 component={Home}
                 path={props.match.path}
@@ -138,7 +177,6 @@ const AppTemplate = props => {
                 isCompletedOpen={props.isCompletedOpen}
                 handleCompletedOpen={props.handleCompletedOpen}
               />
-              
             </Switch>
             <LeftPanel
               data={data.viewer.myAgent}
