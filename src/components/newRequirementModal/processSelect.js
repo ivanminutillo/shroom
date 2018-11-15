@@ -29,7 +29,7 @@ export default ({ scopeId, setFieldValue, field }) => {
               value: process.id,
               label: process.name
             }))}
-            placeholder={"Select a process..."}
+            placeholder={"Is it part of a process ?"}
           />
         );
       }}

@@ -1,22 +1,30 @@
 import React from "react";
 import s from "styled-components";
 import Select from "react-select";
+import {withRouter} from 'react-router-dom'
 import { clearFix, placeholder } from "polished";
 import gql from "graphql-tag";
 import { Icons } from "oce-components/build";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import { Img, AvatarTitle, AvatarWrapper } from "../../atoms/avatar";
-
-export default ({
+import {compose, withState, withHandlers} from 'recompose'
+export default withRouter(compose(
+  withState('route', 'onRoute', '/'),
+)(({
   handleGroup,
-  history,
+  match, location, history,
   togglePanel,
   providerImage,
   togglenewRequirementModal,
   togglenewProcessModal,
   providerName
 }) => {
+  console.log(match)
+  console.log(location)
+  
+  console.log(history)
+  
   const openStuff = (val) => {
     if (val.value === 'requirement') {
       return togglenewRequirementModal()
@@ -63,10 +71,11 @@ export default ({
             label: a.object.name
           }));
           options.unshift({ value: "all", label: "All groups" });
-          let defaultValue = history.location.pathname.replace(/\D/g, "");
+          let defaultValue
           let defaultLabel;
-          console.log(history)
-          if (defaultValue.length > 0 && history.location.pathname.includes('/agent/')) {
+          if (location.pathname.includes('/agent/')) {
+            console.log('sto dentro')
+            defaultValue = history.location.pathname.replace(/\D/g, "");
             defaultLabel = data.viewer.myAgent.agentRelationships.filter(
               a => a.object.id === defaultValue
             );
@@ -94,13 +103,13 @@ export default ({
           styles={customStylesTwo}
           onChange={openStuff}
           value={{value: null, label: 'Add new...'}}
-          options={[{value: 'requirement', label: 'Add a new requirement'}, {value: 'process', label: 'Add a new process'}, {value: 'plan', label: 'Add a new plan'}, {value: 'exchange', label: 'Add a new exchange'}, {value: 'tx', label: 'Add a new transaction'}]}
+          options={[{value: 'requirement', label: 'Add a new requirement'}, {value: 'process', label: 'Add a new process'}]}
         />
       {/* <SpanNew><Icons.Plus width='18' height='18' color='#f0f0f0' /></SpanNew>
       <Title>Add new requirement</Title> */}
     </WrapperNew>
   </HeaderWrapper>
-)};
+)}));
 
 const agentRelationships = gql`
   query($token: String) {

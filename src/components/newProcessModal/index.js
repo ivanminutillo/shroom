@@ -4,10 +4,10 @@ import Modal from "../modal";
 
 class ProcessModal extends React.Component {
   render() {
-    const { toggleModal, modalIsOpen } = this.props;
+    const { toggleModal, modalIsOpen, history } = this.props;
     return (
       <Modal isOpen={modalIsOpen} toggleModal={toggleModal}>
-        <Wrapper toggleModal={toggleModal} />
+        <Wrapper history={history} toggleModal={toggleModal} />
       </Modal>
     );
   }

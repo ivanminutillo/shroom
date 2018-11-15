@@ -52,5 +52,5 @@ export default ({
 };
 
 const Wrapper = styled.div`
-  margin: 0 10px;
+margin: 5px 0
 `;

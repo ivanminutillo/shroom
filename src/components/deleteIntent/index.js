@@ -16,6 +16,7 @@ export default compose(
     mutation={DELETE_COMMITMENT}
     onError={onError}
     update={(store, { data }) => {
+        console.log(scopeId)
         let comm = store.readQuery({
             query: getCommitments,
             variables: {
@@ -25,6 +26,7 @@ export default compose(
           });
           let i =comm.viewer.agent.agentCommitments.findIndex(comm => comm.id === intentId)
           let newlist = comm.viewer.agent.agentCommitments.splice(i, 1)
+          console.log(newlist)
           store.writeQuery({
             query: getCommitments,
             data: newlist,

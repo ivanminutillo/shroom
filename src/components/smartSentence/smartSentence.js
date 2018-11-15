@@ -62,9 +62,6 @@ const SmartSentence = ({
     <Module>
       <SentenceContainer>
         <Wrapper>
-          <SpanLeft onClick={toggleHelpModal}>
-            <Icons.Grid width="20" color="#989BA0" />
-          </SpanLeft>
           {/* <MentionsInput
             value={value}
             style={defaultStyle}

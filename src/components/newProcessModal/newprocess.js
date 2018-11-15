@@ -18,7 +18,6 @@ import CreateCommitment from "../../mutations/CreateCommitment";
 import DateRangeSelect from "../dateRangeSelect";
 import GroupSelect from "../groupSelect";
 import AddNote from "../addNote";
-// import Gantt from "../gantt";
 import { Icons } from "oce-components/build";
 import Timeline from "./timeline";
 
@@ -37,8 +36,6 @@ class NewProcess extends React.Component {
       toggleModal,
       addIntent
     } = this.props;
-    console.log(inputs);
-
     return (
       <Form>
         <PlanWrapper>
@@ -56,7 +53,7 @@ class NewProcess extends React.Component {
             />
             {errors.title && touched.title && <Alert>{errors.title}</Alert>}
           </ProcessInput>
-          <ClearFix>
+          <Grid>
             <GroupSelect setFieldValue={setFieldValue} />
             <DateRangeSelect
               setFieldValue={setFieldValue}
@@ -65,25 +62,12 @@ class NewProcess extends React.Component {
               errors={errors}
               touched={touched}
             />
-          </ClearFix>
+          </Grid>
           <AddNote setFieldValue={setFieldValue} />
         </PlanWrapper>
         <Wrapper>
-          {/* <Gantt /> */}
           {values.scope ? (
             <Actions>
-              {/* {inputs.map((i, j) => (
-                <SentenceTemporary key={j}>
-                  <Sentence>
-                    {`${i.action} ${i.numericValue} ${i.unit.label} of ${
-                      i.affectedResourceClassifiedAsId.label
-                    }`}
-                  </Sentence>
-                  <SentenceNote>{i.note}</SentenceNote>
-                  <span onClick={() => deleteReq(j)}><Icons.Trash width='16' height='16' color="#ffffff78" /></span>
-                </SentenceTemporary>
-              ))}
-               */}
               <CommitmentWrapper>
                 <Span>
                   <Icons.Plus width="20" height="20" color="f0f0f020" />
@@ -119,17 +103,26 @@ class NewProcess extends React.Component {
                   />
                 </Actions>
               ) : null}
-              {inputs.length > 0 ? <Timeline onInput={onInput} start={values.start} end={values.due} deleteReq={deleteReq} inputs={inputs} /> : null}
+              {inputs.length > 0 ? (
+                <Timeline
+                  onInput={onInput}
+                  start={values.start}
+                  end={values.due}
+                  deleteReq={deleteReq}
+                  inputs={inputs}
+                />
+              ) : null}
             </Actions>
           ) : null}
         </Wrapper>
-
-        <ActionsProcess>
-          <Button type="submit">Publish</Button>
-          <Button outline onClick={toggleModal}>
-            Cancel
-          </Button>
-        </ActionsProcess>
+        {values.inputAction ? null : (
+          <ActionsProcess>
+            <Button type="submit">Create process</Button>
+            <Button outline onClick={toggleModal}>
+              Cancel
+            </Button>
+          </ActionsProcess>
+        )}
       </Form>
     );
   }
@@ -146,7 +139,7 @@ export default compose(
     deleteReq: props => i => {
       props.inputs.splice(i, 1);
       return props.onInput(props.inputs);
-    },
+    }
   }),
   graphql(CreateProcess, { name: "createProcessMutation" }),
   graphql(CreateCommitment, { name: "CreateCommitmentMutation" }),
@@ -163,14 +156,13 @@ export default compose(
     validationSchema: Yup.object().shape({
       scope: Yup.object().required(),
       note: Yup.string(),
-      due: Yup.object(),
-      start: Yup.object(),
+      due: Yup.object().required(),
+      start: Yup.object().required(),
       title: Yup.string().required()
     }),
     handleSubmit: (values, { props, resetForm, setErrors, setSubmitting }) => {
       let due = moment(values.due).format("YYYY-MM-DD");
       let start = moment(values.start).format("YYYY-MM-DD");
-      console.log(values);
       setSubmitting(true);
       let vars = {
         token: localStorage.getItem("oce_token"),
@@ -210,10 +202,15 @@ export default compose(
         })
         .then(res => {
           console.log(res);
-          return props.onSuccess();
+          let processId = res[0].data.createCommitment.commitment.inputOf
+            ? res[0].data.createCommitment.commitment.inputOf.id
+            : res[0].data.createCommitment.commitment.outputOf.id
+            props.onSuccess();
+          props.toggleModal()
+          props.history.push("/process/" + processId);
+          return null;
         })
         .catch(err => {
-          console.log(err);
           return props.onError();
         });
     }
@@ -226,6 +223,8 @@ const Actions = styled.div`
 const SelectInput = styled.div`
   flex: 1;
   margin-left: 8px;
+  position: relative;
+  z-index: 999999999999999999999999999999999999999;
 `;
 
 const Span = styled.span`
@@ -259,48 +258,15 @@ const ActionsProcess = styled.div`
     margin-left: 8px;
   }
 `;
-const ClearFix = styled.div`
+const Grid = styled.div`
   ${clearFix()};
-`;
-const SentenceTemporary = styled.div`
-  background: ${props => props.theme.color.b100};
-  padding: 0 8px;
-  color: #f0f0f0;
-  margin-top: 8px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 0 10px;
+  margin-bottom: 10px;
   position: relative;
-  border-radius: 4px;
-  position: relative;
-  & span {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    cursor: pointer;
-  }
-`;
-const SentenceNote = styled.div`
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 300;
-  font-style: italic;
-  color: #f0f0f0c9;
-`;
-
-const Sentence = styled.div`
-  height: 30px;
-  line-height: 30px;
-  font-weight: 500;
-  font-size: 14px;
-  position: relative;
-  ${props =>
-    props.output &&
-    css`
-      &:before {
-        border-right: 10px solid #3871ac !important;
-      }
-    `};
-  }
+  z-index: 999999;
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  grid-column-gap: 8px;
 `;
 
 const CommitmentWrapper = styled.div`
@@ -337,5 +303,5 @@ const Wrapper = styled.div`
   ${clearFix()};
   margin-bottom: 5px;
   position: relative;
-  z-index: 999999;
+  z-index: 99999;
 `;

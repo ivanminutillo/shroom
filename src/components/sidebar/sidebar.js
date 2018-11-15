@@ -37,7 +37,7 @@ const Sidebar = props => {
                 location.pathname === `/agent/${props.param}`
               );
             }}
-            to={props.param ? `/agent/${props.param}/` : `/`}
+            to={props.param && props.location.pathname.includes('/agent/') ? `/agent/${props.param}/` : `/`}
             activeStyle={{
               position: "relative",
               marginLeft: "24px",
@@ -58,7 +58,7 @@ const Sidebar = props => {
         <Item>
           <NavLink
             {...props}
-            to={props.param ? `/agent/${props.param}/committed` : `/committed`}
+            to={props.param && props.location.pathname.includes('/agent/')  ? `/agent/${props.param}/committed` : `/committed`}
             isActive={(match, location) =>
               location.pathname.includes("/committed")
             }
@@ -86,7 +86,7 @@ const Sidebar = props => {
               isActive={(match, location) =>
                 location.pathname.includes("/matched")
               }
-              to={props.param ? `/agent/${props.param}/matched` : `/matched`}
+              to={props.param && props.location.pathname.includes('/agent/') ? `/agent/${props.param}/matched` : `/matched`}
               activeStyle={{
                 position: "relative",
                 marginLeft: "24px",
@@ -118,7 +118,7 @@ const Sidebar = props => {
                 location.pathname === `/agent/${props.param}/processes`
               );
             }}
-            to={props.param ? `/agent/${props.param}/processes` : `/processes`}
+            to={props.param  && props.location.pathname.includes('/agent/') ? `/agent/${props.param}/processes` : `/processes`}
             activeStyle={{
               position: "relative",
               marginLeft: "24px",
@@ -139,7 +139,7 @@ const Sidebar = props => {
         <Item>
           <NavLink
             {...props}
-            to={props.param ? `/agent/${props.param}/processes/closed` : `/processes/closed`}
+            to={props.param  && props.location.pathname.includes('/agent/') ? `/agent/${props.param}/processes/closed` : `/processes/closed`}
             isActive={(match, location) =>
               location.pathname.includes("/closed")
             }

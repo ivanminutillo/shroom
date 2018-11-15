@@ -18,13 +18,13 @@ export default compose(
       affectedResourceClassifiedAsId: null
     }),
     validationSchema: Yup.object().shape({
-      action: Yup.string(),
+      action: Yup.string().required(),
       note: Yup.string(),
       numericValue: Yup.number(),
       unit: Yup.object(),
-      due: Yup.string(),
-      start: Yup.string(),
-      affectedResourceClassifiedAsId: Yup.object()
+      due: Yup.string().required(),
+      start: Yup.string().required(),
+      affectedResourceClassifiedAsId: Yup.object().required()
     }),
     handleSubmit: (values, { props, resetForm, setErrors, setSubmitting }) => {
       let i = {
@@ -41,8 +41,8 @@ export default compose(
       };
       props.inputs.push(i);
       props.onInput(props.inputs);
-      console.log(props.inputs)
-      return props.closeLogEvent();
+      props.closeLogEvent();
+      return null
     }
   })
 )(LogEvent);

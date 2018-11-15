@@ -45,37 +45,19 @@ const GroupWrapper = styled.div`
   fill: #848f99;
   align-items: center;
   border: 1px solid transparent;
-  border-radius: 18px;
   display: inline-flex;
   flex: 1 1 auto;
   min-width: 1px;
-  padding: 3px;
-  padding-right: 10px;
   position: relative;
   transition: 0.2s box-shadow, 0.2s color;
   float: left;
   margin-bottom: 0px;
   cursor: pointer;
   z-index: 999999999999999999;
-  &:hover {
-    background-color: #f6f8f9;
-    border-color: #646f79;
-    border-style: solid;
-    color: #222b37;
-    fill: #222b37;
-    cursor: pointer;
-    & > span {
-      background-color: #f6f8f9;
-      border-color: #646f79;
-      border-style: solid;
-      color: #222b37;
-      fill: #222b37;
-    }
-  }
 
   & > div {
     display: inline-block;
-    width: 200px;
+    width: 100%;
     margin-top: 2px;
     margin-left: 8px;
   }

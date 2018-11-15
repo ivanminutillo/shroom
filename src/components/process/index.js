@@ -51,7 +51,7 @@ export default compose(
             <EditDueDate due={data.plannedFinish} intentId={data.id} />
             {inputs.length > 0 ?
             <TimelineBtn onClick={toggleTimeline}>
-              <Icons.Eye width="16" height="16" color="#B7BFC6" />
+              <Icons.Eye width="16" height="16" color="#00040" />
               Toggle timeline
             </TimelineBtn>
             : null}
@@ -70,12 +70,21 @@ export default compose(
 });
 
 const TimelineBtn = styled.span`
-  font-size: 13px;
-  margin-left: 8px;
-  color: ##b7bfc6;
+    cursor: pointer;
+    margin: 0;
+    float: left;
+    height: 24px;
+    line-height: 24px;
+    border-radius: 3px;
+    margin-left: 4px;
+    background: #b430ff54;
+    padding: 0 5px;
+    font-size: 13px;
+    font-weight: 400;
   & svg {
     vertical-align: top;
     margin-right: 4px;
+    margin-top: 4px;
   }
 `;
 
@@ -98,7 +107,7 @@ const Wrapper = styled.div`
   border-bottom: 1px solid #22232680;
   position: relative;
   cursor: pointer;
-  background: #fff;
+  background: #fffffff7;
 `;
 
 const First = styled.div`
@@ -118,7 +127,7 @@ const FirstInfo = styled.div`
 
 const ProcessContainer = styled.div`
   ${clearFix()};
-  background: #fff;
+  background: #fffffff7;
   height: 40px;
   padding: 0 8px;
 `;

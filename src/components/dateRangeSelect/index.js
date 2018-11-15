@@ -45,6 +45,7 @@ const StartDate = props => {
         onChange={handleChange}
         placeholderText="Start date"
         dateFormat={"DD MMM"}
+        withPortal
       />
     );
   };
@@ -61,6 +62,7 @@ const StartDate = props => {
         onChange={handleChange}
         placeholderText="Due date"
         dateFormat={"DD MMM"}
+        withPortal
       />
     );
   };

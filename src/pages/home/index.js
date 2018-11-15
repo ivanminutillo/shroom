@@ -24,6 +24,7 @@ export default compose(
         profile="true"
         isopen={props.isopen}
         param={props.match.params.id}
+        location={props.location}
       />
       <Wrapper isopen={props.isopen}>
         <Header

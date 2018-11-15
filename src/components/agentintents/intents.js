@@ -221,7 +221,6 @@ export default compose(
                 style={{ backgroundImage: `url(${providerImage})` }}
               />{" "}
               <Button onClick={handleAddEvent}>Log an event</Button>
-              <Button onClick={handleAddEvent}>Comment</Button>
             </div>
           )}
         </Actions>

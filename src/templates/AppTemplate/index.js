@@ -16,6 +16,7 @@ import { Switch } from "react-router-dom";
 import ProcessList from '../../pages/processList'
 import NewProcessModal from '../../components/newProcessModal'
 import Process from "../../pages/process";
+import agentProcesses from "../../pages/agentProcesses";
 const Surface = styled.div`
   height: 100%;
   display: flex;
@@ -47,12 +48,11 @@ const AppTemplate = props => {
           return (
             <ErrorMini refetch={refetch} message={`Error! ${error.message}`} />
           );
-
+            console.log(props)
         return (
           <Surface>
             <Header
               handleGroup={props.handleGroup}
-              history={props.history}
               providerId={data.viewer.myAgent.id}
               providerImage={data.viewer.myAgent.image}
               providerName={data.viewer.myAgent.name}
@@ -65,6 +65,7 @@ const AppTemplate = props => {
               <PropsRoute
                 component={Process}
                 path={"/process/:id"}
+                location={props.location}
                 onToggleSidebar={props.onToggleSidebar}
                 togglePanel={props.onTogglePanel}
                 isSidebarOpen={props.isSidebarOpen}
@@ -75,6 +76,7 @@ const AppTemplate = props => {
               <PropsRoute
                 component={ProcessList}
                 path={"/processes"}
+                location={props.location}
                 onToggleSidebar={props.onToggleSidebar}
                 togglePanel={props.onTogglePanel}
                 isSidebarOpen={props.isSidebarOpen}
@@ -83,7 +85,26 @@ const AppTemplate = props => {
                 providerName={data.viewer.myAgent.name}
               />
               <PropsRoute
+                component={agentProcesses}
+                location={props.location}
+                onToggleSidebar={props.onToggleSidebar}
+                path="/agent/:id/processes"
+                data={props}
+                togglePanel={props.onTogglePanel}
+                isSidebarOpen={props.isSidebarOpen}
+                client={client}
+                providerId={data.viewer.myAgent.id}
+                providerImage={data.viewer.myAgent.image}
+                providerName={data.viewer.myAgent.name}
+                toggleValidationModal={props.toggleValidationModal}
+                isCommittedOpen={props.isCommittedOpen}
+                handleCommittedOpen={props.handleCommittedOpen}
+                isCompletedOpen={props.isCompletedOpen}
+                handleCompletedOpen={props.handleCompletedOpen}
+              />
+              <PropsRoute
                 component={Agent}
+                location={props.location}
                 onToggleSidebar={props.onToggleSidebar}
                 path="/agent/:id"
                 data={props}
@@ -99,9 +120,11 @@ const AppTemplate = props => {
                 isCompletedOpen={props.isCompletedOpen}
                 handleCompletedOpen={props.handleCompletedOpen}
               />
+              
               <PropsRoute
                 component={Home}
                 path={props.match.path}
+                location={props.location}
                 onToggleSidebar={props.onToggleSidebar}
                 togglePanel={props.onTogglePanel}
                 isSidebarOpen={props.isSidebarOpen}
@@ -142,6 +165,7 @@ const AppTemplate = props => {
             />
             <NewProcessModal
               modalIsOpen={props.newProcessModalIsOpen}
+              history={props.history}
               toggleModal={props.togglenewProcessModal}
             />
           </Surface>

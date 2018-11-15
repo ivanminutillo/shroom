@@ -13,9 +13,9 @@ import { compose, withState, withHandlers } from "recompose";
 import getAgentProcesses from "../../queries/getAgentProcesses";
 import processTodo from "../../components/processTodo";
 export default compose(
-  withState('event', 'onEvent', 'all'),
+  withState("event", "onEvent", "all"),
   withHandlers({
-    handleEvent: props => (val) => (props.onEvent(val.value))
+    handleEvent: props => val => props.onEvent(val.value)
   })
 )(props => {
   return (
@@ -26,39 +26,39 @@ export default compose(
         param={props.match.params.id}
         location={props.location}
       />
-      <Wrapper isopen={props.isopen}>
-        <Header
-          image={""}
-          name={"All groups"}
-          toggleLeftPanel={props.toggleLeftPanel}
-          togglePanel={props.togglePanel}
-          handleEvent={props.handleEvent}
-        />
-        <Content>
-          <Inside>
-            <Overview>
-              <Query
-                query={getAgentProcesses}
-                variables={{
-                  token: localStorage.getItem("oce_token"),
-                  id: props.providerId
-                }}
-              >
-                {({ loading, error, data, client, refetch }) => {
-                  if (loading) return <LoadingMini />;
-                  if (error)
-                    return (
-                      <ErrorMini
-                        refetch={refetch}
-                        message={`Error! ${error.message}`}
-                      />
-                    );
-                  let processes = data.viewer.agent.agentProcesses
-                  // INBOX
-                  let inbox = processes.filter(i => !i.isFinished);
-                  let completed = processes.filter(i => i.isFinished);
-                
-                  return (
+      <Query
+        query={getAgentProcesses}
+        variables={{
+          token: localStorage.getItem("oce_token"),
+          id: props.match.params.id
+        }}
+      >
+        {({ loading, error, data, client, refetch }) => {
+          if (loading) return <LoadingMini />;
+          if (error)
+            return (
+              <ErrorMini
+                refetch={refetch}
+                message={`Error! ${error.message}`}
+              />
+            );
+          let processes = data.viewer.agent.agentProcesses;
+          // INBOX
+          let inbox = processes.filter(i => !i.isFinished);
+          let completed = processes.filter(i => i.isFinished);
+
+          return (
+            <Wrapper isopen={props.isopen}>
+              <Header
+                image={data.viewer.agent.image}
+                name={data.viewer.agent.name}
+                toggleLeftPanel={props.toggleLeftPanel}
+                togglePanel={props.togglePanel}
+                handleEvent={props.handleEvent}
+              />
+              <Content>
+                <Inside>
+                  <Overview>
                     <div>
                       <PropsRoute
                         exact
@@ -87,13 +87,13 @@ export default compose(
                         providerName={props.providerName}
                       />
                     </div>
-                  );
-                }}
-              </Query>
-            </Overview>
-          </Inside>
-        </Content>
-      </Wrapper>
+                  </Overview>
+                </Inside>
+              </Content>
+            </Wrapper>
+          );
+        }}
+      </Query>
     </Body>
   );
 });

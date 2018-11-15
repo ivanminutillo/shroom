@@ -35,6 +35,12 @@ const createCommitment = gql`
       commitment {
         id
         isFinished
+        isDeletable
+        scope {
+          id
+          name
+          image
+        }
         fulfilledBy {
           fulfilledBy {
             ...BasicEvent

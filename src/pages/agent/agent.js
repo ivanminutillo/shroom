@@ -20,9 +20,10 @@ export default compose(
     handleEvent: props => (val) => (props.onEvent(val.value))
   })
 )(props => {
+  console.log(props.location)
   return (
     <Body>
-      <Sidebar isopen={props.isopen} param={props.match.params.id} />
+      <Sidebar isopen={props.isopen} location={props.location} param={props.match.params.id} />
       <Wrapper isopen={props.isopen}>
         <Content>
           <Inside>
@@ -78,7 +79,7 @@ export default compose(
                       togglePanel={props.togglePanel}
                       handleEvent={props.handleEvent}
                     />
-                    {props.id ? null : (
+                    {/* {props.id ? null : (
                   <ApolloConsumer>
                     {client => (
                       <SmartSentence
@@ -90,7 +91,7 @@ export default compose(
                       />
                     )}
                   </ApolloConsumer>
-                )} 
+                )}  */}
                     <PropsRoute
                       exact
                       component={Todo}

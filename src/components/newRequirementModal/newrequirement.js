@@ -33,13 +33,14 @@ export default compose(
       affectedResourceClassifiedAsId: ""
     }),
     validationSchema: Yup.object().shape({
-      action: Yup.string(),
-      scope: Yup.object(),
+      action: Yup.string().required(),
+      scope: Yup.object().required(),
       note: Yup.string(),
-      numericValue: Yup.number(),
+      numericValue: Yup.number().required(),
       unit: Yup.object(),
-      date: Yup.string(),
-      affectedResourceClassifiedAsId: Yup.object()
+      start: Yup.string().required(),
+      due: Yup.string().required(),
+      affectedResourceClassifiedAsId: Yup.object().required()
     }),
     handleSubmit: (values, { props, resetForm, setErrors, setSubmitting }) => {
 
@@ -68,7 +69,7 @@ export default compose(
               query: getCommitments,
               variables: {
                 token: localStorage.getItem("oce_token"),
-                id: props.scopeId
+                id: values.scope.value
               }
             });
             comm.viewer.agent.agentCommitments.push(
@@ -131,7 +132,7 @@ export default compose(
           <div>
             <CommitmentWrapper>
               <Span>
-                <Icons.Plus width="20" height="20" color="f0f0f020" />
+                <Icons.Plus width="20" height="20" color="#b7bfc6" />
               </Span>
               <SelectInput>
                 <Field
@@ -206,7 +207,8 @@ const Actions = styled.div`
 
 const PlanWrapper = styled.div`
   ${clearFix()};
-  padding-top: 5px;
+  padding-top: 2px;
+  height: 38px;
 `;
 
 const Wrapper = styled.div`
@@ -215,6 +217,9 @@ const Wrapper = styled.div`
   margin-bottom: 10px;
   position: relative;
   z-index: 999999;
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  grid-column-gap: 8px;
 `;
 
 const SelectContainer = styled.div`
