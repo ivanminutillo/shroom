@@ -66,7 +66,7 @@ const Sidebar = props => {
               }
               to={
                 props.param && props.location.pathname.includes("/agent/")
-                  ? `/agent/${props.param}/committed`
+                  ? `/agent/${props.param}/requirements/committed`
                   : `/requirements/committed`
               }
               activeStyle={{
@@ -94,7 +94,7 @@ const Sidebar = props => {
               }
               to={
                 props.param && props.location.pathname.includes("/agent/")
-                  ? `/agent/${props.param}/matched`
+                  ? `/agent/${props.param}/requirements/matched`
                   : `/requirements/matched`
               }
               activeStyle={{
@@ -123,15 +123,15 @@ const Sidebar = props => {
               {...props}
               isActive={(match, location) => {
                 return (
-                  location.pathname === `/agent/${props.param}/` ||
+                  location.pathname === `/agent/${props.param}/requirements` ||
                   location.pathname === "/" ||
-                  location.pathname === `/agent/${props.param}`
+                  location.pathname === `/agent/${props.param}/requirements`
                 );
               }}
               to={
                 props.param && props.location.pathname.includes("/agent/")
-                  ? `/agent/${props.param}/`
-                  : `/`
+                  ? `/agent/${props.param}/requirements`
+                  : `/requirements`
               }
               activeStyle={{
                 position: "relative",
@@ -155,8 +155,8 @@ const Sidebar = props => {
               {...props}
               to={
                 props.param && props.location.pathname.includes("/agent/")
-                  ? `/agent/${props.param}/committed`
-                  : `/committed`
+                  ? `/agent/${props.param}/requirements/committed`
+                  : `/requirements/committed`
               }
               isActive={(match, location) =>
                 location.pathname.includes("/committed")

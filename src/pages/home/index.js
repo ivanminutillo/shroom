@@ -173,16 +173,6 @@ const CalendarWrapper = styled.div`
   border-radius: 3px;
 `;
 
-const Img = styled.div`
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  border-radius: 100px;
-  background-size: cover;
-  background-color: #494f5c;
-  vertical-align: middle;
-`;
-
 const Tagline = styled.h3`
   font-weight: 300;
   padding-bottom: 8px;

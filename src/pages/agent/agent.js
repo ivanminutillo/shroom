@@ -111,7 +111,7 @@ export default compose(
                     <PropsRoute
                       component={Todo}
                       exact
-                      path={`/agent/${props.match.params.id}/committed`}
+                      path={`/agent/${props.match.params.id}/requirements/committed`}
                       activeIntents={committed}
                       completed={committedCompleted}
                       onToggleSidebar={props.onToggleSidebar}
@@ -130,7 +130,7 @@ export default compose(
                     <PropsRoute
                       component={Todo}
                       exact
-                      path={`/agent/${props.match.params.id}/matched`}
+                      path={`/agent/${props.match.params.id}/requirements/matched`}
                       activeIntents={inbox}
                       completed={completed}
                       onToggleSidebar={props.onToggleSidebar}

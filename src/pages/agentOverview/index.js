@@ -27,7 +27,6 @@ export default compose(
   return (
     <Body>
       <Sidebar
-        profile="true"
         isopen={props.isopen}
         param={props.match.params.id}
         location={props.location}
