@@ -28,8 +28,8 @@ export default compose(
       />
       <Wrapper isopen={props.isopen}>
         <Header
-          image={""}
-          name={"All groups"}
+          image={props.providerImage}
+          name={props.providerName}
           toggleLeftPanel={props.toggleLeftPanel}
           togglePanel={props.togglePanel}
           handleEvent={props.handleEvent}
