@@ -1,16 +1,18 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 import HeaderTitle from "../agentSectionHeader";
 import Intent from "../agentintents/intents";
 export default props => {
   return (
     <EventsInfo>
       <WrapperIntents>
-        <HeaderTitle
-          isopen={props.isCommittedOpen}
-          action={props.handleCommittedOpen}
-          title={`Inbox (${props.activeIntents.length})`}
-        />
+        <div style={{ marginLeft: "8px" }}>
+          <HeaderTitle
+            isopen={props.isCommittedOpen}
+            action={props.handleCommittedOpen}
+            title={`Inbox (${props.activeIntents.length})`}
+          />
+        </div>
         {props.isCommittedOpen ? (
           <ContentIntents>
             {props.activeIntents.map((intent, i) => (
@@ -31,11 +33,13 @@ export default props => {
         ) : null}
       </WrapperIntents>
       <WrapperIntents>
-        <HeaderTitle
-          isopen={props.isCompletedOpen}
-          action={props.handleCompletedOpen}
-          title={`Completed (${props.completed.length})`}
-        />
+        <div style={{ marginLeft: "8px" }}>
+          <HeaderTitle
+            isopen={props.isCompletedOpen}
+            action={props.handleCompletedOpen}
+            title={`Completed (${props.completed.length})`}
+          />
+        </div>
         {props.isCompletedOpen ? (
           <ContentIntents>
             {props.completed.map((intent, i) => (
@@ -55,26 +59,25 @@ export default props => {
         ) : null}
       </WrapperIntents>
     </EventsInfo>
-  )}
-
-
+  );
+};
 
 const WrapperIntents = styled.div`
-position: relative;
+  position: relative;
 `;
 
 const ContentIntents = styled.div`
-overflow-y: scroll;
-margin: 0;
-padding: 0;
-width: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 `;
 
-
 const EventsInfo = styled.div`
-  display: grid;
-  column-gap: 16px;
-  // grid-template-columns: 1fr 2fr
-  padding: 16px;
-  padding-top: 0;
+  contain: strict;
+  will-change: transform;
+  display: flex;
+  flex: 1;
+  background: #fff;
+  min-height: 100%;
+  flex-direction: column;
 `;

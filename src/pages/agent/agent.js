@@ -13,14 +13,21 @@ import { compose, withState, withHandlers } from "recompose";
 import setCommitted from "../../mutations/setCommitted";
 
 export default compose(
-  withState('event', 'onEvent', 'all'),
+  withState("event", "onEvent", "all"),
   withHandlers({
-    handleEvent: props => (val) => (props.onEvent(val.value))
+    handleEvent: props => val => props.onEvent(val.value)
   })
 )(props => {
   return (
     <Body>
-      <Sidebar isopen={props.isopen} location={props.location} param={props.match.params.id} />
+      <Sidebar
+        isopen={props.isopen}
+        location={props.location}
+        param={props.match.params.id}
+        togglePanel={props.togglePanel}
+        providerName={props.providerName}
+        handleGroup={props.handleGroup}
+      />
       <Wrapper isopen={props.isopen}>
         <Content>
           <Inside>
@@ -41,11 +48,13 @@ export default compose(
                     />
                   );
                 let intents = data.viewer.agent.agentCommitments;
-                let filteredIntents = []
-                if (props.event !== 'all') {
-                  filteredIntents = intents.filter(i => i.action === props.event)
+                let filteredIntents = [];
+                if (props.event !== "all") {
+                  filteredIntents = intents.filter(
+                    i => i.action === props.event
+                  );
                 } else {
-                  filteredIntents = intents
+                  filteredIntents = intents;
                 }
                 // INBOX
                 let inbox = filteredIntents.filter(i => !i.isFinished);
@@ -89,6 +98,7 @@ export default compose(
                     )}
                   </ApolloConsumer>
                 )}  */}
+                  <div style={{display: 'flex', height: '100%'}}>
                     <PropsRoute
                       exact
                       component={Todo}
@@ -111,7 +121,9 @@ export default compose(
                     <PropsRoute
                       component={Todo}
                       exact
-                      path={`/agent/${props.match.params.id}/requirements/committed`}
+                      path={`/agent/${
+                        props.match.params.id
+                      }/requirements/committed`}
                       activeIntents={committed}
                       completed={committedCompleted}
                       onToggleSidebar={props.onToggleSidebar}
@@ -130,7 +142,9 @@ export default compose(
                     <PropsRoute
                       component={Todo}
                       exact
-                      path={`/agent/${props.match.params.id}/requirements/matched`}
+                      path={`/agent/${
+                        props.match.params.id
+                      }/requirements/matched`}
                       activeIntents={inbox}
                       completed={completed}
                       onToggleSidebar={props.onToggleSidebar}
@@ -146,6 +160,7 @@ export default compose(
                       isCompletedOpen={props.isCompletedOpen}
                       handleCompletedOpen={props.handleCompletedOpen}
                     />
+                    </div>
                   </Overview>
                 );
               }}
@@ -165,10 +180,13 @@ const Body = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  height: 100vh;
   box-sizing: border-box;
   position: relative;
   flex: 1;
+  margin-top: 8px;
+  margin-left: 8px;
   ${media.lessThan("medium")`
     display: ${props => (props.isopen ? "none" : "flex")}
   `};
@@ -194,6 +212,8 @@ const Inside = styled.div`
 
 const Overview = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
   ${media.lessThan("medium")`
   width: 100%;
   `};

@@ -49,12 +49,6 @@ export default compose(
         <Second>
           <FirstInfo>
             <EditDueDate due={data.plannedFinish} intentId={data.id} />
-            {inputs.length > 0 ?
-            <TimelineBtn onClick={toggleTimeline}>
-              <Icons.Eye width="16" height="16" color="#00040" />
-              Toggle timeline
-            </TimelineBtn>
-            : null}
           </FirstInfo>
         </Second>
         {isTimelineOpen ? (
@@ -65,22 +59,34 @@ export default compose(
           />
         ) : null}
       </Wrapper>
+      <Actions>
+        {inputs.length > 0 ? (
+          <TimelineBtn onClick={toggleTimeline}>
+            <Icons.Eye width="18" height="18" color="#19191960" />
+            Toggle timeline
+          </TimelineBtn>
+        ) : null}
+      </Actions>
     </Intent>
   );
 });
 
+const Actions = styled.div`
+  padding-bottom: 0px;
+`;
+
 const TimelineBtn = styled.span`
-    cursor: pointer;
-    margin: 0;
-    float: left;
-    height: 24px;
-    line-height: 24px;
-    border-radius: 3px;
-    margin-left: 4px;
-    background: #b430ff54;
-    padding: 0 5px;
-    font-size: 13px;
-    font-weight: 400;
+  cursor: pointer;
+  margin: 0;
+  float: left;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 3px;
+  margin-left: 4px;
+  padding: 0 5px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #19191960;
   & svg {
     vertical-align: top;
     margin-right: 4px;
@@ -91,8 +97,10 @@ const TimelineBtn = styled.span`
 const Intent = styled.div`
   ${clearFix()};
   margin-top: 0;
-  padding-bottom: 0px;
-  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-radius: 4px;
+  border: 1px solid #97979740;
+  margin: 8px;
   border-radius: 4px;
   ${props =>
     props.isFinished &&
@@ -104,7 +112,6 @@ const Intent = styled.div`
 
 const Wrapper = styled.div`
   padding: 8px;
-  border-bottom: 1px solid #22232680;
   position: relative;
   cursor: pointer;
   background: #fffffff7;
@@ -149,15 +156,13 @@ const Sentence = styled.h3`
   letter-spacing: 1px;
   font-size: 14px;
   text-transform: capitalize;
-  color: ${props => props.theme.color.p900};
+  color: #32211B;
   display: inline-block;
-  background: aqua;
   text-decoration: none;
   ${props =>
     props.isFinished &&
     css`
       text-decoration: line-through;
-      text-decoration-color: #ffffffa1;
     `};
 
   & input {

@@ -8,14 +8,23 @@ import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import getCommitments from "../../queries/getCommitments";
 import { PropsRoute } from "../../helpers/router";
+import { clearFix } from "polished";
 import Todo from "../../components/todo";
+import Select from "react-select";
 import Sidebar from "../../components/sidebar/sidebar";
 import setMatched from "../../mutations/setMatched";
 import { compose, withState, withHandlers } from "recompose";
 export default compose(
-  withState('event', 'onEvent', 'all'),
+  withState("event", "onEvent", "all"),
   withHandlers({
-    handleEvent: props => (val) => (props.onEvent(val.value))
+    handleEvent: props => val => props.onEvent(val.value),
+    openStuff: props => val => {
+      if (val.value === "requirement") {
+        return props.togglenewRequirementModal();
+      } else if (val.value === "process") {
+        return props.togglenewProcessModal();
+      }
+    }
   })
 )(props => {
   return (
@@ -25,6 +34,9 @@ export default compose(
         isopen={props.isopen}
         param={props.match.params.id}
         location={props.location}
+        togglePanel={props.togglePanel}
+        providerName={props.providerName}
+        handleGroup={props.handleGroup}
       />
       <Wrapper isopen={props.isopen}>
         <Header
@@ -37,6 +49,22 @@ export default compose(
         <Content>
           <Inside>
             <Overview>
+              <SmartSentence>
+              <Img
+                    style={{ backgroundImage: `url(${props.providerImage})` }}
+                  />
+                <WrapperNew>
+                  <Select
+                    styles={customStylesTwo}
+                    onChange={props.openStuff}
+                    value={{ value: null, label: "Add new..." }}
+                    options={[
+                      { value: "requirement", label: "Add a new requirement" },
+                      { value: "process", label: "Add a new process" }
+                    ]}
+                  />
+                </WrapperNew>
+              </SmartSentence>
               <Query
                 query={getCommitments}
                 variables={{
@@ -54,11 +82,13 @@ export default compose(
                       />
                     );
                   let intents = data.viewer.agent.agentCommitments;
-                  let filteredIntents = []
-                  if (props.event !== 'all') {
-                    filteredIntents = intents.filter(i => i.action === props.event)
+                  let filteredIntents = [];
+                  if (props.event !== "all") {
+                    filteredIntents = intents.filter(
+                      i => i.action === props.event
+                    );
                   } else {
-                    filteredIntents = intents
+                    filteredIntents = intents;
                   }
                   // INBOX
                   let inbox = filteredIntents.filter(i => !i.isFinished);
@@ -94,7 +124,7 @@ export default compose(
                     variables: { total: allmatchedIntents.length }
                   });
                   return (
-                    <div>
+                    <React.Fragment>
                       <PropsRoute
                         exact
                         component={Todo}
@@ -152,7 +182,7 @@ export default compose(
                         isCompletedOpen={props.isCompletedOpen}
                         handleCompletedOpen={props.handleCompletedOpen}
                       />
-                    </div>
+                    </React.Fragment>
                   );
                 }}
               </Query>
@@ -164,12 +194,49 @@ export default compose(
   );
 });
 
+const WrapperNew = styled.div`
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 180px;
+  position: relative;
+  z-index: 99999;
+  margin-right: 28px;
+  margin-top: 10px;
+  flex: 1;
+`;
+
+
+const Img = styled.div`
+  width: 34px;
+  height: 34px;
+  background: ${props => props.theme.color.p150};
+  border-radius: 100px;
+  display: inline-block;
+  margin-right: 8px;
+  margin-left: 32px;
+  margin-top: 18px;
+  vertical-align: middle;
+  background-size: cover;
+`;
+
+const SmartSentence = styled.div`
+  height: 70px;
+  background: #e3ebf2;
+  display: flex;
+  flex-direction: row;
+`;
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   position: relative;
   flex: 1;
+  margin-top: 8px;
+  margin-left: 8px;
+  overflow-y: overlay;
+  min-height: 100vh;
+  margin-bottom: -20px;
   ${media.lessThan("medium")`
     display: ${props => (props.isopen ? "none" : "flex")}
   `};
@@ -181,6 +248,7 @@ const Content = styled.div`
   will-change: transform;
   display: flex;
   flex: 1;
+  background: #fff;
 `;
 
 const Inside = styled.div`
@@ -189,9 +257,8 @@ const Inside = styled.div`
   flex-direction: column;
   align-content: center;
   position: relative;
-  overflow-y: overlay;
+  overflow-x: overlay;
   position: relative;
-  margin-top: 16px;
 `;
 
 const Overview = styled.div`
@@ -207,3 +274,46 @@ const Body = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
+const customStylesTwo = {
+  control: base => ({
+    ...base,
+    background: "#e3ebf2;",
+    border: "0px solid #396ea6",
+    color: "#32211B80",
+    fontWeight: 500,
+    fontSize: "13px",
+    minHeight: "50px",
+    height: "50px",
+    borderRadius: "6px"
+  }),
+  input: base => ({
+    ...base,
+    color: "#32211B80",
+    fontWeight: 500,
+    fontSize: "13px",
+    height: "50px",
+    minHeight: "50px",
+
+  }),
+  singleValue: base => ({
+    ...base,
+    color: "#32211B80",
+    fontWeight: 500,
+    fontSize: "13px"
+  }),
+  option: base => ({
+    ...base,
+    fontSize: "13px"
+  }),
+  menuList: base => ({
+    ...base,
+    fontSize: "13px"
+  }),
+  placeholder: base => ({
+    ...base,
+    color: "#32211B80",
+    fontWeight: 500,
+    fontSize: "13px"
+  })
+};

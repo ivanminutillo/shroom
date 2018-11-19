@@ -2,12 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import Header from "../agent/header";
 import media from "styled-media-query";
-import setInbox from "../../mutations/setInbox";
-import setCommitted from "../../mutations/setCommitted";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import { PropsRoute } from "../../helpers/router";
-import Todo from "../../components/todo";
 import Sidebar from "../../components/sidebar/sidebar";
 import { compose, withState, withHandlers } from "recompose";
 import getAgentProcesses from "../../queries/getAgentProcesses";
@@ -104,6 +101,11 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   position: relative;
   flex: 1;
+  margin-top: 8px;
+  margin-left: 8px;
+  overflow-y: overlay;
+  min-height: 100vh;
+  margin-bottom: -20px;
   ${media.lessThan("medium")`
     display: ${props => (props.isopen ? "none" : "flex")}
   `};
@@ -115,6 +117,7 @@ const Content = styled.div`
   will-change: transform;
   display: flex;
   flex: 1;
+  background: #fff;
 `;
 
 const Inside = styled.div`

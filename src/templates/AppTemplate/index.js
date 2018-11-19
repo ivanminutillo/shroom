@@ -57,15 +57,6 @@ const AppTemplate = props => {
             console.log(props)
         return (
           <Surface>
-            {/* <Header
-              providerId={data.viewer.myAgent.id}
-              providerImage={data.viewer.myAgent.image}
-              providerName={data.viewer.myAgent.name}
-              togglePanel={props.onTogglePanel}
-              togglenewRequirementModal={props.togglenewRequirementModal}
-              togglenewProcessModal={props.togglenewProcessModal}
-              toggleValidationModal={props.toggleValidationModal}
-              /> */}
             <Switch>
               <PropsRoute
                 handleGroup={props.handleGroup}
@@ -111,7 +102,7 @@ const AppTemplate = props => {
                 handleCompletedOpen={props.handleCompletedOpen}
               />
               <PropsRoute
-              handleGroup={props.handleGroup}
+                handleGroup={props.handleGroup}
                 component={Agent}
                 location={props.location}
                 onToggleSidebar={props.onToggleSidebar}
@@ -130,7 +121,7 @@ const AppTemplate = props => {
                 handleCompletedOpen={props.handleCompletedOpen}
               />
               <PropsRoute
-              handleGroup={props.handleGroup}
+                handleGroup={props.handleGroup}
                 component={AgentOverview}
                 location={props.location}
                 onToggleSidebar={props.onToggleSidebar}
@@ -151,7 +142,7 @@ const AppTemplate = props => {
               
               
               <PropsRoute
-              handleGroup={props.handleGroup}
+                handleGroup={props.handleGroup}
                 component={RequirementsList}
                 path={'/requirements'}
                 location={props.location}
@@ -167,9 +158,12 @@ const AppTemplate = props => {
                 handleCommittedOpen={props.handleCommittedOpen}
                 isCompletedOpen={props.isCompletedOpen}
                 handleCompletedOpen={props.handleCompletedOpen}
+
+                togglenewRequirementModal={props.togglenewRequirementModal}
+                togglenewProcessModal={props.togglenewProcessModal}
               />
               <PropsRoute
-              handleGroup={props.handleGroup}
+                  handleGroup={props.handleGroup}
                 component={Home}
                 path={props.match.path}
                 location={props.location}

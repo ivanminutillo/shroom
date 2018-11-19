@@ -30,6 +30,9 @@ export default compose(
         isopen={props.isopen}
         param={props.match.params.id}
         location={props.location}
+        togglePanel={props.togglePanel}
+        providerName={props.providerName}
+        handleGroup={props.handleGroup}
       />
       <Wrapper isopen={props.isopen}>
         <Content>
@@ -142,57 +145,42 @@ const Events = styled.div`
 `;
 const Contribution = styled.div`
   display: inline-block;
-  margin-left: 20px;
+  margin-left: 16px;
+  margin-top: 16px;
   & h3 {
-    font-weight: 500;
+    color: ${props => props.theme.color.p800}
+    font-weight: 400;
     letter-spacing: 1px;
   }
 `;
 
 const FeedItem = styled.div`
   font-size: ${props => props.theme.fontSize.h3};
-  color: #f0f0f0bd;
+  color: ${props => props.theme.color.p900}
 `;
 
 const B = styled.b`
   font-weight: 500;
-  color: ${props => props.theme.color.p100};
+  color: #32211B;
 `;
 
 const CalendarWrapper = styled.div`
-  margin-top: 8px;
-  height: 300px;
-  border: 1px solid #f0f0f030;
-  padding: 8px;
-  border-radius: 2px;
-  height: 150px;
-  width: 620px;
-  background: #f0f8ffe6;
-  border-radius: 3px;
-`;
-
-const Img = styled.div`
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  border-radius: 100px;
-  background-size: cover;
-  background-color: #494f5c;
-  vertical-align: middle;
+height: 300px;
+border: 1px solid #14141430;
+height: 150px;
+border-radius: 3px;
+width: 620px;
+margin: 0 auto;
+margin-top: 8px;
 `;
 
 const Tagline = styled.h3`
-  font-weight: 300;
+  font-weight: 500;
   padding-bottom: 8px;
   margin-top: 20px;
   border-bottom: 1px solid #f0f0f030;
   margin-bottom: 10px;
-`;
-
-const Body = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: row;
+  font-size: 13px;
 `;
 
 const Wrapper = styled.div`
@@ -201,6 +189,11 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   position: relative;
   flex: 1;
+  margin-top: 8px;
+  margin-left: 8px;
+  overflow-y: overlay;
+  min-height: 100vh;
+  margin-bottom: -20px;
   ${media.lessThan("medium")`
     display: ${props => (props.isopen ? "none" : "flex")}
   `};
@@ -212,6 +205,7 @@ const Content = styled.div`
   will-change: transform;
   display: flex;
   flex: 1;
+  background: #fff;
 `;
 
 const Inside = styled.div`
@@ -228,5 +222,12 @@ const Overview = styled.div`
   flex: 1;
   ${media.lessThan("medium")`
   width: 100%;
+  margin-top: 16px;
   `};
+`;
+
+const Body = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
 `;

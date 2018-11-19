@@ -15,7 +15,7 @@ float: left;
 line-height: 36px;
 font-weight: 500;
 // margin-left: 8px;
-color: ${props => props.theme.color.p150};
+color: ${props => props.theme.color.p900};
 letter-spacing: .5px;
 text-transform: capitalize;
 `;

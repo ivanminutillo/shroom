@@ -99,7 +99,7 @@ const Secondary = styled.div`
 `;
 
 const Member = styled.div`
-  display: inline-block;
+  float: left;
   vertical-align: top;
   margin-right: 14px;
 `;
@@ -132,7 +132,7 @@ const MemberItem = styled.span`
 const Desc = styled.div`
   position: relative;
   min-height: 30px;
-  display: inline-block;
+  padding-left: 40px;
 `;
 
 const Img = styled.img`

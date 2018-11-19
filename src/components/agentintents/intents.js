@@ -62,7 +62,7 @@ export default compose(
             <ProcessContainer>
               <NavLink to={`/process/${data.inputOf.id}`}>
                 <ContainerTitle>
-                  <Icons.UpLeft width="13" height="13" color="#F0F0F060" />
+                  <Icons.UpLeft width="13" height="13" color="#3B99FC" />
                 </ContainerTitle>
                 <Content>{data.inputOf.name}</Content>
               </NavLink>
@@ -72,7 +72,7 @@ export default compose(
             <ProcessContainer>
               <NavLink to={`/process/${data.outputOf.id}`}>
                 <ContainerTitle>
-                  <Icons.UpRight width="13" height="13" color="#F0F0F060" />
+                  <Icons.UpRight width="13" height="13" color="#3B99FC" />
                 </ContainerTitle>
                 <Content>{data.outputOf.name}</Content>
               </NavLink>
@@ -185,17 +185,6 @@ export default compose(
                 date={moment(ev.fulfilledBy.start).format("DD MMM")}
               />
             ))}
-            <CloseFeed onClick={handleFeedOpen}>
-              <Icons.Arrowup width="18" height="18" color="#fff" />
-            </CloseFeed>
-          </Events>
-        ) : data.fulfilledBy.length > 0 ? (
-          <Fool onClick={handleFeedOpen}>
-            Read all events ({data.fulfilledBy.length})
-          </Fool>
-        ) : null}
-        <Actions>
-          {addEvent ? (
             <WrapperLogEvent>
               <LogEvent
                 commitmentId={data.id}
@@ -209,21 +198,22 @@ export default compose(
                 closeLogEvent={handleAddEvent}
               />
             </WrapperLogEvent>
-          ) : (
-            <div
-              style={{
-                paddingLeft: "8px",
-                paddingBottom: "8px",
-                background: "#40444C"
-              }}
-            >
-              <ImgProvider
-                style={{ backgroundImage: `url(${providerImage})` }}
-              />{" "}
-              <Button onClick={handleAddEvent}>Log an event</Button>
-            </div>
-          )}
-        </Actions>
+            <CloseFeed onClick={handleFeedOpen}>
+              <Icons.Arrowup width="18" height="18" color="#fff" />
+            </CloseFeed>
+          </Events>
+        ) : (
+          <Actions>
+            {addEvent ? null : (
+              <ActionSpan onClick={handleFeedOpen}>
+                <Span>
+                  <Icons.Message width="18" height="18" color="#19191960" />{" "}
+                </Span>
+                ({data.fulfilledBy.length})
+              </ActionSpan>
+            )}
+          </Actions>
+        )}
       </Intent>
     );
   }
@@ -231,36 +221,36 @@ export default compose(
 
 const B = styled.b`
   font-weight: 500;
-  color: ${props => props.theme.color.p100};
+  color: #32211B;
 `;
 
-const Fool = styled.div`
-  height: 30px;
-  color: #f0f0f061;
-  text-align: center;
-  font-size: 13px;
-  text-decoration: underline;
-  line-height: 30px;
-  background: #565862;
-  letter-spacing: 1px;
-  font-weight: 400;
+const Span = styled.span`
+  font-weight: 300;
+  vertical-align: -webkit-baseline-middle;
   cursor: pointer;
-  &:hover {
-    color: #f0f0f0;
-  }
+  margin-right: 5px;
+  color: ${props => props.theme.color.p900};
+`;
+const ActionSpan = styled.div`
+  font-weight: 500;
+  color: #282b30;
+  font-size: 13px;
+  padding-left: 8px;
+  padding-bottom: 8px;
+  color: #282b3082;
+  margin-top: 10px;
+  display: inline-block;
+  cursor: pointer;
 `;
 
 const WrapperLogEvent = styled.div`
-  background: #f6f8f9;
   padding: 10px 0;
-  margin: 10px;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+  background: #edf3f8;
 `;
 
 const FeedItem = styled.div`
   font-size: ${props => props.theme.fontSize.h3};
-  color: #f0f0f0bd;
+  color: ${props => props.theme.color.p900};
 `;
 
 const Actions = styled.div`
@@ -269,10 +259,6 @@ const Actions = styled.div`
 
 const CloseFeed = styled.div`
   position: absolute;
-  right: 8px;
-  top: 8px;
-  width: 40px;
-  height: 40px;
   border-radius: 100px;
   background: #114357; /* fallback for old browsers */
   background: -webkit-linear-gradient(
@@ -284,6 +270,11 @@ const CloseFeed = styled.div`
   padding-top: 11px;
   box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.4);
   cursor: pointer;
+  right: 50%;
+  bottom: -12px;
+  width: 40px;
+  height: 40px;
+  margin-right: -20px;
 `;
 
 const Popup = styled.div`
@@ -313,41 +304,13 @@ const PopupItem = styled.div`
   color: #4c4d4d;
 `;
 
-const ImgProvider = styled.div`
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  border-radius: 100px;
-  background-size: cover;
-  background-color: #494f5c;
-  vertical-align: middle;
-`;
-
-const Button = styled.button`
-  height: 26px;
-  cursor: pointer;
-  margin-top: 8px;
-  color: #f0f0f0e6;
-  font-size: 13px;
-  margin-right: 28px;
-  border: none;
-  letter-spacing: 0.5px;
-  background: transparent;
-  border-radius: 34px;
-`;
-
 const Intent = styled.div`
   ${clearFix()};
   margin-top: 0;
   padding-bottom: 0px;
-  background: #353841;
-  margin-bottom: 8px;
-  ${props =>
-    props.isFinished &&
-    css`
-      background: #7cff8a14;
-      border: 1px solid #007a1c;
-    `};
+  border: 1px solid #97979740;
+  margin: 8px;
+  border-radius: 4px;
 `;
 const Events = styled.div`
   ${clearFix()};
@@ -371,7 +334,6 @@ const Img = styled.div`
 
 const Wrapper = styled.div`
   padding: 8px;
-  border-bottom: 1px solid #22232680;
   position: relative;
   cursor: pointer;
 `;
@@ -393,7 +355,6 @@ const FirstInfo = styled.div`
 
 const ProcessContainer = styled.div`
   ${clearFix()};
-  background: #353841;
   height: 40px;
   padding: 0 8px;
 `;
@@ -406,7 +367,7 @@ const ContainerTitle = styled.h3`
 const Content = styled.div`
   ${clearFix()};
   display: inline-block;
-  color: #f0f0f060;
+  color: ${props => props.theme.color.b100};
   font-size: 13px;
   margin-left: 4px;
   border-bottom: 3px solid;
@@ -415,16 +376,16 @@ const Content = styled.div`
 `;
 
 const Sentence = styled.h3`
-  font-weight: 400;
+  font-weight: 500;
   line-height: 24px;
   letter-spacing: 0.5px;
   font-size: 14px;
   text-transform: capitalize;
+  color: #32211B;
   ${props =>
     props.isFinished &&
     css`
       text-decoration: line-through;
-      text-decoration-color: #ffffffa1;
     `};
 
   & input {
@@ -444,7 +405,7 @@ const Note = styled.h3`
   line-height: 18px;
   font-size: 13px;
   letter-spacing: 0.4px;
-  color: ${props => props.theme.color.p150};
+  color: ${props => props.theme.color.p800};
   padding-left: 8px;
   border-left: 1px solid;
   margin-left: 4px;

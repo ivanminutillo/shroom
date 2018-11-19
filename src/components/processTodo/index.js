@@ -4,14 +4,15 @@ import HeaderTitle from "../agentSectionHeader";
 import Process from '../process';
 
 export default props => {
-    console.log(props.activeProcesses)
   return (
       <WrapperIntents>
+        <div style={{marginLeft: '8px'}}>
         <HeaderTitle
           isopen={props.isCommittedOpen}
           action={props.handleCommittedOpen}
           title={`Inbox (${props.activeProcesses.length})`}
         />
+        </div>
           <ContentIntents>
             {props.activeProcesses.map((process, i) => (
               <Process
@@ -31,21 +32,10 @@ export default props => {
 
 const WrapperIntents = styled.div`
 position: relative;
-margin: 0 20px;
 `;
 
 const ContentIntents = styled.div`
-overflow-y: scroll;
 margin: 0;
 padding: 0;
 width: 100%;
-`;
-
-
-const EventsInfo = styled.div`
-  display: grid;
-  column-gap: 16px;
-  // grid-template-columns: 1fr 2fr
-  padding: 16px;
-  padding-top: 0;
 `;

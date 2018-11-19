@@ -157,7 +157,7 @@ const FeedItem = styled.div`
 
 const B = styled.b`
   font-weight: 500;
-  color: ${props => props.theme.color.p900};
+  color: #32211B;
 `;
 
 const CalendarWrapper = styled.div`

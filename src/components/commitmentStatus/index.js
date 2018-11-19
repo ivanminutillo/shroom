@@ -45,7 +45,7 @@ export default compose(
                   id: intentId,
                   isFinished: !isFinished
                 }
-              })} ><Icons.Check width='16' height='16' color='#848f99' /></Status>
+              })} ><Icons.Check width='16' height='16' color='#3497ff' /></Status>
         )}
       </Mutation>
     );
@@ -60,9 +60,6 @@ display: inline-flex;
 height: 20px;
 justify-content: center;
 width: 20px;
-// background: #fff;
-// border: 1px solid #b7bfc6;
-background: #272b33;
 border: 1px solid #3497ff;
 border-radius: 50%;
 color: #848f99;

@@ -2,16 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import Header from "../agent/header";
 import media from "styled-media-query";
-import setInbox from "../../mutations/setInbox";
-import setCommitted from "../../mutations/setCommitted";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import { PropsRoute } from "../../helpers/router";
-import Todo from "../../components/todo";
 import Sidebar from "../../components/sidebar/sidebar";
 import { compose, withState, withHandlers } from "recompose";
 import getAgentProcesses from "../../queries/getAgentProcesses";
 import processTodo from "../../components/processTodo";
+
 export default compose(
   withState('event', 'onEvent', 'all'),
   withHandlers({
@@ -20,11 +18,14 @@ export default compose(
 )(props => {
   return (
     <Body>
-      <Sidebar
+       <Sidebar
         profile="true"
         isopen={props.isopen}
         param={props.match.params.id}
         location={props.location}
+        togglePanel={props.togglePanel}
+        providerName={props.providerName}
+        handleGroup={props.handleGroup}
       />
       <Wrapper isopen={props.isopen}>
         <Header
@@ -98,12 +99,18 @@ export default compose(
   );
 });
 
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   position: relative;
   flex: 1;
+  margin-top: 8px;
+  margin-left: 8px;
+  overflow-y: overlay;
+  min-height: 100vh;
+  margin-bottom: -20px;
   ${media.lessThan("medium")`
     display: ${props => (props.isopen ? "none" : "flex")}
   `};
@@ -115,6 +122,7 @@ const Content = styled.div`
   will-change: transform;
   display: flex;
   flex: 1;
+  background: #fff;
 `;
 
 const Inside = styled.div`
@@ -123,7 +131,7 @@ const Inside = styled.div`
   flex-direction: column;
   align-content: center;
   position: relative;
-  overflow-y: overlay;
+  overflow-x: overlay;
   position: relative;
   margin-top: 16px;
 `;

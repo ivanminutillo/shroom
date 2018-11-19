@@ -15,13 +15,7 @@ export default withRouter(({
   name,
   image
 }) => {
-  const openStuff = val => {
-    if (val.value === "requirement") {
-      return togglenewRequirementModal();
-    } else if (val.value === "process") {
-      return togglenewProcessModal();
-    }
-  };
+ 
   return (
     <WrappedHeader>
       <Header>
@@ -47,34 +41,8 @@ export default withRouter(({
           <Img src={image} />
           <Title>{name}</Title>
         </HeaderLeft>
-        <WrapperNew>
-          <Select
-            styles={customStylesTwo}
-            onChange={openStuff}
-            value={{ value: null, label: "Add new..." }}
-            options={[
-              { value: "requirement", label: "Add a new requirement" },
-              { value: "process", label: "Add a new process" }
-            ]}
-          />
-        </WrapperNew>
-        {/* <HeaderRight>
-        <Span onClick={togglePanel}>
-          <Icons.Sidebar width="22" height="22" color="#99ADC6" />
-        </Span>
-      </HeaderRight> */}
       </Header>
-      <Filter>
-        {/* <Item>
-        <Select
-          styles={customStyles}
-          options={[
-            { value: "all", label: "Due" },
-            { value: "work", label: "Show only work type" }
-          ]}
-          
-        />
-      </Item> */}
+      {/* <Filter>
         <Item>
           <Select
             styles={customStyles}
@@ -89,7 +57,7 @@ export default withRouter(({
             onChange={handleEvent}
           />
         </Item>
-      </Filter>
+      </Filter> */}
     </WrappedHeader>
   );
 });
@@ -284,43 +252,3 @@ const Title = styled.h2`
   line-height: 50px;
 `;
 
-const customStylesTwo = {
-  control: base => ({
-    ...base,
-    background: "#2d81d9",
-    border: "1px solid #396ea6",
-    color: "#f0f0f0",
-    fontWeight: 500,
-    fontSize: "13px",
-    minHeight: "30px",
-    height: "30px",
-    borderRadius: "6px"
-  }),
-  input: base => ({
-    ...base,
-    color: "#f0f0f0",
-    fontWeight: 500,
-    fontSize: "13px",
-    height: "30px"
-  }),
-  singleValue: base => ({
-    ...base,
-    color: "#f0f0f0",
-    fontWeight: 500,
-    fontSize: "13px"
-  }),
-  option: base => ({
-    ...base,
-    fontSize: "13px"
-  }),
-  menuList: base => ({
-    ...base,
-    fontSize: "13px"
-  }),
-  placeholder: base => ({
-    ...base,
-    color: "#f0f0f0",
-    fontWeight: 500,
-    fontSize: "13px"
-  })
-};
