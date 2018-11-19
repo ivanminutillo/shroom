@@ -4,7 +4,7 @@ import { clearFix } from "polished";
 import {Icons} from 'oce-components'
 
 const Header = styled.div`
-  height: 36px;
+  height: 26px;
   position: relative;
   ${clearFix()};
   display: inline-block;
@@ -12,16 +12,15 @@ const Header = styled.div`
 `;
 const SectionTitle = styled.h3`
 float: left;
-line-height: 36px;
+line-height: 26px;
 font-weight: 500;
-// margin-left: 8px;
 color: ${props => props.theme.color.p900};
 letter-spacing: .5px;
 text-transform: capitalize;
 `;
 const Right = styled.div`
-height: 36px;
-line-height: 36px;
+height: 26px;
+line-height: 26px;
 vertical-align: middle;
 padding-top: 2px;
 position: absolute;

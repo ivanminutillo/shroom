@@ -13,6 +13,7 @@ export default props =>
         <Result>
           <Tagline>Result</Tagline>
           <Container>
+            <Bar percentage={props.percentage} />
             <ResultTitle>{`${output.action} ${
               output.committedQuantity.numericValue
             } ${output.committedQuantity.unit.name} of ${
@@ -26,9 +27,7 @@ export default props =>
               {moment(output.due).format("DD MMM")}
             </Date>
           </Container>
-        </Result>
-        <Actions>
-          <Bar percentage={props.percentage} />
+          <Actions>
           <Button>Complete this output</Button>
           <Take>
           {output.provider ? (
@@ -44,6 +43,8 @@ export default props =>
         : 'Take this commitment'}
         </Take>
         </Actions>
+        </Result>
+        
       </Wrapper>
     </React.Fragment>
   ));
@@ -63,17 +64,17 @@ export default props =>
 const Wrapper = styled.div`
   display: grid;
   margin-top: 26px;
-  grid-template-columns: 7fr 3fr;
+  grid-template-columns: 1fr;
   grid-column-gap: 24px;
 `;
 const Result = styled.div``;
 const Tagline = styled.h3`
   margin-bottom: 10px;
-  color: #bebebe;
+  color: ${props => props.theme.color.p800};
   letter-spacing: 0.5px;
 `;
 const Container = styled.div`
-  background: #ff966b;
+  background: #d6e1e3;
   border-radius: 3px;
   padding: 8px;
 `;
@@ -120,7 +121,7 @@ const Date = styled.div`
   }
 `;
 const Actions = styled.div`
-  margin-top: 23px;
+  margin-top: 8px;
   & button {
     width: 100%;
     height: 55px;
@@ -147,7 +148,7 @@ const Bar = styled.div`
 `;
 const Take = styled.div`
   margin-top: 16px;
-  color: ${props => props.theme.color.p100};
+  color: ${props => props.theme.color.p800};
   font-size: 14px;
   letter-spacing: 0.5px;
   & span {

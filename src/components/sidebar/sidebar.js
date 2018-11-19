@@ -53,11 +53,11 @@ const Sidebar = props => {
             activeStyle={{
               position: "relative",
               marginLeft: "24px",
-              color: "#f0f0f0"
+              color: "#3B99FC"
             }}
           >
             <SpanIcon>
-              <Icons.User width="14" height="14" color="#f0f0f0bd" />
+              <Icons.User width="14" height="14" color="#2a354682" />
             </SpanIcon>
             Overview
           </NavLink>
@@ -81,11 +81,11 @@ const Sidebar = props => {
               activeStyle={{
                 position: "relative",
                 marginLeft: "24px",
-                color: "#f0f0f0"
+                color: "#3B99FC"
               }}
             >
               <SpanIcon>
-                <Icons.Star width="14" height="14" color="#f0f0f0bd" />
+                <Icons.Star width="14" height="14" color="#2a354682" />
               </SpanIcon>
               Committed
               <Query query={getCommitted}>
@@ -109,11 +109,11 @@ const Sidebar = props => {
               activeStyle={{
                 position: "relative",
                 marginLeft: "24px",
-                color: "#f0f0f0"
+                color: "#3B99FC"
               }}
             >
               <SpanIcon>
-                <Icons.Eye width="14" height="14" color="#f0f0f0bd" />
+                <Icons.Eye width="14" height="14" color="#2a354682" />
               </SpanIcon>
               Matched
               <Query query={getMatched}>
@@ -145,11 +145,11 @@ const Sidebar = props => {
               activeStyle={{
                 position: "relative",
                 marginLeft: "24px",
-                color: "#f0f0f0"
+                color: "#3B99FC"
               }}
             >
               <SpanIcon>
-                <Icons.Inbox width="14" height="14" color="#f0f0f0bd" />
+                <Icons.Inbox width="14" height="14" color="#2a354682" />
               </SpanIcon>
               Inbox
               <Query query={getInbox}>
@@ -173,11 +173,11 @@ const Sidebar = props => {
               activeStyle={{
                 position: "relative",
                 marginLeft: "24px",
-                color: "#f0f0f0"
+                color: "#3B99FC"
               }}
             >
               <SpanIcon>
-                <Icons.Star width="14" height="14" color="#f0f0f0bd" />
+                <Icons.Star width="14" height="14" color="#2a354682" />
               </SpanIcon>
               Committed
               <Query query={getCommitted}>
@@ -210,11 +210,11 @@ const Sidebar = props => {
             activeStyle={{
               position: "relative",
               marginLeft: "24px",
-              color: "#f0f0f0"
+              color: "#3B99FC"
             }}
           >
             <SpanIcon>
-              <Icons.Inbox width="14" height="14" color="#f0f0f0bd" />
+              <Icons.Inbox width="14" height="14" color="#2a354682" />
             </SpanIcon>
             Inbox
           </NavLink>
@@ -233,11 +233,11 @@ const Sidebar = props => {
             activeStyle={{
               position: "relative",
               marginLeft: "24px",
-              color: "#f0f0f0"
+              color: "#3B99FC"
             }}
           >
             <SpanIcon>
-              <Icons.Star width="14" height="14" color="#f0f0f0bd" />
+              <Icons.Star width="14" height="14" color="#2a354682" />
             </SpanIcon>
             Closed
           </NavLink>
@@ -249,7 +249,7 @@ const Sidebar = props => {
 };
 
 const Menu = styled.div`
-background: #36393F;
+background: #fff;
 border-radius: 2px;
 margin-top: 8px;
 `
@@ -303,11 +303,11 @@ const ListTitle = styled.h3`
   text-transform: uppercase;
   font-size: 12px;
   letter-spacing: 0.4px;
-  color: #bebebe;
+  color: #2a3546;
   & a {
     font-size: 12px;
     text-decoration: none;
-    color: #f0f0f0bd;
+    color: #2a3546;
     &:after {
       position: absolute;
       content: "";
@@ -327,7 +327,7 @@ const Item = styled.h3`
   font-weight: 400;
   & a {
     text-decoration: none;
-    color: #f0f0f0bd;
+    color: #2a354682;
     &:after {
       position: absolute;
       content: "";

@@ -55,8 +55,8 @@ const StyledTab = styled(Tab)`
   cursor: pointer;
   background: transparent !important;
   color: ${props =>
-    props.selected ? "#f0f0f0 !important" : "#BEBEBE !important"};
-  font-size: 14px;
+    props.selected ? "#333 !important" : "#33333360 !important"};
+  font-size: 13px;
   font-weight: 500 !important;
   letter-spacing: 1px;
   margin-right: 24px;

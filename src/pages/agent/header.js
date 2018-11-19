@@ -21,17 +21,18 @@ export default withRouter(({
       <Header>
         <Navigation>
           <button
-            disabled={history.entries.length > 1 ? false : true}
+            // disabled={history.entries.length > 1 ? false : true}
             onClick={() => history.goBack()}
           >
             <Icons.Left
               width="18"
               height="18"
-              color={history.entries.length > 1 ? "#f0f0f0" : "#f0f0f080"}
+              color='#f0f0f080'
+              // color={history.entries.length > 1 ? "#f0f0f0" : "#f0f0f080"}
             />
           </button>
           <button onClick={() => history.goForward()}>
-            <Icons.ArrowRight width="18" height="18" color="#f0f0f0" />
+            <Icons.ArrowRight width="18" height="18" color="#f0f0f080" />
           </button>
         </Navigation>
         <HeaderLeft>
@@ -116,7 +117,7 @@ const Navigation = styled.div`
     height: 25px;
     display: inline-block;
     text-align: center;
-    background: #3487dd;
+    background: transparent;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
     cursor: pointer;
@@ -161,7 +162,7 @@ const Item = styled.div`
 `;
 const WrappedHeader = styled.div`
   ${clearFix()};
-  background: #2f3136;
+  background: #36393F;
   position: relative;
 `;
 
@@ -169,7 +170,7 @@ const Header = styled.div`
   position: relative;
   height: 50px;
   color: ${props => props.theme.color.p100};
-  background: #2f3136;
+  background: #36393F;
   border-bottom: 1px solid #1e2024;
   box-shadow: 0 1px 0 #373d45;
   z-index: 9999;

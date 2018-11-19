@@ -26,7 +26,7 @@ const Content = styled.div`
 `
 const Title = styled.div`
 margin-top: 16px;
-color: ${props => props.theme.color.p100};
+color: ${props => props.theme.color.p800};
 font-size: 14px;
 letter-spacing: .5px;
 & span {

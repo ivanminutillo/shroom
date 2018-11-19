@@ -26,7 +26,6 @@ const Surface = styled.div`
   flex-direction: column;
   width: 1010px;
   margin: 0 auto;
-  margin-top: 8px;
 `;
 
 const Overlay = styled.div`

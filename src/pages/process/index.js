@@ -35,6 +35,9 @@ const Process = props => (
             isopen={props.isopen}
             param={props.match.params.id}
             location={props.location}
+            providerName={props.providerName}
+            handleGroup={props.handleGroup}
+            togglePanel={props.togglePanel}
           />
           <Wrapper isopen={props.isopen}>
             <Header
@@ -50,6 +53,7 @@ const Process = props => (
               outputs={data.viewer.process.committedOutputs}
               percentage={percentage}
             />
+            <Agents agents={data.viewer.process.workingAgents} />
             <Content>
               <Actions
                 providerImage={props.providerImage}
@@ -58,7 +62,6 @@ const Process = props => (
                 inputs={data.viewer.process.committedInputs}
                 client={client}
               />
-              <Agents agents={data.viewer.process.workingAgents} />
             </Content>
           </Wrapper>
         </Body>
@@ -73,7 +76,10 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   position: relative;
   flex: 1;
-  margin: 16px 32px 0;
+  margin-top: 8px;
+  background: #f2f4f8;
+  padding: 8px;
+  margin-left: 8px;
   ${media.lessThan("medium")`
     display: ${props => (props.isopen ? "none" : "flex")}
   `};
@@ -86,7 +92,7 @@ const Body = styled.div`
 const Content = styled.div`
   display: grid;
   margin-top: 26px;
-  grid-template-columns: 7fr 3fr;
+  grid-template-columns: 1fr
   grid-column-gap: 24px;
 `;
 

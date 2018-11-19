@@ -73,11 +73,10 @@ const ContentIntents = styled.div`
 `;
 
 const EventsInfo = styled.div`
-  contain: strict;
   will-change: transform;
   display: flex;
   flex: 1;
-  background: #fff;
+  background: #f2f4f8;
   min-height: 100%;
   flex-direction: column;
 `;

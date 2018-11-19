@@ -200,7 +200,7 @@ const WrapperNew = styled.div`
   width: 180px;
   position: relative;
   z-index: 99999;
-  margin-right: 28px;
+  margin-right: 16px;
   margin-top: 10px;
   flex: 1;
 `;
@@ -213,7 +213,7 @@ const Img = styled.div`
   border-radius: 100px;
   display: inline-block;
   margin-right: 8px;
-  margin-left: 32px;
+  margin-left: 16px;
   margin-top: 18px;
   vertical-align: middle;
   background-size: cover;
@@ -221,9 +221,12 @@ const Img = styled.div`
 
 const SmartSentence = styled.div`
   height: 70px;
-  background: #e3ebf2;
+  background: #fff;
   display: flex;
   flex-direction: row;
+  margin-bottom: 16px;
+  border: 1px solid #dadada;
+  border-radius: 4px;
 `;
 
 const Wrapper = styled.div`
@@ -234,9 +237,7 @@ const Wrapper = styled.div`
   flex: 1;
   margin-top: 8px;
   margin-left: 8px;
-  overflow-y: overlay;
   min-height: 100vh;
-  margin-bottom: -20px;
   ${media.lessThan("medium")`
     display: ${props => (props.isopen ? "none" : "flex")}
   `};
@@ -248,7 +249,7 @@ const Content = styled.div`
   will-change: transform;
   display: flex;
   flex: 1;
-  background: #fff;
+  background:#f2f4f8;
 `;
 
 const Inside = styled.div`

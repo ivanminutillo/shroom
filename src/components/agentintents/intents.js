@@ -245,7 +245,7 @@ const ActionSpan = styled.div`
 
 const WrapperLogEvent = styled.div`
   padding: 10px 0;
-  background: #edf3f8;
+  border-top: 1px solid #e9e9e9;
 `;
 
 const FeedItem = styled.div`
@@ -311,6 +311,7 @@ const Intent = styled.div`
   border: 1px solid #97979740;
   margin: 8px;
   border-radius: 4px;
+  background: #fff;
 `;
 const Events = styled.div`
   ${clearFix()};
