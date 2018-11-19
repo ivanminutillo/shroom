@@ -57,7 +57,7 @@ const AppTemplate = props => {
             console.log(props)
         return (
           <Surface>
-            <Header
+            {/* <Header
               providerId={data.viewer.myAgent.id}
               providerImage={data.viewer.myAgent.image}
               providerName={data.viewer.myAgent.name}
@@ -65,7 +65,7 @@ const AppTemplate = props => {
               togglenewRequirementModal={props.togglenewRequirementModal}
               togglenewProcessModal={props.togglenewProcessModal}
               toggleValidationModal={props.toggleValidationModal}
-              />
+              /> */}
             <Switch>
               <PropsRoute
                 handleGroup={props.handleGroup}

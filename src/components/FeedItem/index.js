@@ -73,8 +73,9 @@ const FeedItem = styled.div`
   padding: 8px;
   word-wrap: break-word;
   font-size: 14px;
-  color: #f0f0f0bd;
-  margin-bottom: 26px;
+  border-bottom: 1px solid #e9e9e9;
+  padding-top: 16px;
+  color: ${props => props.theme.color.p800};
   ${clearFix()};
   transition: background 0.5s ease;
 `;
@@ -82,7 +83,7 @@ const FeedItem = styled.div`
 const Primary = styled.div`
   line-height: 20px;
   display: inline-block;
-  padding: 6px 10px;
+  padding: 0;
   background: #f0f8ff0f;
   border-radius: 56px;
   position: relative;
@@ -90,17 +91,16 @@ const Primary = styled.div`
 
 const Secondary = styled.div`
   font-weight: 400;
-  margin-top: 0px;
+  margin-top: 4px;
   letter-spacing. .5px;
   line-height: 20px;
   font-size: 14px;
-  color: ${props =>
-    props.light ? props.theme.color.p800 : props.theme.color.p150};
+  color: #36393fb0;
 `;
 
 const Member = styled.div`
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: top;
   margin-right: 14px;
 `;
 const Validations = styled.div`
@@ -112,8 +112,7 @@ const Validations = styled.div`
 
 const Sub = styled.div`
   ${clearFix()};
-  position: absolute;
-  bottom: -26px;
+  
 `;
 
 const MemberItem = styled.span`
@@ -166,7 +165,8 @@ const Actions = styled.div`
   ${clearFix()};
   float: left;
   vertical-align: middle;
-  margin-left: 8px;
+  margin-left: 0px;
+  
 `;
 
 const ActionTitle = styled.h3`
