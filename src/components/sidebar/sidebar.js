@@ -5,6 +5,8 @@ import { NavLink } from "react-router-dom";
 import media from "styled-media-query";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import Profile from "./profile";
+
 
 const getInbox = gql`
   query getInbox {
@@ -25,6 +27,13 @@ const getMatched = gql`
 const Sidebar = props => {
   return (
     <Wrapper isopen={props.isOpen}>
+      <Profile
+        togglePanel={props.togglePanel}
+        location={props.location}
+        providerName={props.providerName}
+        handleGroup={props.handleGroup}
+      />
+      <Menu>
       <List>
         <ListTitle>
           <NavLink
@@ -208,11 +217,6 @@ const Sidebar = props => {
               <Icons.Inbox width="14" height="14" color="#f0f0f0bd" />
             </SpanIcon>
             Inbox
-            {/* <Query query={getInbox}>
-              {({ data: { inbox } }) => {
-                return <Total>{inbox}</Total>;
-              }}
-            </Query> */}
           </NavLink>
         </Item>
         <Item>
@@ -236,17 +240,19 @@ const Sidebar = props => {
               <Icons.Star width="14" height="14" color="#f0f0f0bd" />
             </SpanIcon>
             Closed
-            {/* <Query query={getCommitted}>
-              {({ data: { committed } }) => {
-                return <Total>{committed}</Total>;
-              }}
-            </Query> */}
           </NavLink>
         </Item>
       </List>
+      </Menu>
     </Wrapper>
   );
 };
+
+const Menu = styled.div`
+background: #36393F;
+border-radius: 2px;
+margin-top: 8px;
+`
 
 const Total = styled.span`
   float: right;
@@ -265,13 +271,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   overflow-y: hidden;
   overflow: hidden;
-  background: ${props => props.theme.color.p900};
   transition: margin-left 0.5s ease;
-  height: 100%;
-  min-height: 100vh;
-  margin-bottom: -40px;
-  border-right: 1px solid #121315;
-  box-shadow: 1px 0 0 rgba(255, 255, 255, 0.1);
   ${media.lessThan("medium")`
   margin-left: -270px
   ${props =>
@@ -340,6 +340,5 @@ const Item = styled.h3`
     }
   }
 `;
-
 
 export default Sidebar;

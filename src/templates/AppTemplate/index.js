@@ -24,6 +24,9 @@ const Surface = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  width: 1010px;
+  margin: 0 auto;
+  margin-top: 8px;
 `;
 
 const Overlay = styled.div`
@@ -55,7 +58,6 @@ const AppTemplate = props => {
         return (
           <Surface>
             <Header
-              handleGroup={props.handleGroup}
               providerId={data.viewer.myAgent.id}
               providerImage={data.viewer.myAgent.image}
               providerName={data.viewer.myAgent.name}
@@ -63,9 +65,10 @@ const AppTemplate = props => {
               togglenewRequirementModal={props.togglenewRequirementModal}
               togglenewProcessModal={props.togglenewProcessModal}
               toggleValidationModal={props.toggleValidationModal}
-            />
+              />
             <Switch>
               <PropsRoute
+                handleGroup={props.handleGroup}
                 component={Process}
                 path={"/process/:id"}
                 location={props.location}
@@ -77,6 +80,7 @@ const AppTemplate = props => {
                 providerName={data.viewer.myAgent.name}
               />
               <PropsRoute
+              handleGroup={props.handleGroup}
                 component={ProcessList}
                 path={"/processes"}
                 location={props.location}
@@ -88,6 +92,7 @@ const AppTemplate = props => {
                 providerName={data.viewer.myAgent.name}
               />
               <PropsRoute
+              handleGroup={props.handleGroup}
                 component={agentProcesses}
                 location={props.location}
                 onToggleSidebar={props.onToggleSidebar}
@@ -106,6 +111,7 @@ const AppTemplate = props => {
                 handleCompletedOpen={props.handleCompletedOpen}
               />
               <PropsRoute
+              handleGroup={props.handleGroup}
                 component={Agent}
                 location={props.location}
                 onToggleSidebar={props.onToggleSidebar}
@@ -124,6 +130,7 @@ const AppTemplate = props => {
                 handleCompletedOpen={props.handleCompletedOpen}
               />
               <PropsRoute
+              handleGroup={props.handleGroup}
                 component={AgentOverview}
                 location={props.location}
                 onToggleSidebar={props.onToggleSidebar}
@@ -144,6 +151,7 @@ const AppTemplate = props => {
               
               
               <PropsRoute
+              handleGroup={props.handleGroup}
                 component={RequirementsList}
                 path={'/requirements'}
                 location={props.location}
@@ -161,6 +169,7 @@ const AppTemplate = props => {
                 handleCompletedOpen={props.handleCompletedOpen}
               />
               <PropsRoute
+              handleGroup={props.handleGroup}
                 component={Home}
                 path={props.match.path}
                 location={props.location}

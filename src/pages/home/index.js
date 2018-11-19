@@ -2,18 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import Header from "../agent/header";
 import media from "styled-media-query";
-import setInbox from "../../mutations/setInbox";
 import Feed from "../../components/FeedItem";
-import moment from 'moment'
-import {clearFix} from 'polished'
-import setCommitted from "../../mutations/setCommitted";
+import moment from "moment";
+import { clearFix } from "polished";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
-import getCommitments from "../../queries/getCommitments";
-import { PropsRoute } from "../../helpers/router";
-import Todo from "../../components/todo";
 import Sidebar from "../../components/sidebar/sidebar";
-import setMatched from "../../mutations/setMatched";
 import { compose, withState, withHandlers } from "recompose";
 import getFeed from "../../queries/getFeed";
 import { Calendar } from "@nivo/calendar";
@@ -31,6 +25,10 @@ export default compose(
         isopen={props.isopen}
         param={props.match.params.id}
         location={props.location}
+        togglePanel={props.togglePanel}
+        location={props.location}
+        providerName={props.providerName}
+        handleGroup={props.handleGroup}
       />
       <Wrapper isopen={props.isopen}>
         <Header
@@ -72,7 +70,7 @@ export default compose(
                     day: f.start,
                     value: 1
                   }));
-
+                  
                   return (
                     <Contribution>
                       <h3>{feed.length} contributions during this year</h3>
@@ -97,7 +95,13 @@ export default compose(
                           <Feed
                             scopeId={ev.scope.id}
                             image={ev.provider.image}
-                            commitmentId={ev.inputOf ? ev.inputOf.id : ev.outputOf ? ev.outputOf.id : null}
+                            commitmentId={
+                              ev.inputOf
+                                ? ev.inputOf.id
+                                : ev.outputOf
+                                  ? ev.outputOf.id
+                                  : null
+                            }
                             key={i}
                             id={ev.id}
                             loggedUserId={props.providerId}
@@ -113,12 +117,7 @@ export default compose(
                                   " " +
                                   ev.affectedQuantity.unit.name +
                                   " of "}
-                                <i>
-                                  {
-                                    ev.affects.resourceClassifiedAs
-                                      .name
-                                  }
-                                </i>
+                                <i>{ev.affects.resourceClassifiedAs.name}</i>
                               </FeedItem>
                             }
                             secondary={ev.note}

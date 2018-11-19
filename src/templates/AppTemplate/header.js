@@ -2,23 +2,12 @@ import React from "react";
 import s from "styled-components";
 import Select from "react-select";
 import {withRouter} from 'react-router-dom'
-import { clearFix, placeholder } from "polished";
-import gql from "graphql-tag";
+import { clearFix } from "polished";
 import { Icons } from "oce-components/build";
-import { Query } from "react-apollo";
-import { LoadingMini, ErrorMini } from "../../components/loading";
-import { Img, AvatarTitle, AvatarWrapper } from "../../atoms/avatar";
-import {compose, withState, withHandlers} from 'recompose'
-export default withRouter(compose(
-  withState('route', 'onRoute', '/'),
-)(({
-  handleGroup,
-  match, location, history,
-  togglePanel,
-  providerImage,
+export default withRouter(({
+  history,
   togglenewRequirementModal,
   togglenewProcessModal,
-  providerName
 }) => {
   const openStuff = (val) => {
     if (val.value === 'requirement') {
@@ -29,66 +18,6 @@ export default withRouter(compose(
   }
   return (
   <HeaderWrapper>
-    <Header>
-      <Span onClick={togglePanel}>
-        <Icons.Menu width="18" color="#f0f0f0" />
-      </Span>
-      {/* <SpanInput>
-        <AvatarWrapper>
-          <Img small src={`${providerImage}`} />
-          <AvatarTitle>{providerName}</AvatarTitle>
-        </AvatarWrapper>
-      </SpanInput> */}
-      <WrapperSelect>
-      <Query
-        query={agentRelationships}
-        variables={{
-          token: localStorage.getItem("oce_token")
-        }}
-      >
-        {({ loading, error, data, refetch, client }) => {
-          if (loading) return <LoadingMini />;
-          if (error)
-            return (
-              <ErrorMini
-                refetch={refetch}
-                message={`Error! ${error.message}`}
-              />
-            );
-
-          let options = data.viewer.myAgent.agentRelationships.map(a => ({
-            value: a.object.id,
-            label: a.object.name
-          }));
-          options.unshift({ value: "profile", label: providerName });
-          let defaultValue
-          let defaultLabel;
-          console.log(location.pathname.includes('/agent/'))
-          if (location.pathname.includes('/agent/')) {
-            defaultValue = history.location.pathname.replace(/\D/g, "");
-            defaultLabel = data.viewer.myAgent.agentRelationships.filter(
-              a => a.object.id === defaultValue
-            );
-            defaultLabel = defaultLabel[0].object.name;
-          } else {
-            (defaultLabel = providerName), (defaultValue = "profile");
-          }
-          let defaultOption = {
-            value: defaultValue,
-            label: defaultLabel
-          };
-          return (
-            <GroupSelect
-              defaultValue={defaultOption}
-              handleGroup={handleGroup}
-              options={options}
-              client={client}
-            />
-          );
-        }}
-      </Query>
-    </WrapperSelect>
-    </Header>
     <Navigation>
       <button disabled={history.entries.length > 1 ? false : true} onClick={() => history.goBack()}><Icons.Left width='18' height='18' color={history.entries.length > 1 ? '#f0f0f0' : '#f0f0f080'} /></button>
       <button onClick={() => history.goForward()}><Icons.ArrowRight width='18' height='18' color='#f0f0f0' /></button>
@@ -101,45 +30,10 @@ export default withRouter(compose(
           value={{value: null, label: 'Add new...'}}
           options={[{value: 'requirement', label: 'Add a new requirement'}, {value: 'process', label: 'Add a new process'}]}
         />
-      {/* <SpanNew><Icons.Plus width='18' height='18' color='#f0f0f0' /></SpanNew>
-      <Title>Add new requirement</Title> */}
     </WrapperNew>
   </HeaderWrapper>
-)}));
+)});
 
-const agentRelationships = gql`
-  query($token: String) {
-    viewer(token: $token) {
-      myAgent {
-        id
-        agentRelationships {
-          object {
-            id
-            name
-          }
-        }
-      }
-    }
-  }
-`;
-
-const Header = s.div`
-  height: 36px;
-  width: 270px;
-  float: left;
-  ${clearFix()}
-  background: #277BD5;
-  border-right: 1px solid #1e68b8;
-    box-shadow: 1px 0px 0px rgba(250,250,250,0.1);
-`;
-
-const Span = s.div`
-  vertical-align: middle;
-  cursor: pointer;
-  margin-left: 16px;
-  float:left;
-  margin-top: 5px;
-`;
 const Navigation = s.div`
   vertical-align: middle;
   float:left;
@@ -185,58 +79,7 @@ const Navigation = s.div`
   position: relative;
   z-index: 99999;
 `
-const Title = s.h3`
-font-size: 13px;
-line-height: 26px;
-margin-left: 4px;
-float: left;
-`
 
-const SpanInput = s.div`
-  margin-right: 8px;
-  float: left;
-`;
-
-const customStyles = {
-  control: base => ({
-    ...base,
-    background: "transparent",
-    border: "none",
-    color: "#f0f0f0",
-    fontWeight: 500,
-    fontSize: "14px",
-    minHeight: "30px",
-    height: "30px",
-    borderRadius: "0px"
-  }),
-  input: base => ({
-    ...base,
-    color: "#f0f0f0",
-    fontWeight: 500,
-    fontSize: "14px",
-    height: "30px"
-  }),
-  singleValue: base => ({
-    ...base,
-    color: "#f0f0f0",
-    fontWeight: 500,
-    fontSize: "14px"
-  }),
-  option: base => ({
-    ...base,
-    fontSize: "14px"
-  }),
-  menuList: base => ({
-    ...base,
-    fontSize: "14px"
-  }),
-  placeholder: base => ({
-    ...base,
-    color: "#3B99FC",
-    fontWeight: 500,
-    fontSize: "14px"
-  })
-};
 const customStylesTwo = {
   control: base => ({
     ...base,
@@ -278,35 +121,9 @@ const customStylesTwo = {
   })
 };
 
-const WrapperSelect = s.div`
-    float: left;
-    margin: 0;
-    width: 225px;
-    margin-top: 3px;
-    margin-left: 8px;
-    position: relative;
-    z-index: 9999999;
-    & span {
-      background-color: transparent !important;
-    }
-  `;
-
 const HeaderWrapper = s.div`
   height: 36px;
   ${clearFix()}
   background: ${props => props.theme.color.b100};
   `;
 
-
-const GroupSelect = props => {
-  return (
-    <Select
-      placeholder="Select a group..."
-      // value={field.value}
-      styles={customStyles}
-      defaultValue={props.defaultValue}
-      onChange={val => props.handleGroup(val)}
-      options={props.options}
-    />
-  );
-};
