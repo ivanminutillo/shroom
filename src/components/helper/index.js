@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { clearFix, transitions } from "polished";
-import { Icons } from "oce-components/build";
+import Icons from '../../atoms/icons'
 import Select from 'react-select'
 import media from "styled-media-query";
 

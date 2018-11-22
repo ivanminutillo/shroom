@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { clearFix } from "polished";
 import moment from "moment";
-import { Icons } from "oce-components";
+import Icons from '../../atoms/icons'
 import { NavLink } from "react-router-dom";
 import LogEvent from "../logEvent/index";
 import Feed from "../../components/FeedItem";

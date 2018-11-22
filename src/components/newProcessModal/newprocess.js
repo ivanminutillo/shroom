@@ -18,7 +18,7 @@ import CreateCommitment from "../../mutations/CreateCommitment";
 import DateRangeSelect from "../dateRangeSelect";
 import GroupSelect from "../groupSelect";
 import AddNote from "../addNote";
-import { Icons } from "oce-components/build";
+import Icons from '../../atoms/icons'
 import Timeline from "./timeline";
 
 class NewProcess extends React.Component {

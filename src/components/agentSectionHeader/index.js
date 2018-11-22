@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { clearFix } from "polished";
-import {Icons} from 'oce-components'
+import Icons from '../../atoms/icons'
 
 const Header = styled.div`
   height: 26px;

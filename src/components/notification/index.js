@@ -1,4 +1,4 @@
-import { Icons } from "oce-components";
+import Icons from '../../atoms/icons'
 import updateNotification from "../../mutations/updateNotification";
 import deleteNotification from "../../mutations/deleteNotification";
 import React, { createFactory } from "react";

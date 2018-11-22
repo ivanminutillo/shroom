@@ -244,7 +244,6 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.div`
-  contain: strict;
   flex: 1 1 auto;
   will-change: transform;
   display: flex;
@@ -258,7 +257,7 @@ const Inside = styled.div`
   flex-direction: column;
   align-content: center;
   position: relative;
-  overflow-x: overlay;
+  
   position: relative;
 `;
 

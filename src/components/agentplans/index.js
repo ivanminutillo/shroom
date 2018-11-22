@@ -5,7 +5,7 @@ import Header from "../agentSectionHeader";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import {compose, withHandlers, withState} from 'recompose'
 import { Query } from "react-apollo";
-import {Icons} from 'oce-components'
+import Icons from '../atoms/icons'
 import PlanOptions from './planOptions'
 import getActivePlan from "../../queries/getPlans";
 import getAllPlans from "../../queries/getAllPlans";

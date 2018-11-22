@@ -13,7 +13,7 @@ import CreateCommitment from "../../mutations/CreateCommitment";
 import getCommitments from "../../queries/getCommitments";
 import GroupSelect from "../groupSelect";
 import { inputReqs } from "../newProcessModal/options";
-import { Icons } from "oce-components/build";
+import Icons from '../../atoms/icons'
 import Select from "react-select";
 
 export default compose(

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Textarea from '../../atoms/textarea'
-import {Icons} from 'oce-components/build'
+import Icons from '../../atoms/icons'
 import { clearFix, placeholder } from "polished";
 import { Field } from "formik";
 

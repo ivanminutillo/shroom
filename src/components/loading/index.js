@@ -1,5 +1,6 @@
 import React from 'react'
-import {Icons, Button} from 'oce-components/build'
+import Icons from '../../atoms/icons'
+import  Button from '../../atoms/button'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`

@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { clearFix } from "polished";
-import { Icons } from "oce-components";
+import Icons from '../../atoms/icons'
 import moment from "moment";
 import Feed from "../../components/FeedItem";
 import LogEvent from "../../components/logEvent/index";

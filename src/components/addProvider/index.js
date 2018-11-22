@@ -1,5 +1,5 @@
 import { Mutation } from "react-apollo";
-import { Icons } from "oce-components";
+import Icons from '../../atoms/icons'
 import React from "react";
 import styled from "styled-components";
 import getComm from "../../queries/getCommitment";

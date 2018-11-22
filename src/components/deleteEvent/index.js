@@ -1,6 +1,6 @@
 import { Mutation } from "react-apollo";
 import DELETE_EVENT from "../../mutations/deleteEvent";
-import { Icons } from "oce-components";
+import Icons from '../../atoms/icons'
 import React from "react";
 import styled from "styled-components";
 import { compose } from "recompose";

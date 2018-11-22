@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {Icons} from 'oce-components/build'
+import Icons from '../../atoms/icons'
 import {placeholder} from 'polished'
 import DatePicker from "react-datepicker";
 require("react-datepicker/dist/react-datepicker-cssmodules.css");

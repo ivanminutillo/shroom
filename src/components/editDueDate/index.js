@@ -17,7 +17,6 @@ const DueDate = props => {
         selected={props.value}
         onChange={props.action}
         dateFormat={"DD MMM"}
-        withPortal
       />
     </Wrapper>
   );

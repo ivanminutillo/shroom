@@ -3,8 +3,8 @@ import s from "styled-components";
 import { Icons } from "oce-components";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { LoadingMini, ErrorMini } from "../../components/loading";
-import SkillSelect from "./skillSelect";
+import { LoadingMini, ErrorMini } from "../loading";
+import SkillSelect from "../../pages/settings/skillSelect";
 
 const GET_SKILLS = gql`
   query($token: String) {
@@ -66,17 +66,6 @@ export default ({ toggleSkills, providerId }) => (
   </Wrapper>
 );
 
-const Skill = s.div`
-border: 1px solid #2687d1;
-    padding: 5px;
-    border-radius: 2px;
-    color: #3B99FC;
-    font-size: 13px;
-    font-weight: 400;
-    margin-right: 8px;
-    display: inline-block;
-    margin-bottom: 8px;
-`;
 
 const Body = s.div`
   

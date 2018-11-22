@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import UPDATE_COMMITMENT from "../../mutations/updateCommitment";
 import withNotif from "../notification";
 import gql from "graphql-tag";
-import {Icons} from 'oce-components/build'
+import Icons from '../../atoms/icons'
 import styled, {css} from 'styled-components'
 export default compose(
   withNotif("Status is successfully updated", "Error! Status is not updated")

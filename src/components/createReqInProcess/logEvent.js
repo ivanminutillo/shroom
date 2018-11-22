@@ -1,6 +1,6 @@
 import DateRangeSelect from "../dateRangeSelect";
 import React from "react";
-import { Icons } from "oce-components/build";
+import Icons from '../../atoms/icons'
 import Button from "../../atoms/button";
 import Input from "../../atoms/input";
 import Textarea from "../../atoms/textarea";

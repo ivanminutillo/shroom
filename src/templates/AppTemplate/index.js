@@ -24,8 +24,9 @@ const Surface = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  width: 1010px;
+  max-width: 1010px;
   margin: 0 auto;
+  margin-top: 50px;
 `;
 
 const Overlay = styled.div`
@@ -37,6 +38,10 @@ const Overlay = styled.div`
   right: 0;
   background: rgba(0, 0, 0, 0.2);
   cursor: pointer;
+`;
+
+const Whole = styled.div`
+  
 `;
 
 const AppTemplate = props => {
@@ -53,8 +58,15 @@ const AppTemplate = props => {
           return (
             <ErrorMini refetch={refetch} message={`Error! ${error.message}`} />
           );
-            console.log(props)
+          console.log(data)
         return (
+          <Whole>
+            <Header 
+              history={props.history}
+              providerId={data.viewer.myAgent.id}
+              providerImage={data.viewer.myAgent.image}
+              agents={data.viewer.myAgent.agentRelationships}
+            />
           <Surface>
             <Switch>
               <PropsRoute
@@ -209,6 +221,7 @@ const AppTemplate = props => {
               toggleModal={props.togglenewProcessModal}
             />
           </Surface>
+          </Whole>
         );
       }}
     </Query>
@@ -222,6 +235,13 @@ const agentRelationships = gql`
         id
         name
         image
+        agentRelationships {
+          id
+          object {
+            id
+            name
+          }
+        }
       }
     }
   }

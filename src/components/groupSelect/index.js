@@ -2,7 +2,7 @@ import React from "react";
 import { getRelationships } from "../../helpers/asyncQueries";
 import AsyncSelect from "react-select/lib/Async";
 import { ApolloConsumer, graphql } from "react-apollo";
-import { Icons } from "oce-components/build";
+import Icons from '../../atoms/icons'
 import { Field } from "formik";
 import styled from 'styled-components'
 

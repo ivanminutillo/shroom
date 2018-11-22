@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { clearFix } from "polished";
 import { Icons } from "oce-components";
-import EditSkills from './skill'
+import EditSkills from '../../components/skillsModal/skill'
 import EditInfo from './info'
 import { compose, withState, withHandlers } from "recompose";
 

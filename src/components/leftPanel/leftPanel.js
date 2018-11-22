@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { Icons } from "oce-components/build";
+import Icons from '../../atoms/icons'
 import { Img, AvatarTitle, AvatarWrapper } from "../../atoms/avatar";
 import { NavLink } from "react-router-dom";
 import { compose, withHandlers } from "recompose";
