@@ -5,15 +5,8 @@ import { PropsRoute } from "../../helpers/router";
 import getAgentProcesses from "../../queries/getAgentProcesses";
 import processTodo from "../../components/processTodo";
 import ProcessModal from "../process/wrapper";
-import { lifecycle, compose } from "recompose";
 
-export default compose(
-  lifecycle({
-    componentDidMount() {
-      console.log(this.props)
-    }
-  })
-)(props => (
+export default props => (
   <Query
     query={getAgentProcesses}
     variables={{
@@ -73,4 +66,4 @@ export default compose(
       );
     }}
   </Query>
-));
+);

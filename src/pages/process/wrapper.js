@@ -2,7 +2,6 @@ import React from "react";
 import Wrapper from "./index";
 import Modal from "../../components/modal";
 import {withRouter} from 'react-router-dom'
-import { PropsRoute } from "../../helpers/router";
 
 class ProcessModal extends React.Component {
     componentDidMount() {

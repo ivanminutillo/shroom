@@ -71,6 +71,8 @@ const AppTemplate = props => {
                 isCompletedOpen={props.isCompletedOpen}
                 handleCompletedOpen={props.handleCompletedOpen}
                 handleProcess={props.handleProcess}
+                handleProcess={props.handleProcess}
+                processModalIsOpen={props.processModalIsOpen}
               />
               <PropsRoute
                 component={Home}

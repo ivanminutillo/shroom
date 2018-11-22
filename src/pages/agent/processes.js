@@ -4,6 +4,7 @@ import { LoadingMini, ErrorMini } from "../../components/loading";
 import { PropsRoute } from "../../helpers/router";
 import getAgentProcesses from "../../queries/getAgentProcesses";
 import processTodo from "../../components/processTodo";
+import ProcessModal from "../process/wrapper";
 
 export default props => (
   <Query
@@ -26,6 +27,13 @@ export default props => (
 
       return (
         <div>
+           <PropsRoute
+            component={ProcessModal}
+            path={"/processes/:id"}
+              modalIsOpen={props.processModalIsOpen}
+              history={props.history}
+              toggleModal={props.handleProcess}
+            />
           <PropsRoute
             exact
             component={processTodo}
@@ -38,6 +46,7 @@ export default props => (
             providerId={props.providerId}
             providerImage={props.providerImage}
             providerName={props.providerName}
+            handleProcess={props.handleProcess}
           />
           <PropsRoute
             component={processTodo}
@@ -51,7 +60,9 @@ export default props => (
             providerId={props.providerId}
             providerImage={props.providerImage}
             providerName={props.providerName}
+            handleProcess={props.handleProcess}
           />
+
         </div>
       );
     }}

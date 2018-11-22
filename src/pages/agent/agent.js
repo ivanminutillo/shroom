@@ -42,6 +42,8 @@ export default compose(
                   providerId={props.providerId}
                   event={props.event}
                   param={props.match.params.id}
+                  handleProcess={props.handleProcess}
+                  processModalIsOpen={props.processModalIsOpen}
                 />
                 <PropsRoute
                   component={Profile}

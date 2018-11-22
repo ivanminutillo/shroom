@@ -1,5 +1,4 @@
 import React from "react";
-import Sidebar from "../../components/sidebar/sidebar";
 import styled from "styled-components";
 import media from "styled-media-query";
 import Header from "./header";
