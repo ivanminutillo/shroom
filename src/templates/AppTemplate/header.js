@@ -56,7 +56,7 @@ export default compose(
             </Navigation>
           </LeftHeader>
           <Title>
-            <span>🍄</span>
+            <span role='img'>🍄</span>
           </Title>
           <WrapperNew>
             <Img

@@ -1,16 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import Header from "./header";
 import media from "styled-media-query";
-import { Query } from "react-apollo";
-import { LoadingMini, ErrorMini } from "../../components/loading";
-import getCommitments from "../../queries/getCommitments";
-import setInbox from "../../mutations/setInbox";
-import Todo from "../../components/todo";
+import Profile from './overview'
+import Requirements from './requirements'
+import Processes from './processes'
 import { PropsRoute } from "../../helpers/router";
 import Sidebar from "../../components/sidebar/sidebar";
 import { compose, withState, withHandlers } from "recompose";
-import setCommitted from "../../mutations/setCommitted";
 
 export default compose(
   withState("event", "onEvent", "all"),
@@ -21,150 +17,41 @@ export default compose(
   return (
     <Body>
       <Sidebar
-        isopen={props.isopen}
-        location={props.location}
         param={props.match.params.id}
-        togglePanel={props.togglePanel}
-        providerName={props.providerName}
-        handleGroup={props.handleGroup}
+        providerId={props.providerId}
+        location={props.location}
       />
-      <Wrapper isopen={props.isopen}>
+      <Wrapper>
         <Content>
           <Inside>
-            <Query
-              query={getCommitments}
-              variables={{
-                token: localStorage.getItem("oce_token"),
-                id: props.match.params.id
-              }}
-            >
-              {({ loading, error, data, client, refetch }) => {
-                if (loading) return <LoadingMini />;
-                if (error)
-                  return (
-                    <ErrorMini
-                      refetch={refetch}
-                      message={`Error! ${error.message}`}
-                    />
-                  );
-                let intents = data.viewer.agent.agentCommitments;
-                let filteredIntents = [];
-                if (props.event !== "all") {
-                  filteredIntents = intents.filter(
-                    i => i.action === props.event
-                  );
-                } else {
-                  filteredIntents = intents;
-                }
-                // INBOX
-                let inbox = filteredIntents.filter(i => !i.isFinished);
-                let completed = filteredIntents.filter(i => i.isFinished);
-                client.mutate({
-                  mutation: setInbox,
-                  variables: { total: filteredIntents.length }
-                });
-                // COMMITTED
-                let allCommittedIntents = filteredIntents.filter(
-                  int =>
-                    int.provider ? int.provider.id === props.providerId : null
-                );
-                let committed = allCommittedIntents.filter(i => !i.isFinished);
-                let committedCompleted = allCommittedIntents.filter(
-                  i => i.isFinished
-                );
-                client.mutate({
-                  mutation: setCommitted,
-                  variables: { total: allCommittedIntents.length }
-                });
-                return (
-                  <Overview>
-                    <Header
-                      image={data.viewer.agent.image}
-                      name={data.viewer.agent.name}
-                      toggleLeftPanel={props.toggleLeftPanel}
-                      togglePanel={props.togglePanel}
-                      handleEvent={props.handleEvent}
-                    />
-                    {/* {props.id ? null : (
-                  <ApolloConsumer>
-                    {client => (
-                      <SmartSentence
-                        client={client}
-                        providerId={props.providerId}
-                        providerImage={props.providerImage}
-                        providerName={props.providerName}
-                        scopeId={props.match.params.id}
-                      />
-                    )}
-                  </ApolloConsumer>
-                )}  */}
-                  <div style={{display: 'flex', height: '100%'}}>
-                    <PropsRoute
-                      exact
-                      component={Todo}
-                      activeIntents={inbox}
-                      completed={completed}
-                      path={props.match.path}
-                      onToggleSidebar={props.onToggleSidebar}
-                      togglePanel={props.togglePanel}
-                      isSidebarOpen={props.isSidebarOpen}
-                      client={client}
-                      providerId={props.providerId}
-                      providerImage={props.providerImage}
-                      providerName={props.providerName}
-                      toggleValidationModal={props.toggleValidationModal}
-                      isCommittedOpen={props.isCommittedOpen}
-                      handleCommittedOpen={props.handleCommittedOpen}
-                      isCompletedOpen={props.isCompletedOpen}
-                      handleCompletedOpen={props.handleCompletedOpen}
-                    />
-                    <PropsRoute
-                      component={Todo}
-                      exact
-                      path={`/agent/${
-                        props.match.params.id
-                      }/requirements/committed`}
-                      activeIntents={committed}
-                      completed={committedCompleted}
-                      onToggleSidebar={props.onToggleSidebar}
-                      togglePanel={props.togglePanel}
-                      isSidebarOpen={props.isSidebarOpen}
-                      client={client}
-                      providerId={props.providerId}
-                      providerImage={props.providerImage}
-                      providerName={props.providerName}
-                      toggleValidationModal={props.toggleValidationModal}
-                      isCommittedOpen={props.isCommittedOpen}
-                      handleCommittedOpen={props.handleCommittedOpen}
-                      isCompletedOpen={props.isCompletedOpen}
-                      handleCompletedOpen={props.handleCompletedOpen}
-                    />
-                    <PropsRoute
-                      component={Todo}
-                      exact
-                      path={`/agent/${
-                        props.match.params.id
-                      }/requirements/matched`}
-                      activeIntents={inbox}
-                      completed={completed}
-                      onToggleSidebar={props.onToggleSidebar}
-                      togglePanel={props.togglePanel}
-                      isSidebarOpen={props.isSidebarOpen}
-                      client={client}
-                      providerId={props.providerId}
-                      providerImage={props.providerImage}
-                      providerName={props.providerName}
-                      toggleValidationModal={props.toggleValidationModal}
-                      isCommittedOpen={props.isCommittedOpen}
-                      handleCommittedOpen={props.handleCommittedOpen}
-                      isCompletedOpen={props.isCompletedOpen}
-                      handleCompletedOpen={props.handleCompletedOpen}
-                    />
-                    </div>
-                  </Overview>
-                );
-              }}
-            </Query>
+            <Overview>
+              <PropsRoute
+                  component={Requirements}
+                  path="/agent/:id/requirements"
+                  providerId={props.providerId}
+                  param={props.match.params.id}
+                  event={props.event}
+                  isCommittedOpen={props.isCommittedOpen}
+                  handleCommittedOpen={props.handleCommittedOpen}
+                  isCompletedOpen={props.isCompletedOpen}
+                  handleCompletedOpen={props.handleCompletedOpen}
+                />
+                <PropsRoute
+                  component={Processes}
+                  path="/agent/:id/processes"
+                  providerId={props.providerId}
+                  event={props.event}
+                  param={props.match.params.id}
+                />
+                <PropsRoute
+                  component={Profile}
+                  path={props.match.path}
+                  param={props.match.params.id}
+                  providerId={props.providerId}
+                  event={props.event}
+                  exact
+                />
+            </Overview>
           </Inside>
         </Content>
       </Wrapper>
@@ -214,7 +101,6 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   position: relative;
   flex: 1;
-  margin-top: 8px;
   margin-left: 8px;
   min-height: 100vh;
   ${media.lessThan("medium")`
@@ -223,11 +109,11 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.div`
-  flex: 1 1 auto;
   will-change: transform;
   display: flex;
   flex: 1;
-  background:#f2f4f8;
+  background:#fff;
+  padding-top: 8px;
 `;
 
 const Inside = styled.div`

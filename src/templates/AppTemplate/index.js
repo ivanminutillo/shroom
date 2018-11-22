@@ -13,12 +13,8 @@ import Home from "../../pages/home";
 import { PropsRoute } from "../../helpers/router";
 import Agent from "../../pages/agent/agent";
 import { Switch } from "react-router-dom";
-import ProcessList from '../../pages/processList'
-import RequirementsList from '../../pages/requirementsList'
 import NewProcessModal from '../../components/newProcessModal'
 import Process from "../../pages/process";
-import agentProcesses from "../../pages/agentProcesses";
-import AgentOverview from '../../pages/agentOverview'
 
 const Surface = styled.div`
   height: 100%;
@@ -54,11 +50,7 @@ const AppTemplate = props => {
     >
       {({ loading, error, data, refetch, client }) => {
         if (loading) return <LoadingMini />;
-        if (error)
-          return (
-            <ErrorMini refetch={refetch} message={`Error! ${error.message}`} />
-          );
-          console.log(data)
+        if (error) return (<ErrorMini refetch={refetch} message={`Error! ${error.message}`} />)
         return (
           <Whole>
             <Header 
@@ -82,64 +74,9 @@ const AppTemplate = props => {
                 providerName={data.viewer.myAgent.name}
               />
               <PropsRoute
-              handleGroup={props.handleGroup}
-                component={ProcessList}
-                path={"/processes"}
-                location={props.location}
-                onToggleSidebar={props.onToggleSidebar}
-                togglePanel={props.onTogglePanel}
-                isSidebarOpen={props.isSidebarOpen}
-                providerId={data.viewer.myAgent.id}
-                providerImage={data.viewer.myAgent.image}
-                providerName={data.viewer.myAgent.name}
-              />
-              <PropsRoute
-              handleGroup={props.handleGroup}
-                component={agentProcesses}
-                location={props.location}
-                onToggleSidebar={props.onToggleSidebar}
-                path="/agent/:id/processes"
-                data={props}
-                togglePanel={props.onTogglePanel}
-                isSidebarOpen={props.isSidebarOpen}
-                client={client}
-                providerId={data.viewer.myAgent.id}
-                providerImage={data.viewer.myAgent.image}
-                providerName={data.viewer.myAgent.name}
-                toggleValidationModal={props.toggleValidationModal}
-                isCommittedOpen={props.isCommittedOpen}
-                handleCommittedOpen={props.handleCommittedOpen}
-                isCompletedOpen={props.isCompletedOpen}
-                handleCompletedOpen={props.handleCompletedOpen}
-              />
-              <PropsRoute
-                handleGroup={props.handleGroup}
                 component={Agent}
                 location={props.location}
-                onToggleSidebar={props.onToggleSidebar}
-                path="/agent/:id/requirements"
-                data={props}
-                togglePanel={props.onTogglePanel}
-                isSidebarOpen={props.isSidebarOpen}
-                client={client}
-                providerId={data.viewer.myAgent.id}
-                providerImage={data.viewer.myAgent.image}
-                providerName={data.viewer.myAgent.name}
-                toggleValidationModal={props.toggleValidationModal}
-                isCommittedOpen={props.isCommittedOpen}
-                handleCommittedOpen={props.handleCommittedOpen}
-                isCompletedOpen={props.isCompletedOpen}
-                handleCompletedOpen={props.handleCompletedOpen}
-              />
-              <PropsRoute
-                handleGroup={props.handleGroup}
-                component={AgentOverview}
-                location={props.location}
-                onToggleSidebar={props.onToggleSidebar}
                 path="/agent/:id"
-                data={props}
-                togglePanel={props.onTogglePanel}
-                isSidebarOpen={props.isSidebarOpen}
                 client={client}
                 providerId={data.viewer.myAgent.id}
                 providerImage={data.viewer.myAgent.image}
@@ -150,37 +87,10 @@ const AppTemplate = props => {
                 isCompletedOpen={props.isCompletedOpen}
                 handleCompletedOpen={props.handleCompletedOpen}
               />
-              
-              
               <PropsRoute
-                handleGroup={props.handleGroup}
-                component={RequirementsList}
-                path={'/requirements'}
-                location={props.location}
-                onToggleSidebar={props.onToggleSidebar}
-                togglePanel={props.onTogglePanel}
-                isSidebarOpen={props.isSidebarOpen}
-                client={client}
-                providerId={data.viewer.myAgent.id}
-                providerImage={data.viewer.myAgent.image}
-                providerName={data.viewer.myAgent.name}
-                toggleValidationModal={props.toggleValidationModal}
-                isCommittedOpen={props.isCommittedOpen}
-                handleCommittedOpen={props.handleCommittedOpen}
-                isCompletedOpen={props.isCompletedOpen}
-                handleCompletedOpen={props.handleCompletedOpen}
-
-                togglenewRequirementModal={props.togglenewRequirementModal}
-                togglenewProcessModal={props.togglenewProcessModal}
-              />
-              <PropsRoute
-                  handleGroup={props.handleGroup}
                 component={Home}
                 path={props.match.path}
                 location={props.location}
-                onToggleSidebar={props.onToggleSidebar}
-                togglePanel={props.onTogglePanel}
-                isSidebarOpen={props.isSidebarOpen}
                 client={client}
                 providerId={data.viewer.myAgent.id}
                 providerImage={data.viewer.myAgent.image}

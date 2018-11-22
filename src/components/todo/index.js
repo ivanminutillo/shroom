@@ -76,7 +76,6 @@ const EventsInfo = styled.div`
   will-change: transform;
   display: flex;
   flex: 1;
-  background: #f2f4f8;
   min-height: 100%;
   flex-direction: column;
 `;

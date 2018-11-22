@@ -77,7 +77,6 @@ const Wrapper = styled.div`
   position: relative;
   flex: 1;
   margin-top: 8px;
-  background: #f2f4f8;
   padding: 8px;
   margin-left: 8px;
   ${media.lessThan("medium")`

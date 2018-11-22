@@ -5,41 +5,12 @@ import { clearFix } from "polished";
 import { Icons } from "oce-components/build";
 import Select from "react-select";
 import {withRouter} from 'react-router-dom'
-export default withRouter(({
-  toggleLeftPanel,
-  history,
-  togglePanel,
-  handleEvent,
-  togglenewRequirementModal,
-  togglenewProcessModal,
-  name,
-  image
-}) => {
- 
-  return (
+export default ({
+  name
+}) =>  (
     <WrappedHeader>
       <Header>
-        <Navigation>
-          <button
-            // disabled={history.entries.length > 1 ? false : true}
-            onClick={() => history.goBack()}
-          >
-            <Icons.Left
-              width="18"
-              height="18"
-              color='#f0f0f080'
-              // color={history.entries.length > 1 ? "#f0f0f0" : "#f0f0f080"}
-            />
-          </button>
-          <button onClick={() => history.goForward()}>
-            <Icons.ArrowRight width="18" height="18" color="#f0f0f080" />
-          </button>
-        </Navigation>
         <HeaderLeft>
-          <HeaderSpan onClick={toggleLeftPanel}>
-            <Icons.Left width="22" height="22" color="#99ADC6" />
-          </HeaderSpan>
-          <Img src={image} />
           <Title>{name}</Title>
         </HeaderLeft>
       </Header>
@@ -61,86 +32,7 @@ export default withRouter(({
       </Filter> */}
     </WrappedHeader>
   );
-});
 
-const customStyles = {
-  control: base => ({
-    ...base,
-    background: "rgba(250,250,250,0)",
-    border: "none",
-    color: "#3B99FC",
-    fontWeight: 500,
-    fontSize: "13px",
-    minHeight: "22px",
-    height: "22px",
-    borderRadius: "4px"
-  }),
-  input: base => ({
-    ...base,
-    color: "#3B99FC",
-    fontWeight: 500,
-    fontSize: "13px",
-    height: "22px"
-  }),
-  singleValue: base => ({
-    ...base,
-    color: "#3B99FC",
-    fontWeight: 500,
-    fontSize: "13px"
-  }),
-  option: base => ({
-    ...base,
-    fontSize: "13px",
-    color: "#333"
-  }),
-  menuList: base => ({
-    ...base,
-    fontSize: "13px",
-    color: "#333"
-  }),
-  placeholder: base => ({
-    ...base,
-    color: "#3B99FC",
-    fontWeight: 500,
-    fontSize: "13px"
-  })
-};
-
-const Navigation = styled.div`
-  vertical-align: middle;
-  float:left;
-  margin-top: 12px;
-  margin-left: 8px;
-  & button {
-    width: 30px;
-    border: none;
-    height: 25px;
-    display: inline-block;
-    text-align: center;
-    background: transparent;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-    cursor: pointer;
-    &[disabled] {
-      background: #7d8d9ead;
-      &:hover {
-        background: #7d8d9ead; 
-      }
-    }
-    &:hover {
-      background: #6e5ddf;
-    }
-    &:last-of-type {
-      border-radius: 0;
-      border-top-right-radius: 3px;
-      border-bottom-right-radius: 3px;
-      margin-left: 1px;
-    }
-    & svg {
-      margin-top: 3px;
-    }
-  }
-  `;
 
 const Filter = styled.div`
   ${clearFix()};
@@ -168,7 +60,7 @@ const WrappedHeader = styled.div`
 
 const Header = styled.div`
   position: relative;
-  height: 50px;
+  height: 30px;
   color: ${props => props.theme.color.p100};
   background: #36393F;
   border-bottom: 1px solid #1e2024;
