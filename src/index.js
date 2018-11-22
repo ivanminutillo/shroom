@@ -29,7 +29,7 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     height: 100%;
     padding: 0;
-    background: #2a3545;
+    background: #282B30;
   }
   .vis-timeline {
     visibility: visible !important

@@ -15,7 +15,7 @@ const Process = props => (
     query={getProcess}
     variables={{
       token: localStorage.getItem("oce_token"),
-      id: Number(props.match.params.id)
+      id: Number(props.id)
     }}
   >
     {({ loading, error, data, refetch, client }) => {
@@ -30,15 +30,14 @@ const Process = props => (
         data.viewer.process.committedInputs.length;
       return (
         <Body>
-          <Sidebar
+          {/* <Sidebar
             profile="true"
-            isopen={props.isopen}
             param={props.match.params.id}
-            location={props.location}
+            providerImage={props.providerImage}
             providerName={props.providerName}
-            handleGroup={props.handleGroup}
-            togglePanel={props.togglePanel}
-          />
+            providerId={props.providerId}
+            location={props.location}
+          /> */}
           <Wrapper isopen={props.isopen}>
             <Header
               title={data.viewer.process.name}
@@ -76,7 +75,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   position: relative;
   flex: 1;
-  margin-top: 8px;
+  background: #fff;
   padding: 8px;
   margin-left: 8px;
   ${media.lessThan("medium")`

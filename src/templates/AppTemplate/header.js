@@ -240,5 +240,5 @@ const HeaderWrapper = s.div`
   left: 0;
   top: 0;
   right: 0;
-  z-index: 9999999999999999999999999;
+  z-index: 999999;;
   `;

@@ -28,7 +28,7 @@ export default compose(
       props.onSentenceOpen(!props.isSentenceOpen);
     }
   })
-)(({ data, toggleTimeline, isTimelineOpen }) => {
+)(({ data, toggleTimeline, isTimelineOpen, handleProcess }) => {
   let inputs = data.committedInputs.concat(data.committedOutputs);
   return (
     <Intent>
@@ -41,9 +41,7 @@ export default compose(
       </Infos>
       <Wrapper>
         <First>
-          <NavLink to={`/process/${data.id}`}>
-            <Sentence>{data.name}</Sentence>
-          </NavLink>
+            <Sentence onClick={() => handleProcess(data.id)}>{data.name}</Sentence>
           <Note>{data.note}</Note>
         </First>
         <Second>

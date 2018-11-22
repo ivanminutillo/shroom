@@ -22,6 +22,7 @@ export default props => {
                 scopeId={process.scope ? process.scope.id : null}
                 myId={props.providerId}
                 providerImage={props.providerImage}
+                handleProcess={props.handleProcess}
               />
             ))}
           </ContentIntents>

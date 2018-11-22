@@ -3,8 +3,6 @@ import gql from "graphql-tag";
 import { compose, withHandlers, withState } from "recompose";
 import styled from "styled-components";
 import { LoadingMini, ErrorMini } from "../../components/loading";
-import LeftPanel from "../../components/leftPanel/leftPanel";
-import SettingModal from "../../pages/settings";
 import Header from "./header";
 import { Query } from "react-apollo";
 import ValidationModal from "../../components/modalValidation";
@@ -14,7 +12,7 @@ import { PropsRoute } from "../../helpers/router";
 import Agent from "../../pages/agent/agent";
 import { Switch } from "react-router-dom";
 import NewProcessModal from '../../components/newProcessModal'
-import Process from "../../pages/process";
+import ProcessModal from "../../pages/process/wrapper";
 
 const Surface = styled.div`
   height: 100%;
@@ -23,17 +21,6 @@ const Surface = styled.div`
   max-width: 1010px;
   margin: 0 auto;
   margin-top: 50px;
-`;
-
-const Overlay = styled.div`
-  position: absolute;
-  z-index: 9;
-  top: 0;
-  bottom: 0;
-  left: 270px;
-  right: 0;
-  background: rgba(0, 0, 0, 0.2);
-  cursor: pointer;
 `;
 
 const Whole = styled.div`
@@ -61,18 +48,15 @@ const AppTemplate = props => {
             />
           <Surface>
             <Switch>
-              <PropsRoute
-                handleGroup={props.handleGroup}
+              {/* <PropsRoute
                 component={Process}
                 path={"/process/:id"}
                 location={props.location}
-                onToggleSidebar={props.onToggleSidebar}
-                togglePanel={props.onTogglePanel}
-                isSidebarOpen={props.isSidebarOpen}
                 providerId={data.viewer.myAgent.id}
                 providerImage={data.viewer.myAgent.image}
                 providerName={data.viewer.myAgent.name}
-              />
+                toggleModal={props.handleProcess}
+              /> */}
               <PropsRoute
                 component={Agent}
                 location={props.location}
@@ -86,6 +70,7 @@ const AppTemplate = props => {
                 handleCommittedOpen={props.handleCommittedOpen}
                 isCompletedOpen={props.isCompletedOpen}
                 handleCompletedOpen={props.handleCompletedOpen}
+                handleProcess={props.handleProcess}
               />
               <PropsRoute
                 component={Home}
@@ -100,21 +85,10 @@ const AppTemplate = props => {
                 handleCommittedOpen={props.handleCommittedOpen}
                 isCompletedOpen={props.isCompletedOpen}
                 handleCompletedOpen={props.handleCompletedOpen}
+                handleProcess={props.handleProcess}
+                processModalIsOpen={props.processModalIsOpen}
               />
             </Switch>
-            <LeftPanel
-              data={data.viewer.myAgent}
-              togglePanel={props.onTogglePanel}
-              active={props.isopen}
-              toggleSettings={props.onToggleSettings}
-            />
-            {props.isopen ? <Overlay onClick={props.onTogglePanel} /> : null}
-            <SettingModal
-              modalIsOpen={props.isSettingsOpen}
-              toggleModal={props.onToggleSettings}
-              providerId={data.viewer.myAgent.id}
-            />
-
             <ValidationModal
               modalIsOpen={props.validationModalIsOpen}
               toggleModal={props.toggleValidationModal}
@@ -130,6 +104,11 @@ const AppTemplate = props => {
               history={props.history}
               toggleModal={props.togglenewProcessModal}
             />
+            {/* <ProcessModal
+              modalIsOpen={props.processModalIsOpen}
+              history={props.history}
+              toggleModal={props.handleProcess}
+            /> */}
           </Surface>
           </Whole>
         );
@@ -169,23 +148,21 @@ export default compose(
     false
   ),
   withState("validationModalIsOpen", "toggleValidationModalIsOpen", false),
+  withState("processModalIsOpen", "toggleProcessModalIsOpen", false),
   withState("validationModalId", "selectValidationModalId", null),
-  withState("group", "onGroup", "all"),
-  withState("isopen", "togglePanel", false),
-  withState("isSidebarOpen", "toggleSidebar", false),
-  withState("isSettingsOpen", "toggleSettings", false),
   withState("intentModalIsOpen", "toggleIntentModalIsOpen", false),
   withState("intentModal", "selectIntentModal", null),
   withState("isCommittedOpen", "onCommittedOpen", true),
   withState("isCompletedOpen", "onCompletedOpen", false),
 
   withHandlers({
-    handleGroup: props => val => {
-      props.onGroup(val.value);
-      if (val.value !== "profile") {
-        return props.history.push("/agent/" + val.value);
+    handleProcess: props => (id) => {
+      if (props.processModalIsOpen) {
+        props.history.goBack()
+        props.toggleProcessModalIsOpen(false)
       } else {
-        return props.history.push("/");
+        props.history.push('/processes/' + id)
+        props.toggleProcessModalIsOpen(true)
       }
     },
     handleCommittedOpen: props => () =>
@@ -196,21 +173,6 @@ export default compose(
       props.selectIntentModal(contributionId);
       props.toggleIntentModalIsOpen(!props.intentModalIsOpen);
     },
-    onToggleSettings: props => () => {
-      props.toggleSettings(!props.isSettingsOpen);
-      if (props.isopen && props.isSidebarOpen) {
-        return props.toggleSidebar(!props.isSidebarOpen);
-      }
-      return null;
-    },
-    onTogglePanel: props => () => {
-      props.togglePanel(!props.isopen);
-      if (props.isopen && props.isSidebarOpen) {
-        return props.toggleSidebar(!props.isSidebarOpen);
-      }
-      return null;
-    },
-    onToggleSidebar: props => () => props.toggleSidebar(!props.isSidebarOpen),
     togglenewRequirementModal: props => () => {
       props.togglenewRequirementModalIsOpen(!props.newRequirementModalIsOpen);
     },
