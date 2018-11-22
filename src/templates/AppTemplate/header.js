@@ -56,7 +56,7 @@ export default compose(
             </Navigation>
           </LeftHeader>
           <Title>
-            <span role='img'>🍄</span>
+            <NavLink to={'/'}><span role='img'>🍄</span></NavLink>
           </Title>
           <WrapperNew>
             <Img
@@ -73,7 +73,6 @@ export default compose(
                           isActive={(match, location) => {
                             return (
                               location.pathname === `/agent/${a.object.id}/` ||
-                              location.pathname === "/" ||
                               location.pathname === `/agent/${a.object.id}`
                             );
                           }}
@@ -166,8 +165,21 @@ const Title = s.div`
 margin-top: 4px;
 text-align: center;
 flex: 1;
+a {
+  text-decoration: none;
+    width: 28px;
+    height: 28px;
+    border: 1px solid #348eee;
+    border-radius: 150px;
+    background: rgba(250,250,250,.2);
+    display: inline-block;
+    &:hover {
+      background: rgba(250,250,250,.3);
+    }
+}
 & span {
   font-size: 16px;
+  padding-left: 5px;
 }
 `;
 
