@@ -50,6 +50,8 @@ const wrapperComponent = compose(
         id: props.providerId,
         providerId: props.providerId,
         receiverId: props.scopeId,
+        inputOfId: props.inputOfId,
+        outputOfId: props.outputOfId,
         commitmentId: props.commitmentId,
         action: values.action.value,
         scopeId: props.scopeId,

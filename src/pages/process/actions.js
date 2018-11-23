@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import Intent from "../../components/agentintents/intents";
 import Timeline from './timeline'
+import Unplanned from './unplanned'
 import "react-tabs/style/react-tabs.css";
 
 export default props => (
@@ -10,6 +11,7 @@ export default props => (
     <StyledTabList>
       <StyledTab>Requirements</StyledTab>
       <StyledTab>Overview</StyledTab>
+      <StyledTab>Unplanned work</StyledTab>
     </StyledTabList>
 
     <StyledTabPanel>
@@ -30,6 +32,15 @@ export default props => (
     </StyledTabPanel>
     <StyledTabPanel>
       <Timeline inputs={props.inputs}/>
+    </StyledTabPanel>
+    <StyledTabPanel>
+      <Unplanned 
+        providerId={props.providerId}
+        scopeId={props.scope ? props.scope.id : null}
+        events={props.events}
+        openValidationModal={props.openValidationModal}
+        processId={props.processId}
+      />
     </StyledTabPanel>
   </Tabs>
 );

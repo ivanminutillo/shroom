@@ -21,7 +21,9 @@ const getProcess = gql`
         plannedStart
         plannedFinish
         isFinished
-     
+        unplannedEconomicEvents {
+          ...BasicEvent
+        }
         userIsAuthorizedToUpdate
         userIsAuthorizedToDelete
         workingAgents {

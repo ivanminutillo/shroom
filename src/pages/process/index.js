@@ -27,16 +27,9 @@ const Process = props => (
         (data.viewer.process.committedInputs.filter(i => i.isFinished).length *
           100) /
         data.viewer.process.committedInputs.length;
+        console.log(data.viewer.process)
       return (
         <Body>
-          {/* <Sidebar
-            profile="true"
-            param={props.match.params.id}
-            providerImage={props.providerImage}
-            providerName={props.providerName}
-            providerId={props.providerId}
-            location={props.location}
-          /> */}
           <Wrapper isopen={props.isopen}>
             <Header
               title={data.viewer.process.name}
@@ -46,12 +39,12 @@ const Process = props => (
               scope={data.viewer.process.scope}
               plan={data.viewer.process.processPlan}
             />
+            <Agents agents={data.viewer.process.workingAgents} />
             <Output
               myId={props.providerId}
               outputs={data.viewer.process.committedOutputs}
               percentage={percentage}
             />
-            <Agents agents={data.viewer.process.workingAgents} />
             <Content>
               <Actions
                 providerImage={props.providerImage}
@@ -59,6 +52,8 @@ const Process = props => (
                 scope={data.viewer.process.scope}
                 inputs={data.viewer.process.committedInputs}
                 client={client}
+                events={data.viewer.process.unplannedEconomicEvents}
+                processId={data.viewer.process.id}
               />
             </Content>
           </Wrapper>

@@ -9,6 +9,7 @@ export default gql`
     $start: String
     $scopeId: Int!
     $inputOfId: Int
+    $outputOfId: Int
     $note: String
     $commitmentId: Int
     $affectedNumericValue: String!
@@ -21,6 +22,7 @@ export default gql`
       start: $start
       fulfillsCommitmentId: $commitmentId
       inputOfId: $inputOfId
+      outputOfId: $outputOfId
       providerId: $providerId
       receiverId: $receiverId
       scopeId: $scopeId

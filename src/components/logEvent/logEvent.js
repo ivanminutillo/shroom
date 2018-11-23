@@ -151,7 +151,7 @@ const LogEvent = ({
                 touched={touched.start}
               />
               <Button  type="submit">Publish</Button>
-              <Button outline onClick={closeLogEvent}>Cancel</Button>
+              {closeLogEvent ? <Button outline onClick={closeLogEvent}>Cancel</Button> : null}
             </Log.PublishActions>
           </Log.Module>
         </Form>
