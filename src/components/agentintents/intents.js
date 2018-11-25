@@ -127,7 +127,7 @@ export default compose(
                     style={{ verticalAlign: "middle" }}
                     onClick={handlePopup}
                   >
-                    <Icons.More width="18" height="18" color="#f0f0f0" />
+                    <Icons.More width="18" height="18" color="#33340" />
                   </span>
                   {popup ? (
                     <OutsideClickHandler onOutsideClick={handlePopup}>
@@ -204,14 +204,12 @@ export default compose(
           </Events>
         ) : (
           <Actions>
-            {addEvent ? null : (
-              <ActionSpan onClick={handleFeedOpen}>
-                <Span>
-                  <Icons.Message width="18" height="18" color="#19191960" />{" "}
-                </Span>
-                ({data.fulfilledBy.length})
-              </ActionSpan>
-            )}
+            <ActionSpan onClick={handleFeedOpen}>
+              <Span>
+                <Icons.Message width="18" height="18" color="#19191960" />{" "}
+              </Span>
+              ({data.fulfilledBy.length})
+            </ActionSpan>
           </Actions>
         )}
       </Intent>

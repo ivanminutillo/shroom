@@ -59,6 +59,11 @@ const getProcess = gql`
           note
           id
           action
+          fulfilledBy {
+            fulfilledBy {
+              ...BasicEvent
+            }
+          }
           provider {
             id
             name

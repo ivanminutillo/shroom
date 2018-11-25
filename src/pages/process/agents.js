@@ -6,7 +6,6 @@ export default props => (
     <Wrapper>
         <Title>
             <span><Icons.Users width='16' height='16' color='#BEBEBE' /></span>
-            {props.agents.length} Agents involved
         </Title>
         <Content>
             {props.agents.map((a,i) => (
@@ -25,10 +24,11 @@ const Content = styled.div`
   margin-top: 16px;
 `
 const Title = styled.div`
-margin-top: 16px;
+margin-top: 8px;
 color: ${props => props.theme.color.p800};
 font-size: 14px;
 letter-spacing: .5px;
+float: left;
 & span {
     margin-right: 8px;
     vertical-align: sub;

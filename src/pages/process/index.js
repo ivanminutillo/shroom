@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import media from "styled-media-query";
 import Header from "./header";
-import Output from "./output";
+import Output from "./outputs";
 import Actions from "./actions";
 import Agents from "./agents";
 import getProcess from "../../queries/getProcess";
@@ -38,12 +38,15 @@ const Process = props => (
               to={moment(data.viewer.process.plannedFinish).format("DD MMM")}
               scope={data.viewer.process.scope}
               plan={data.viewer.process.processPlan}
+              agents={data.viewer.process.workingAgents}
             />
-            <Agents agents={data.viewer.process.workingAgents} />
+            
             <Output
-              myId={props.providerId}
+              providerId={props.providerId}
               outputs={data.viewer.process.committedOutputs}
               percentage={percentage}
+              scopeId={data.viewer.process.scope.id}
+              processId={data.viewer.process.id}
             />
             <Content>
               <Actions

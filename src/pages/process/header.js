@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import media from "styled-media-query";
 import {Icons} from 'oce-components'
 import {NavLink} from 'react-router-dom'
+import Agents from "./agents";
 export default props => (
     <Wrapper>
         <Box>
@@ -18,6 +18,7 @@ export default props => (
             <WrapperAction>
                 <Date><span><Icons.Clock width='16' height='16' color='#F0F0F0' /></span> From {props.from} to {props.to}</Date>
             </WrapperAction>
+            <Agents agents={props.agents} />
         </WrapperInfo>
     </Wrapper>
 )
@@ -56,10 +57,10 @@ const Plan = styled.h3`
 `
 const WrapperInfo = styled.div``
 const Title = styled.h1`
-  font-size: 32px;
+  font-size: 22px;
   color: ${props=>props.theme.color.p900}
   letter-spacing: 1px;
-  margin-bottom: 16px;
+  margin-bottom: 0px;
   line-height: 40px;
 `
 const Note = styled.h2`
@@ -70,7 +71,7 @@ font-weight: 300;
 color: ${props=>props.theme.color.p900}
 `
 const WrapperAction = styled.div`
-margin-top: 16px;
+margin-top: 8px;
 `
 const Date = styled.div`
   background: #40454C;
