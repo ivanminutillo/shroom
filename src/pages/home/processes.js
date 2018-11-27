@@ -28,11 +28,12 @@ export default props => (
       return (
         <div>
            <PropsRoute
-            component={ProcessModal}
-            path={"/processes/:id"}
+              component={ProcessModal}
+              path={"/processes/:id"}
               modalIsOpen={props.processModalIsOpen}
               history={props.history}
               toggleModal={props.handleProcess}
+              providerId={props.providerId}
             />
           <PropsRoute
             component={processTodo}

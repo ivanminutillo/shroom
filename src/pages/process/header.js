@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {Icons} from 'oce-components'
+import  Icons  from "../../atoms/icons";
 import {NavLink} from 'react-router-dom'
 import Agents from "./agents";
 export default props => (

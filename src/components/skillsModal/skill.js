@@ -1,6 +1,6 @@
 import React from "react";
 import s from "styled-components";
-import { Icons } from "oce-components";
+import  Icons  from "../../atoms/icons";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../loading";

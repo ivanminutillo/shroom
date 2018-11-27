@@ -7,21 +7,30 @@ import Processes from './processes'
 import { PropsRoute } from "../../helpers/router";
 import Sidebar from "../../components/sidebar/sidebar";
 import { compose, withState, withHandlers } from "recompose";
-
+import Inventory from '../inventory'
+import SmartSentence from './smartSentence'
 export default compose(
-  withState("event", "onEvent", "all"),
+  withState("activity", "onActivity", null),
+  withState("smartSentence", "onSmartSentence", false),
   withHandlers({
-    handleEvent: props => val => props.onEvent(val.value)
+    handleSmartSentence: props => () => {
+      props.onActivity(null)
+      return props.onSmartSentence(!props.smartSentence)
+    },
+    handleActivity: props => value => props.onActivity(value)
   })
 )(props => {
   return (
     <Body>
+      
       <Sidebar
         param={props.match.params.id}
         providerId={props.providerId}
         location={props.location}
       />
       <Wrapper>
+        <CoverImage />
+        <SmartSentence handleActivity={props.handleActivity} activity={props.activity} scopeId={props.match.params.id} handleSmartSentence={props.handleSmartSentence} isActive={props.smartSentence}/>
         <Content>
           <Inside>
             <Overview>
@@ -53,49 +62,42 @@ export default compose(
                   event={props.event}
                   exact
                 />
+                <PropsRoute
+                  component={Inventory}
+                  path={"/agent/:id/inventory"}
+                  providerId={props.match.params.id}
+                  exact
+                />
             </Overview>
           </Inside>
         </Content>
       </Wrapper>
+      {props.smartSentence ? <Overlay onClick={props.handleSmartSentence} /> : null}
     </Body>
   );
 });
 
 
-const WrapperNew = styled.div`
-  cursor: pointer;
-  box-sizing: border-box;
-  width: 180px;
-  position: relative;
-  z-index: 99999;
-  margin-right: 16px;
-  margin-top: 10px;
-  flex: 1;
-`;
-
-
-const Img = styled.div`
-  width: 34px;
-  height: 34px;
-  background: ${props => props.theme.color.p150};
-  border-radius: 100px;
-  display: inline-block;
-  margin-right: 8px;
-  margin-left: 16px;
-  margin-top: 18px;
-  vertical-align: middle;
-  background-size: cover;
-`;
-
-const SmartSentence = styled.div`
-  height: 70px;
-  background: #fff;
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 16px;
-  border: 1px solid #dadada;
-  border-radius: 4px;
-`;
+const CoverImage = styled.div`
+height: 300px;
+background: url(https://picsum.photos/800/300);
+background-repeat: no-repeat;
+background-size: cover;
+background-position: center center;
+margin: 10px;
+margin-top: 0;
+border-radius: 2px;
+`
+const Overlay = styled.div`
+  background: rgba(0,0,0,.4);
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100vh;
+`
 
 const Wrapper = styled.div`
   display: flex;
@@ -114,8 +116,7 @@ const Content = styled.div`
   will-change: transform;
   display: flex;
   flex: 1;
-  background:#fff;
-  padding-top: 8px;
+  // background:#fff;
 `;
 
 const Inside = styled.div`
@@ -123,8 +124,6 @@ const Inside = styled.div`
   flex: 1;
   flex-direction: column;
   align-content: center;
-  position: relative;
-
   position: relative;
 `;
 

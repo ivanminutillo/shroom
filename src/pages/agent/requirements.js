@@ -6,8 +6,11 @@ import getCommitments from "../../queries/getCommitments";
 import setInbox from "../../mutations/setInbox";
 import Todo from "../../components/todo";
 import { PropsRoute } from "../../helpers/router";
+import { compose, withState } from "recompose";
 
-export default props => (
+export default compose(
+  withState('filter', 'onFilter', null),
+)(props => (
   <Query
     query={getCommitments}
     variables={{
@@ -16,7 +19,6 @@ export default props => (
     }}
   >
     {({ loading, error, data, client, refetch }) => {
-        console.log('sahudsahuidhsauihasdiu')
       if (loading) return <LoadingMini />;
       if (error)
         return (
@@ -24,11 +26,24 @@ export default props => (
         );
       let intents = data.viewer.agent.agentCommitments;
       let filteredIntents = [];
-      if (props.event !== "all") {
-        filteredIntents = intents.filter(i => i.action === props.event);
+      if (props.filter === 'active') {
+        filteredIntents = intents.filter(i => !i.isFinished);
+      } else if (props.filter === 'completed') {
+        filteredIntents = intents.filter(i => i.isFinished);
+      } else if (props.filter === 'committed') {
+        filteredIntents = intents.filter(i => i.provider ? i.provider.id === props.providerId : null);
+      } else if (props.filter === 'without process') {
+        filteredIntents = intents.filter(i => !i.inputOf && !i.outputOf)
+      } else if (props.filter === 'with process') {
+        filteredIntents = intents.filter(i => i.inputOf || i.outputOf)
       } else {
         filteredIntents = intents;
       }
+      // if (props.filter) {
+      //   filteredIntents = intents.filter(i => i.action === props.filter);
+      // } else {
+      //   filteredIntents = intents;
+      // }
       // INBOX
       let inbox = filteredIntents.filter(i => !i.isFinished);
       let completed = filteredIntents.filter(i => i.isFinished);
@@ -50,8 +65,10 @@ export default props => (
         <div style={{ display: "flex", height: "100%" }}>
           <PropsRoute
             exact
+            filter={props.filter}
+            onFilter={props.onFilter}
             component={Todo}
-            activeIntents={inbox}
+            activeIntents={filteredIntents}
             completed={completed}
             path={props.match.path}
             onToggleSidebar={props.onToggleSidebar}
@@ -109,4 +126,4 @@ export default props => (
       );
     }}
   </Query>
-);
+));

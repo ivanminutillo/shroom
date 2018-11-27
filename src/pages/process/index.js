@@ -27,7 +27,6 @@ const Process = props => (
         (data.viewer.process.committedInputs.filter(i => i.isFinished).length *
           100) /
         data.viewer.process.committedInputs.length;
-        console.log(data.viewer.process)
       return (
         <Body>
           <Wrapper isopen={props.isopen}>

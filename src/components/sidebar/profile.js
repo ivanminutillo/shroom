@@ -1,80 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { clearFix } from "polished";
-import { Img, AvatarTitle, AvatarWrapper } from "../../atoms/avatar";
+import { Img, AvatarTitle } from "../../atoms/avatar";
 import { NavLink } from "react-router-dom";
 const ProfileHeader = ({ providerImage, providerName, providerId, location }) => (
   <Profile>
     <Header>
-      <AvatarWrapper>
-        <RoundedImg src={`${providerImage}`} />
         <Title>{providerName}</Title>
-      </AvatarWrapper>
     </Header>
-    <List>
-      <NavLink
-        isActive={(match, location) => {
-          return (
-            location.pathname === `/agent/${providerId}/` ||
-            location.pathname === "/" ||
-            location.pathname === `/agent/${providerId}`
-          );
-        }}
-        to={
-          providerId && location.pathname.includes("/agent/")
-            ? `/agent/${providerId}/`
-            : `/`
-        }
-        activeStyle={{
-          position: "relative",
-          color: "#3B99FC"
-        }}
-      >
-        <Item>Home</Item>
-      </NavLink>
-      <NavLink
-        isActive={(match, location) => {
-          return (
-            location.pathname === `/agent/${providerId}/relationships` ||
-            location.pathname === "/relationships" ||
-            location.pathname === `/agent/${providerId}/relationships/`
-          );
-        }}
-        to={
-          providerId && location.pathname.includes("/agent/")
-            ? `/agent/${providerId}/relationships`
-            : `/relationships`
-        }
-        activeStyle={{
-          position: "relative",
-          marginLeft: "24px",
-          color: "#3B99FC"
-        }}
-      >
-        <Item>Relationships</Item>
-      </NavLink>
-      <NavLink 
-       isActive={(match, location) => {
-        return (
-          location.pathname === `/agent/${providerId}/inventory` ||
-          location.pathname === "/inventory" ||
-          location.pathname === `/agent/${providerId}/inventory/`
-        );
-      }}
-      to={
-        providerId && location.pathname.includes("/agent/")
-          ? `/agent/${providerId}/inventory`
-          : `/inventory`
-      }
-      activeStyle={{
-        position: "relative",
-        marginLeft: "24px",
-        color: "#3B99FC"
-      }}
-      >
-        <Item>Inventory</Item>
-      </NavLink>
-    </List>
   </Profile>
 );
 
@@ -100,13 +33,13 @@ const Item = styled.div`
 
 const Header = styled.div`
   ${clearFix()};
-  margin-top: 16px;
+  // margin-top: 16px;
 `;
 
 const Profile = styled.div`
-  background: #454b54;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
+  // background: #36393F;
+  // border-top-left-radius: 2px;
+  // border-top-right-radius: 2px;
 `;
 
 const RoundedImg = styled(Img)`
@@ -118,6 +51,10 @@ const RoundedImg = styled(Img)`
 
 const Title = styled(AvatarTitle)`
   line-height: 26px;
+  color: ${props => props.theme.color.p100};
+  margin-left:0;
+  font-size: 18px;
+  font-weight: 500;
 `;
 
 export default ProfileHeader;

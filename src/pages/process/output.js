@@ -4,7 +4,7 @@ import Button from "../../atoms/button";
 import { Form, Field } from "formik";
 import Alert from "../../components/alert";
 import Textarea from "../../atoms/textarea";
-import { Icons } from "oce-components";
+import  Icons  from "../../atoms/icons";
 import Input from "../../atoms/input";
 import { clearFix, placeholder } from "polished";
 import moment from "moment";
@@ -141,18 +141,18 @@ export default compose(
         {props.data.fulfilledBy.map((ev, i) => (
           <Feed
             scopeId={props.scopeId}
-            image={ev.fulfilledBy.provider.image}
+            image={ev.fulfilledBy.provider ? ev.fulfilledBy.provider.image : null}
             commitmentId={null}
             key={i}
             id={ev.id}
             loggedUserId={props.providerId}
-            providerId={ev.fulfilledBy.provider.id}
+            providerId={ev.fulfilledBy.provider ? ev.fulfilledBy.provider.id : null}
             withDelete
             validations={ev.fulfilledBy.validations}
             openValidationModal={props.openValidationModal}
             primary={
               <FeedItem>
-                <B>{ev.fulfilledBy.provider.name}</B>{" "}
+                <B>{ev.fulfilledBy.provider ? ev.fulfilledBy.provider.name : null}</B>{" "}
                 {ev.fulfilledBy.action +
                   " " +
                   ev.fulfilledBy.affectedQuantity.numericValue +
@@ -220,9 +220,11 @@ export default compose(
               </WrapperLogEvent>
             </FeedList>
           ) : (
+            <Footer>
             <RightButton onClick={props.toggleOutput}>
               Complete this output
             </RightButton>
+            </Footer>
           )}
         </Actions>
       </Container>
@@ -263,6 +265,16 @@ const Url = styled.div`
   margin: 0 10px;
 `;
 
+const Footer = styled.div`
+  ${clearFix()};
+  background: #ecedee;
+    /* margin-left: -8px; */
+    /* margin-right: -8px; */
+    padding: 0 4px;
+    margin-bottom: 0px;
+    border-radius: 2px;
+`;
+
 const NoteIcon = styled.div`
   position: absolute;
   top: 17px;
@@ -279,6 +291,22 @@ const RightButton = styled(Button)`
   float: right;
   width: 200px !important;
   margin-bottom: 0;
+  padding: 0 5px;
+  width: 160px !important;
+  border-radius: 2px !important;
+  width: 100%;
+  height: 55px;
+  line-height: 55px;
+  margin-top: 0px;
+  /* margin-left: 10px; */
+  margin-bottom: 0px;
+  display: inline-block;
+  width: 100px;
+  height: 34px;
+  line-height: 34px;
+  font-size: 13px;
+  border: 1px solid #396d91;
+  margin: 4px 0px !important;
 `;
 
 const ResourceNote = styled.div`

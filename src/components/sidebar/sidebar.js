@@ -7,6 +7,10 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import Profile from "./profile";
 import { LoadingMini, ErrorMini } from "../loading";
+import Overview from '../../atoms/astronaut_y2.png'
+import Flail from '../../atoms/flail.png'
+import Requirement from '../../atoms/shining_star.png'
+import Process from '../../atoms/shooting_star.png'
 
 const getInbox = gql`
   query getInbox {
@@ -63,83 +67,68 @@ const Sidebar = props => {
                 providerId={data.viewer.agent.id}
                 location={props.location}
               />
-              <Menu>
-                {props.profile ? (
+              <Menu>  
                   <List>
-                    <ListTitle>Requirements</ListTitle>
                     <Item>
                       <NavLink
-                        isActive={(match, location) =>
-                          location.pathname.includes("/committed")
-                        }
+                        isActive={(match, location) => {
+                          return (
+                            location.pathname === `/agent/${props.param}/` ||
+                            location.pathname === "/" ||
+                            location.pathname === `/agent/${props.param}`
+                          );
+                        }}
                         to={
-                          props.param &&
-                          props.location.pathname.includes("/agent/")
-                            ? `/agent/${props.param}/requirements/committed`
-                            : `/requirements/committed`
+                          props.param && props.location.pathname.includes("/agent/")
+                            ? `/agent/${props.param}/`
+                            : `/`
                         }
                         activeStyle={{
-                          position: "relative",
-                          marginLeft: "24px",
-                          color: "#3B99FC"
+                          color: "#fff",
+                          fontWeight: '500',
+                          borderRadius: '2px',
+                          background: 'rgba(252, 254, 255, 0.14)',
+                          border: '1px solid rgba(221, 223, 226, 0.16)'
                         }}
                       >
-                        <SpanIcon>
-                          <Icons.Star
-                            width="14"
-                            height="14"
-                            color="#f0f0f0"
-                          />
-                        </SpanIcon>
-                        Committed
-                        <Query query={getCommitted}>
-                          {({ data: { committed } }) => {
-                            return <Total>{committed}</Total>;
-                          }}
-                        </Query>
+                        <SpanIcon style={{backgroundImage: `url(${Overview})`}}/>
+                        Overview
                       </NavLink>
                     </Item>
                     <Item>
                       <NavLink
-                        isActive={(match, location) =>
-                          location.pathname.includes("/matched")
-                        }
+                        isActive={(match, location) => {
+                          return (
+                            location.pathname === `/agent/${props.param}/inventory` ||
+                            location.pathname === "/inventory" ||
+                            location.pathname === `/agent/${props.param}/inventory/`
+                          );
+                        }}
                         to={
-                          props.param &&
-                          props.location.pathname.includes("/agent/")
-                            ? `/agent/${props.param}/requirements/matched`
-                            : `/requirements/matched`
+                          props.param && props.location.pathname.includes("/agent/")
+                            ? `/agent/${props.param}/inventory`
+                            : `/inventory`
                         }
                         activeStyle={{
-                          position: "relative",
-                          marginLeft: "24px",
-                          color: "#3B99FC"
+                          color: "#fff",
+                          fontWeight: '500',
+                          borderRadius: '2px',
+                          background: 'rgba(252, 254, 255, 0.14)',
+                          border: '1px solid rgba(221, 223, 226, 0.16)'
                         }}
                       >
-                        <SpanIcon>
-                          <Icons.Eye width="14" height="14" color="#f0f0f0" />
-                        </SpanIcon>
-                        Matched
-                        <Query query={getMatched}>
-                          {({ data: { matched } }) => {
-                            return <Total>{matched}</Total>;
-                          }}
-                        </Query>
+                        <SpanIcon style={{backgroundImage: `url(${Flail})`}}/>
+                        Inventory
                       </NavLink>
                     </Item>
-                  </List>
-                ) : (
-                  <List>
-                    <ListTitle>Requirements</ListTitle>
                     <Item>
                       <NavLink
                         isActive={(match, location) => {
                           return (
                             location.pathname ===
                               `/agent/${props.param}/requirements` ||
-                            location.pathname === "/" ||
-                            location.pathname ===
-                              `/agent/${props.param}/requirements`
+                            location.pathname === "/requirements" ||
+                            location.pathname ===`/agent/${props.param}/requirements/`
                           );
                         }}
                         to={
@@ -149,64 +138,18 @@ const Sidebar = props => {
                             : `/requirements`
                         }
                         activeStyle={{
-                          position: "relative",
-                          marginLeft: "24px",
-                          color: "#3B99FC"
+                          color: "#fff",
+                          fontWeight: '500',
+                          borderRadius: '2px',
+                          background: 'rgba(252, 254, 255, 0.14)',
+                          border: '1px solid rgba(221, 223, 226, 0.16)'
                         }}
                       >
-                        <SpanIcon>
-                          <Icons.Inbox
-                            width="14"
-                            height="14"
-                            color="#f0f0f0"
-                          />
-                        </SpanIcon>
-                        Inbox
-                        <Query query={getInbox}>
-                          {({ data: { inbox } }) => {
-                            return <Total>{inbox}</Total>;
-                          }}
-                        </Query>
+                        <SpanIcon style={{backgroundImage: `url(${Requirement})`}}/>
+                        Requirements
                       </NavLink>
                     </Item>
                     <Item>
-                      <NavLink
-                        to={
-                          props.param &&
-                          props.location.pathname.includes("/agent/")
-                            ? `/agent/${props.param}/requirements/committed`
-                            : `/requirements/committed`
-                        }
-                        isActive={(match, location) =>
-                          location.pathname.includes("/committed")
-                        }
-                        activeStyle={{
-                          position: "relative",
-                          marginLeft: "24px",
-                          color: "#3B99FC"
-                        }}
-                      >
-                        <SpanIcon>
-                          <Icons.Star
-                            width="14"
-                            height="14"
-                            color="#f0f0f0"
-                          />
-                        </SpanIcon>
-                        Committed
-                        <Query query={getCommitted}>
-                          {({ data: { committed } }) => {
-                            return <Total>{committed}</Total>;
-                          }}
-                        </Query>
-                      </NavLink>
-                    </Item>
-                  </List>
-                )}
-
-                <List>
-                  <ListTitle>Processes</ListTitle>
-                  <Item>
                     <NavLink
                       isActive={(match, location) => {
                         return (
@@ -224,41 +167,48 @@ const Sidebar = props => {
                           : `/processes`
                       }
                       activeStyle={{
-                        position: "relative",
-                        marginLeft: "24px",
-                        color: "#3B99FC"
+                        color: "#fff",
+                        fontWeight: '500',
+                        borderRadius: '2px',
+                        background: 'rgba(252, 254, 255, 0.14)',
+                        border: '1px solid rgba(221, 223, 226, 0.16)'
                       }}
                     >
-                      <SpanIcon>
-                        <Icons.Inbox width="14" height="14" color="#f0f0f0" />
-                      </SpanIcon>
-                      Inbox
+                      <SpanIcon style={{backgroundImage: `url(${Process})`}}/>
+                      Processes
                     </NavLink>
                   </Item>
-                  <Item>
-                    <NavLink
-                      to={
-                        props.param &&
-                        props.location.pathname.includes("/agent/")
-                          ? `/agent/${props.param}/processes/closed`
-                          : `/processes/closed`
-                      }
-                      isActive={(match, location) =>
-                        location.pathname.includes("/closed")
-                      }
-                      activeStyle={{
-                        position: "relative",
-                        marginLeft: "24px",
-                        color: "#3B99FC"
-                      }}
-                    >
-                      <SpanIcon>
-                        <Icons.Star width="14" height="14" color="#f0f0f0" />
-                      </SpanIcon>
-                      Closed
-                    </NavLink>
-                  </Item>
-                </List>
+                  {props.profile ? <Item>
+                      <NavLink
+                        isActive={(match, location) =>
+                          location.pathname.includes("/matched")
+                        }
+                        to={
+                          props.param &&
+                          props.location.pathname.includes("/agent/")
+                            ? `/agent/${props.param}/requirements/matched`
+                            : `/requirements/matched`
+                        }
+                        activeStyle={{
+                          color: "#fff",
+                          fontWeight: '500',
+                          borderRadius: '2px',
+                          background: 'rgba(252, 254, 255, 0.14)',
+                          border: '1px solid rgba(221, 223, 226, 0.16)'
+                        }}
+                      >
+                        <SpanIcon>
+                          <Icons.Eye width="14" height="14" color="#333" />
+                        </SpanIcon>
+                        Matched
+                        <Query query={getMatched}>
+                          {({ data: { matched } }) => {
+                            return <Total>{matched}</Total>;
+                          }}
+                        </Query>
+                      </NavLink>
+                    </Item> : null }
+                  </List>
               </Menu>
             </React.Fragment>
           );
@@ -269,9 +219,9 @@ const Sidebar = props => {
 };
 
 const Menu = styled.div`
-  background: #36393F;
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
+  // background: #36393F;
+  // border-bottom-left-radius: 2px;
+  // border-bottom-right-radius: 2px;
 `;
 
 const Total = styled.span`
@@ -292,6 +242,11 @@ const Wrapper = styled.div`
   overflow-y: hidden;
   overflow: hidden;
   transition: margin-left 0.5s ease;
+  // background: rgb(224, 226, 230);
+  // padding: 8px;
+  border-radius: 4px;
+  // background: #3c4a58;
+  padding: 8px;
   ${media.lessThan("medium")`
   margin-left: -270px
   ${props =>
@@ -304,42 +259,25 @@ const Wrapper = styled.div`
 `;
 
 const SpanIcon = styled.div`
-  vertical-align: middle;
   cursor: pointer;
   margin-right: 8px;
   display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  vertical-align: sub;
 `;
 
 const List = styled.div`
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 16px;
-  margin: 16px;
+  // margin: 16px;
   & a {
     display: block;
   }
 `;
 
-const ListTitle = styled.h3`
-  text-transform: uppercase;
-  font-size: 11px;
-  letter-spacing: 1px;
-  color: #BEBEBE;
-  & a {
-    font-size: 12px;
-    text-decoration: none;
-    color: #2a3546;
-    &:after {
-      position: absolute;
-      content: "";
-      width: 20px;
-      height: 2px;
-      background: ${props => props.theme.color.b100};
-      display: block;
-      top: 5px;
-      left: -24px;
-    }
-  }
-`;
+
 
 const Item = styled.h3`
   margin-top: 8px;
@@ -349,18 +287,11 @@ const Item = styled.h3`
   & a {
     text-decoration: none;
     color: ${props => props.theme.color.p100};
-    font-size: 13px;
-    font-weight: 300;
-    &:after {
-      position: absolute;
-      content: "";
-      width: 20px;
-      height: 2px;
-      background: ${props => props.theme.color.b100};
-      display: block;
-      top: 5px;
-      left: -24px;
-    }
+    font-size: 14px;
+    text-decoration: none;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 8px;
   }
 `;
 

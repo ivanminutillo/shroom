@@ -7,7 +7,7 @@ import { clearFix } from "polished";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import styled from "styled-components";
-
+import Beer from '../../atoms/beers.png'
 
 export default props => (
   <Query
@@ -37,7 +37,7 @@ export default props => (
 
       return (
         <Contribution>
-          <h3>{feed.length} contributions during this year</h3>
+          {/* <h3>{feed.length} contributions during this year</h3>
           <CalendarWrapper>
             <Calendar
               width={600}
@@ -52,8 +52,8 @@ export default props => (
               to={new Date()}
               data={feedChart}
             />
-          </CalendarWrapper>
-          <Tagline>Activities</Tagline>
+          </CalendarWrapper> */}
+          <Tagline><Span style={{backgroundImage: `url(${Beer})`}}/>Activities</Tagline>
           <Events>
             {feed.map((ev, i) => (
               <Feed
@@ -95,19 +95,36 @@ export default props => (
   </Query>
 );
 
-
+const Span = styled.span`
+vertical-align: middle;
+  cursor: pointer;
+  margin-right: 8px;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  vertical-align: sub;
+`
 const Events = styled.div`
   ${clearFix()};
   position: relative;
 `;
 const Contribution = styled.div`
-  display: inline-block;
-  margin-left: 16px;
-  & h3 {
-    color: ${props => props.theme.color.p800}
-    font-weight: 400;
-    letter-spacing: 1px;
-  }
+  padding-left: 8px;
+  background: #fff;
+  padding: 8px;
+  margin: 8px;
+  border: 1px solid #e6ecf0;
+  // & h3 {
+  //   font-weight: 400;
+  //   letter-spacing: 1px;
+  //   color: #36393f59;
+  //   letter-spacing: 1px;
+  //   margin: 0;
+  //   margin-top: 10px;
+  //   font-weight: 500;
+  //   text-transform: uppercase;
+  // }
 `;
 
 const FeedItem = styled.div`
@@ -131,10 +148,21 @@ margin-top: 8px;
 `;
 
 const Tagline = styled.h3`
-  font-weight: 500;
-  padding-bottom: 8px;
-  margin-top: 20px;
-  border-bottom: 1px solid #f0f0f030;
-  margin-bottom: 10px;
-  font-size: 13px;
+color: #36393f;
+-webkit-letter-spacing: 1px;
+-moz-letter-spacing: 1px;
+-ms-letter-spacing: 1px;
+letter-spacing: 1px;
+margin: 0;
+/* margin-top: 10px; */
+font-size: 12px;
+font-weight: 600;
+text-transform: uppercase;
+background: #e6ebf0;
+height: 26px;
+margin-top: -8px;
+margin-left: -8px;
+margin-right: -8px;
+line-height: 30px;
+padding: 0 10px;
 `;

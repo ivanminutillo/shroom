@@ -14,6 +14,8 @@ import EditSentence from "../modalIntent/editSentence";
 import ButtonDeleteIntent from "../deleteIntent";
 import EditDueDate from "../editDueDate";
 import { NavLink } from "react-router-dom";
+import Process from '../../atoms/shooting_star.png'
+import Pencil from '../../atoms/pencil.png'
 
 export default compose(
   withState("popup", "isOpen", false),
@@ -61,9 +63,7 @@ export default compose(
           {data.inputOf ? (
             <ProcessContainer>
               <NavLink to={`/process/${data.inputOf.id}`}>
-                <ContainerTitle>
-                  <Icons.UpLeft width="13" height="13" color="#3B99FC" />
-                </ContainerTitle>
+                <ContainerTitle style={{backgroundImage: `url(${Process})`}} />
                 <Content>{data.inputOf.name}</Content>
               </NavLink>
             </ProcessContainer>
@@ -71,9 +71,7 @@ export default compose(
           {data.outputOf ? (
             <ProcessContainer>
               <NavLink to={`/process/${data.outputOf.id}`}>
-                <ContainerTitle>
-                  <Icons.UpRight width="13" height="13" color="#3B99FC" />
-                </ContainerTitle>
+              <ContainerTitle style={{backgroundImage: `url(${Process})`}} />
                 <Content>{data.outputOf.name}</Content>
               </NavLink>
             </ProcessContainer>
@@ -205,9 +203,7 @@ export default compose(
         ) : (
           <Actions>
             <ActionSpan onClick={handleFeedOpen}>
-              <Span>
-                <Icons.Message width="18" height="18" color="#19191960" />{" "}
-              </Span>
+                <SpanIcon style={{backgroundImage: `url(${Pencil})`}}/>
               ({data.fulfilledBy.length})
             </ActionSpan>
           </Actions>
@@ -239,6 +235,15 @@ const ActionSpan = styled.div`
   margin-top: 10px;
   display: inline-block;
   cursor: pointer;
+`;
+const SpanIcon = styled.div`
+  cursor: pointer;
+  margin-right: 8px;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  vertical-align: sub;
 `;
 
 const WrapperLogEvent = styled.div`
@@ -308,7 +313,7 @@ const Intent = styled.div`
   padding-bottom: 0px;
   border: 1px solid #97979740;
   margin: 8px;
-  border-radius: 4px;
+  border-radius: 2px;
   background: #fff;
 `;
 const Events = styled.div`
@@ -354,7 +359,6 @@ const FirstInfo = styled.div`
 
 const ProcessContainer = styled.div`
   ${clearFix()};
-  height: 40px;
   padding: 0 8px;
 `;
 const ContainerTitle = styled.h3`
@@ -362,6 +366,11 @@ const ContainerTitle = styled.h3`
   display: inline-block;
   vertical-align: middle;
   line-height: 30px;
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  vertical-align: middle;
 `;
 const Content = styled.div`
   ${clearFix()};
@@ -369,9 +378,17 @@ const Content = styled.div`
   color: ${props => props.theme.color.b100};
   font-size: 13px;
   margin-left: 4px;
-  border-bottom: 3px solid;
   line-height: 26px;
   margin-top: 4px;
+  font-weight: 500;
+  display: inline-block;
+  color: #bcbec0;
+  font-size: 12px;
+  margin-left: 4px;
+  line-height: 26px;
+  margin-top: 4px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
 `;
 
 const Sentence = styled.h3`

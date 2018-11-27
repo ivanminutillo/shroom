@@ -7,6 +7,7 @@ import Profile from "./profile";
 import { PropsRoute } from "../../helpers/router";
 import Requirements from "./requirements";
 import Processes from "./processes";
+import Inventory from '../inventory'
 
 export default compose(
   withState("event", "onEvent", "all"),
@@ -53,6 +54,12 @@ export default compose(
                 event={props.event}
                 exact
               />
+              <PropsRoute
+                component={Inventory}
+                path={"/inventory"}
+                providerId={props.providerId}
+                exact
+              />
             </Overview>
           </Inside>
         </Content>
@@ -81,8 +88,9 @@ const Content = styled.div`
   will-change: transform;
   display: flex;
   flex: 1;
-  background: #fff;
-  padding-top: 8px;
+  // background: #fff;
+  // padding-top: 8px;
+  margin-top: -8px;
 `;
 
 const Inside = styled.div`

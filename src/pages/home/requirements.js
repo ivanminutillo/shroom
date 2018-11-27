@@ -7,8 +7,11 @@ import getCommitments from "../../queries/getCommitments";
 import { PropsRoute } from "../../helpers/router";
 import Todo from "../../components/todo";
 import setMatched from "../../mutations/setMatched";
+import { compose, withState } from "recompose";
 
-export default props => (
+export default compose(
+  withState('filter', 'onFilter', null),
+)(props => (
   <Query
     query={getCommitments}
     variables={{
@@ -22,10 +25,25 @@ export default props => (
         return (
           <ErrorMini refetch={refetch} message={`Error! ${error.message}`} />
         );
+      // let intents = data.viewer.agent.agentCommitments;
+      // let filteredIntents = [];
+      // if (props.event !== "all") {
+      //   filteredIntents = intents.filter(i => i.action === props.event);
+      // } else {
+      //   filteredIntents = intents;
+      // }
       let intents = data.viewer.agent.agentCommitments;
       let filteredIntents = [];
-      if (props.event !== "all") {
-        filteredIntents = intents.filter(i => i.action === props.event);
+      if (props.filter === 'active') {
+        filteredIntents = intents.filter(i => !i.isFinished);
+      } else if (props.filter === 'completed') {
+        filteredIntents = intents.filter(i => i.isFinished);
+      } else if (props.filter === 'committed') {
+        filteredIntents = intents.filter(i => i.provider ? i.provider.id === props.providerId : null);
+      } else if (props.filter === 'without process') {
+        filteredIntents = intents.filter(i => !i.inputOf && !i.outputOf)
+      } else if (props.filter === 'with process') {
+        filteredIntents = intents.filter(i => i.inputOf || i.outputOf)
       } else {
         filteredIntents = intents;
       }
@@ -59,8 +77,7 @@ export default props => (
           <PropsRoute
             exact
             component={Todo}
-            activeIntents={inbox}
-            completed={completed}
+            activeIntents={filteredIntents}
             path={props.match.path}
             onToggleSidebar={props.onToggleSidebar}
             togglePanel={props.togglePanel}
@@ -74,25 +91,9 @@ export default props => (
             handleCommittedOpen={props.handleCommittedOpen}
             isCompletedOpen={props.isCompletedOpen}
             handleCompletedOpen={props.handleCompletedOpen}
-          />
-          <PropsRoute
-            component={Todo}
-            exact
-            path={"/requirements/committed"}
-            activeIntents={committed}
-            completed={committedCompleted}
-            onToggleSidebar={props.onToggleSidebar}
-            togglePanel={props.togglePanel}
-            isSidebarOpen={props.isSidebarOpen}
-            client={client}
-            providerId={props.providerId}
-            providerImage={props.providerImage}
-            providerName={props.providerName}
-            toggleValidationModal={props.toggleValidationModal}
-            isCommittedOpen={props.isCommittedOpen}
-            handleCommittedOpen={props.handleCommittedOpen}
-            isCompletedOpen={props.isCompletedOpen}
-            handleCompletedOpen={props.handleCompletedOpen}
+
+            filter={props.filter}
+            onFilter={props.onFilter}
           />
           <PropsRoute
             component={Todo}
@@ -117,4 +118,4 @@ export default props => (
       );
     }}
   </Query>
-);
+));

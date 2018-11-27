@@ -5,7 +5,6 @@ import { compose, withState, withHandlers } from "recompose";
 import EditDueDate from "../editDueDate";
 import Timeline from "./timeline";
 import { Icons } from "oce-components/build";
-import { NavLink } from "react-router-dom";
 
 export default compose(
   withState("popup", "isOpen", false),
@@ -31,7 +30,7 @@ export default compose(
 )(({ data, toggleTimeline, isTimelineOpen, handleProcess }) => {
   let inputs = data.committedInputs.concat(data.committedOutputs);
   return (
-    <Intent>
+    <Intent  onClick={() => handleProcess(data.id)}>
       <Infos>
         {data.processPlan ? (
           <ProcessContainer>
@@ -71,6 +70,9 @@ export default compose(
 
 const Actions = styled.div`
   padding-bottom: 0px;
+  position:relative;
+  z-index: 999999;
+  ${clearFix()};
 `;
 
 const TimelineBtn = styled.span`

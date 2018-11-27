@@ -22,9 +22,10 @@ export default ({
   closeLogEvent,
   action,
   handleSubmit,
+  avoidNote,
   type
 }) => {
-  console.log(errors);
+  console.log(avoidNote);
   return (
     <ApolloConsumer>
       {client => (
@@ -82,7 +83,7 @@ export default ({
                 )}
             </Resource>
           </Row>
-          <Note>
+          {avoidNote ?  null : <Note>
             <NoteIcon>
               <Icons.Text width="16" height="16" color="#b7bfc6" />
             </NoteIcon>
@@ -97,7 +98,7 @@ export default ({
                 />
               )}
             />
-          </Note>
+          </Note>}
           <WrapperDate>
             <DateRangeSelect
               setFieldValue={setFieldValue}
@@ -109,9 +110,9 @@ export default ({
           </WrapperDate>
 
           <PublishActions>
-            <Button outline onClick={closeLogEvent}>
+            {/* <Button outline onClick={closeLogEvent}>
               Cancel
-            </Button>
+            </Button> */}
             <Button onClick={handleSubmit} type="submit">
               Publish
             </Button>
@@ -141,22 +142,27 @@ const WrapperDate = styled.div`
 `;
 
 const PublishActions = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: 8px;
+  background: #ecedee;
+  height: 45px;
+  margin-left: -10px;
+  margin-right: -10px;
+  padding: 0 10px;
   margin-top: 10px;
-  border-top: 1px solid #dadada;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  ${clearFix()};
   & button {
-    width: 100%;
+    width: 120px;
     margin: 0;
+    float:right;
     box-shadow: none;
-    margin-top: 2px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 15px;
+    margin-top: 6px;
+    height: 34px;
+    line-height: 34px;
+    font-size: 14px;
     letter-spacing: 0.5px;
+    letter-spacing: 0.5px;
+    margin-top: 6px;
+    border-radius: 2px;
+    border: 1px solid #2a668f;
   }
 `;
 

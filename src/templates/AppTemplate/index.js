@@ -20,7 +20,7 @@ const Surface = styled.div`
   flex-direction: column;
   max-width: 1010px;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 60px;
 `;
 
 const Whole = styled.div`

@@ -169,9 +169,9 @@ a {
   text-decoration: none;
     width: 28px;
     height: 28px;
-    border: 1px solid #348eee;
+    border: 1px dashed #dadada;
     border-radius: 150px;
-    background: rgba(250,250,250,.2);
+    background: rgba(240,240,240,.2);
     display: inline-block;
     &:hover {
       background: rgba(250,250,250,.3);
@@ -229,13 +229,17 @@ const WrapperNew = s.div`
 const Content = s.div`
 max-width: 1010px;
 margin: 0 auto;
+margin-top: 4px;
 display: flex;
 `;
 
 const HeaderWrapper = s.div`
-  height: 36px;
+  height: 46px;
   ${clearFix()}
-  background: ${props => props.theme.color.b100};
+  // background: #fff;
+  // border-bottom: 1px solid #d2d2d2;
+  background: #096db0;
+  border-bottom: 1px solid #063858;
   position: fixed;
   left: 0;
   top: 0;
