@@ -14,6 +14,7 @@ import Process from '../../atoms/shooting_star.png'
 import Money from '../../atoms/moneybag.png'
 import Exchange from '../../atoms/handshake_hmn_y2.png'
 import Matched from '../../atoms/eyes.png'
+import Plan from '../../atoms/dizzy.png'
 
 const getInbox = gql`
   query getInbox {
@@ -183,6 +184,12 @@ const Sidebar = props => {
                       Processes
                     </NavLink>
                   </Item>
+                  <Item>
+                      <NavLink to={'#'}>
+                        <SpanIcon style={{backgroundImage: `url(${Plan})`}}/>
+                        Plans
+                      </NavLink>
+                    </Item>
                   <Item>
                       <NavLink to={'#'}>
                         <SpanIcon style={{backgroundImage: `url(${Exchange})`}}/>
