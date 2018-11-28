@@ -55,7 +55,6 @@ const columns = [
 
 
 const Inventory = props => {
-    console.log('chai')
     return (
   <Query
     query={getReources}
@@ -70,7 +69,6 @@ const Inventory = props => {
         return (
           <ErrorMini refetch={refetch} message={`Error! ${error.message}`} />
         );
-      console.log(data);
       var datat = data.viewer.agent.ownedEconomicResources.map(r => ({
           id: r.id,
           name: r.resourceClassifiedAs.name,
@@ -79,7 +77,6 @@ const Inventory = props => {
           taxonomy: r.resourceClassifiedAs.category,
           processCategory: r.resourceClassifiedAs.processCategory
       }))
-      console.log(datat)
       return (
         <Body>
           <ReactTable
@@ -103,6 +100,7 @@ const Body = styled.div`
   display: flex;
   flex-direction: row;
   margin: 8px;
+  background: #fff;
 `;
 
 export default Inventory;
