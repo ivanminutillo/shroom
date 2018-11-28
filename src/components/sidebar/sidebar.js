@@ -38,6 +38,7 @@ const SidebarData = gql`
         id
         image
         name
+        type
       }
     }
   }
@@ -69,6 +70,7 @@ const Sidebar = props => {
                 providerImage={data.viewer.agent.image}
                 providerId={data.viewer.agent.id}
                 location={props.location}
+                type={data.viewer.agent.type}
               />
               <Menu>  
                   <List>

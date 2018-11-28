@@ -2,45 +2,53 @@ import React from "react";
 import styled from "styled-components";
 import { clearFix } from "polished";
 import { Img, AvatarTitle } from "../../atoms/avatar";
-import { NavLink } from "react-router-dom";
-const ProfileHeader = ({ providerImage, providerName, providerId, location }) => (
+import Individual from "../../atoms/paw_print.png";
+import Group from "../../atoms/paws.png";
+
+const ProfileHeader = ({
+  providerImage,
+  providerName,
+  type,
+}) => (
   <Profile>
     <Header>
-        <Title>{providerName}</Title>
+      <Title>{providerName}</Title>
     </Header>
+      <Type>
+        {type === "Person" ? (
+          <SpanIcon style={{ backgroundImage: `url(${Individual})` }} />
+        ) : (
+          <SpanIcon style={{ backgroundImage: `url(${Group})` }} />
+        )}
+        {type === "Person" ? 'Human' : type}
+      </Type>
   </Profile>
 );
 
-const List = styled.div`
-  padding: 5px 0;
-  & a {
-    display: block;
-    text-decoration: none;
-  }
-  &:last-of-type {
-    border-bottom: 0px;
-  }
-`;
-const Item = styled.div`
-  color: inherit;
-  padding: 0 10px;
-  display: block;
-  text-decoration: none;
-  line-height: 32px;
-  font-size: 13px;
-  letter-spacing: 0.5px;
+const SpanIcon = styled.div`
+  cursor: pointer;
+  margin-right: 8px;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  vertical-align: sub;
 `;
 
 const Header = styled.div`
   ${clearFix()};
-  // margin-top: 16px;
+`;
+const Type = styled.div`
+  ${clearFix()};
+  color: #f0f0f060;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
 `;
 
-const Profile = styled.div`
-  // background: #36393F;
-  // border-top-left-radius: 2px;
-  // border-top-right-radius: 2px;
-`;
+const Profile = styled.div``;
 
 const RoundedImg = styled(Img)`
   border-radius: 100px;
@@ -52,7 +60,7 @@ const RoundedImg = styled(Img)`
 const Title = styled(AvatarTitle)`
   line-height: 26px;
   color: ${props => props.theme.color.p100};
-  margin-left:0;
+  margin-left: 0;
   font-size: 18px;
   font-weight: 500;
 `;
