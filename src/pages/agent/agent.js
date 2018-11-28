@@ -30,7 +30,7 @@ export default compose(
       />
       <Wrapper>
         <CoverImage />
-        <SmartSentence handleActivity={props.handleActivity} activity={props.activity} scopeId={props.match.params.id} handleSmartSentence={props.handleSmartSentence} isActive={props.smartSentence}/>
+        <SmartSentence providerImage={props.providerImage} handleActivity={props.handleActivity} activity={props.activity} scopeId={props.match.params.id} handleSmartSentence={props.handleSmartSentence} isActive={props.smartSentence}/>
         <Content>
           <Inside>
             <Overview>
@@ -80,7 +80,7 @@ export default compose(
 
 const CoverImage = styled.div`
 height: 300px;
-background: url(https://picsum.photos/800/300);
+background: url(https://picsum.photos/800/300/?random);
 background-repeat: no-repeat;
 background-size: cover;
 background-position: center center;

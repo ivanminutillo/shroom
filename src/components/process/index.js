@@ -4,7 +4,7 @@ import { clearFix } from "polished";
 import { compose, withState, withHandlers } from "recompose";
 import EditDueDate from "../editDueDate";
 import Timeline from "./timeline";
-import { Icons } from "oce-components/build";
+import Crystal from '../../atoms/crystal_ball.png'
 
 export default compose(
   withState("popup", "isOpen", false),
@@ -30,7 +30,7 @@ export default compose(
 )(({ data, toggleTimeline, isTimelineOpen, handleProcess }) => {
   let inputs = data.committedInputs.concat(data.committedOutputs);
   return (
-    <Intent  onClick={() => handleProcess(data.id)}>
+    <Intent >
       <Infos>
         {data.processPlan ? (
           <ProcessContainer>
@@ -39,8 +39,8 @@ export default compose(
         ) : null}
       </Infos>
       <Wrapper>
-        <First>
-            <Sentence onClick={() => handleProcess(data.id)}>{data.name}</Sentence>
+        <First  onClick={() => handleProcess(data.id)}>
+            <Sentence>{data.name}</Sentence>
           <Note>{data.note}</Note>
         </First>
         <Second>
@@ -59,7 +59,7 @@ export default compose(
       <Actions>
         {inputs.length > 0 ? (
           <TimelineBtn onClick={toggleTimeline}>
-            <Icons.Eye width="18" height="18" color="#19191960" />
+            <SpanIcon style={{backgroundImage: `url(${Crystal})`}}/>
             Toggle timeline
           </TimelineBtn>
         ) : null}
@@ -68,10 +68,25 @@ export default compose(
   );
 });
 
+
+const SpanIcon = styled.span`
+  ${clearFix()};
+  cursor: pointer;
+  margin-right: 8px;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  vertical-align: sub;
+`;
+
+
 const Actions = styled.div`
   padding-bottom: 0px;
   position:relative;
   z-index: 999999;
+  background: #e0f5fcde;
+  height: 28px;
   ${clearFix()};
 `;
 
@@ -84,22 +99,17 @@ const TimelineBtn = styled.span`
   border-radius: 3px;
   margin-left: 4px;
   padding: 0 5px;
-  font-size: 13px;
-  font-weight: 400;
-  color: #19191960;
-  & svg {
-    vertical-align: top;
-    margin-right: 4px;
-    margin-top: 4px;
-  }
+  font-size: 12px;
+  font-weight: 500;
+  color: #60757d;
+  margin-top: 3px;
+  letter-spacing: .5px;
 `;
 
 const Intent = styled.div`
   ${clearFix()};
   margin-top: 0;
-  padding-bottom: 8px;
   border-radius: 4px;
-  border: 1px solid #97979740;
   margin: 8px;
   border-radius: 4px;
   ${props =>
@@ -113,12 +123,12 @@ const Intent = styled.div`
 const Wrapper = styled.div`
   padding: 8px;
   position: relative;
-  cursor: pointer;
   background: #fffffff7;
 `;
 
 const First = styled.div`
   ${clearFix()};
+  cursor: pointer;
 `;
 
 const Second = styled.div`

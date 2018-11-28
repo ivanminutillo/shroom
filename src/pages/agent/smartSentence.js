@@ -3,6 +3,11 @@ import styled from "styled-components";
 import { compose, withState, withHandlers } from "recompose";
 import Input from '../../atoms/input'
 import Intent from '../../components/newCommitment'
+import NewProcess from '../../components/newProcessModal/newprocess'
+import Requirement from '../../atoms/shining_star.png'
+import Process from '../../atoms/shooting_star.png'
+import Money from '../../atoms/moneybag.png'
+import Exchange from '../../atoms/handshake_hmn_y2.png'
 
 export default compose(
   withState('note', 'onNote', ''),
@@ -16,22 +21,22 @@ export default compose(
     <Header><Title>Interact with the network</Title></Header>
     {props.isActive ? null : <Overlay onClick={props.handleSmartSentence} />}
     <UserInput>
-      <Img />
+      <Img style={{backgroundImage: `url(${props.providerImage})`}}/>
       {props.isActive ? <SuperInput><Input onChange={props.handleNote} placeholder='Write a message...' /></SuperInput> : 'Write a message...'}
     </UserInput>
     <ContainerEconomicEvents>
-    {props.activity === "replyCommitment" ? (
+    {props.activity === "addCommitment" ? (
         <Intent note={props.note} scopeId={props.scopeId} avoidNote />
-    ) : props.activity === "replyProcess" ? (
-      <div>reply process</div>
+    ) : props.activity === "addProcess" ? (
+      <NewProcess note={props.note} scopeId={props.scopeId} />
     ) : null}
     </ContainerEconomicEvents>
     {props.isActive ? (
       <Box>
-        <Item active={props.activity === "replyCommitment"} onClick={() => props.handleActivity('replyCommitment')} >Reply to a commitment</Item>
-        <Item active={props.activity === "replyProcess"} onClick={() => props.handleActivity('replyProcess')}>Reply to a process</Item>
-        <Item>Add a commitment</Item>
-        <Item>Add a process</Item>
+        <Item active={props.activity === "addCommitment"} onClick={() => props.handleActivity('addCommitment')}><SpanIcon style={{backgroundImage: `url(${Requirement})`}}/>Create a commitment</Item>
+        <Item active={props.activity === "addProcess"} onClick={() => props.handleActivity('addProcess')}><SpanIcon style={{backgroundImage: `url(${Process})`}}/>Create a process</Item>
+        <Item active={props.activity === "addExchange"} onClick={() => props.handleActivity('addExchange')}><SpanIcon style={{backgroundImage: `url(${Exchange})`}}/>Create an exchange</Item>
+        <Item active={props.activity === "addTx"} onClick={() => props.handleActivity('addTx')}><SpanIcon style={{backgroundImage: `url(${Money})`}}/>Create a transaction</Item>
       </Box>
     ) : null}
   </SmartSentence>
@@ -46,6 +51,18 @@ const Box = styled.div`
   position: relative;
   z-index: 9999999
 `;
+
+
+const SpanIcon = styled.span`
+  cursor: pointer;
+  margin-right: 8px;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  vertical-align: sub;
+`;
+
 
 const ContainerEconomicEvents = styled.div`
   position: relative;

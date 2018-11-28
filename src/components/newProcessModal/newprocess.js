@@ -20,6 +20,8 @@ import GroupSelect from "../groupSelect";
 import AddNote from "../addNote";
 import Icons from '../../atoms/icons'
 import Timeline from "./timeline";
+import Requirement from '../../atoms/shining_star.png'
+import Process from '../../atoms/shooting_star.png'
 
 class NewProcess extends React.Component {
   render() {
@@ -33,13 +35,16 @@ class NewProcess extends React.Component {
       inputs,
       onInput,
       values,
+      note,
       toggleModal,
       addIntent
     } = this.props;
+    console.log(note)
     return (
       <Form>
         <PlanWrapper>
           <ProcessInput>
+             <SpanIcon style={{backgroundImage: `url(${Process})`}}/>
             <Field
               name="title"
               render={({ field }) => (
@@ -54,7 +59,6 @@ class NewProcess extends React.Component {
             {errors.title && touched.title && <Alert>{errors.title}</Alert>}
           </ProcessInput>
           <Grid>
-            <GroupSelect setFieldValue={setFieldValue} />
             <DateRangeSelect
               setFieldValue={setFieldValue}
               start={values.start}
@@ -63,15 +67,11 @@ class NewProcess extends React.Component {
               touched={touched}
             />
           </Grid>
-          <AddNote setFieldValue={setFieldValue} />
         </PlanWrapper>
         <Wrapper>
-          {values.scope ? (
             <Actions>
               <CommitmentWrapper>
-                <Span>
-                  <Icons.Plus width="20" height="20" color="f0f0f020" />
-                </Span>
+                <SpanIcon style={{backgroundImage: `url(${Requirement})`}}/>
                 <SelectInput>
                   <Field
                     name="inputAction"
@@ -113,7 +113,6 @@ class NewProcess extends React.Component {
                 />
               ) : null}
             </Actions>
-          ) : null}
         </Wrapper>
         {values.inputAction ? null : (
           <ActionsProcess>
@@ -145,17 +144,14 @@ export default compose(
   graphql(CreateCommitment, { name: "CreateCommitmentMutation" }),
   withFormik({
     mapPropsToValues: props => ({
-      scope: null,
+      scope: props.scopeId,
       inputAction: null,
       outputAction: null,
-      note: "",
       title: "",
-      start: null,
-      due: null
+      start: moment(),
+      due: moment()
     }),
     validationSchema: Yup.object().shape({
-      scope: Yup.object().required(),
-      note: Yup.string(),
       due: Yup.object().required(),
       start: Yup.object().required(),
       title: Yup.string().required()
@@ -167,8 +163,8 @@ export default compose(
       let vars = {
         token: localStorage.getItem("oce_token"),
         name: values.title,
-        note: values.note,
-        scope: values.scope.value,
+        note: props.note,
+        scope: props.scopeId,
         due: due,
         start: start
       };
@@ -192,7 +188,7 @@ export default compose(
                 committedUnitId: input.unit.value,
                 committedNumericValue: input.numericValue,
                 inputOfId: res.data.createProcess.process.id,
-                scopeId: values.scope.value
+                scopeId: props.scopeId
               };
               return props.CreateCommitmentMutation({
                 variables: inputVars
@@ -201,7 +197,6 @@ export default compose(
           );
         })
         .then(res => {
-          console.log(res);
           let processId = res[0].data.createCommitment.commitment.inputOf
             ? res[0].data.createCommitment.commitment.inputOf.id
             : res[0].data.createCommitment.commitment.outputOf.id
@@ -227,26 +222,15 @@ const SelectInput = styled.div`
   z-index: 999999999999999999999999999999999999999;
 `;
 
-const Span = styled.span`
+const SpanIcon = styled.span`
   ${clearFix()};
-  box-sizing: border-box;
-  color: #848f99;
-  fill: #848f99;
-  flex: 0 0 auto;
-  font-size: 13px;
-  height: 30px;
-  line-height: 1;
-  transition: 200ms box-shadow, 200ms color, 200ms background, 200ms fill;
-  width: 30px;
-  background: #fff;
-  border: 1px solid #b7bfc6;
-  border-radius: 50%;
-  align-items: center;
-  border-style: dashed;
-  display: flex;
-  flex-shrink: 0;
-  justify-content: center;
-  transition: none;
+  cursor: pointer;
+  margin-right: 8px;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  vertical-align: sub;
 `;
 
 const ActionsProcess = styled.div`
@@ -260,13 +244,7 @@ const ActionsProcess = styled.div`
 `;
 const Grid = styled.div`
   ${clearFix()};
-  margin: 0 10px;
-  margin-bottom: 10px;
-  position: relative;
-  z-index: 999999;
-  display: grid;
-  grid-template-columns: 2fr 2fr;
-  grid-column-gap: 8px;
+  margin-left: -10px;
 `;
 
 const CommitmentWrapper = styled.div`
@@ -275,7 +253,22 @@ const CommitmentWrapper = styled.div`
   align-items: center;
 `;
 
-const ProcessInput = styled.div``;
+const ProcessInput = styled.div`
+  margin-right: 10px;
+  display: flex;
+  & span {
+    width: 18px;
+  }
+  & input {
+    flex: 1;
+    margin-top: -8px;
+    ${placeholder({
+      color: "#282B30",
+      fontSize: "14px",
+      letterSpacing: ".5px"
+    })};
+  }
+`;
 
 const PlanWrapper = styled.div`
   ${clearFix()};

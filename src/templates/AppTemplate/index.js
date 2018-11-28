@@ -61,6 +61,7 @@ const AppTemplate = props => {
                 component={Agent}
                 location={props.location}
                 path="/agent/:id"
+                providerImage={data.viewer.myAgent.image}
                 client={client}
                 providerId={data.viewer.myAgent.id}
                 providerImage={data.viewer.myAgent.image}

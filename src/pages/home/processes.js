@@ -5,8 +5,11 @@ import { PropsRoute } from "../../helpers/router";
 import getAgentProcesses from "../../queries/getAgentProcesses";
 import processTodo from "../../components/processTodo";
 import ProcessModal from "../process/wrapper";
+import { compose, withState } from "recompose";
 
-export default props => (
+export default compose(
+  withState('filter', 'onFilter', null),
+)(props => (
   <Query
     query={getAgentProcesses}
     variables={{
@@ -20,10 +23,15 @@ export default props => (
         return (
           <ErrorMini refetch={refetch} message={`Error! ${error.message}`} />
         );
+      let filteredProcesses= []
       let processes = data.viewer.agent.agentProcesses;
-      // INBOX
-      let inbox = processes.filter(i => !i.isFinished);
-      let completed = processes.filter(i => i.isFinished);
+      if (props.filter === 'active') {
+        filteredProcesses = processes.filter(i => !i.isFinished);
+      } else if (props.filter === 'completed') {
+        filteredProcesses = processes.filter(i => i.isFinished);
+      } else {
+        filteredProcesses = processes
+      }
 
       return (
         <div>
@@ -36,8 +44,10 @@ export default props => (
               providerId={props.providerId}
             />
           <PropsRoute
+            filter={props.filter}
+            onFilter={props.onFilter}
             component={processTodo}
-            activeProcesses={inbox}
+            activeProcesses={filteredProcesses}
             path={props.match.path}
             onToggleSidebar={props.onToggleSidebar}
             togglePanel={props.togglePanel}
@@ -48,23 +58,8 @@ export default props => (
             providerName={props.providerName}
             handleProcess={props.handleProcess}
           />
-          <PropsRoute
-            component={processTodo}
-            exact
-            path={"completed"}
-            activeProcesses={completed}
-            onToggleSidebar={props.onToggleSidebar}
-            togglePanel={props.togglePanel}
-            isSidebarOpen={props.isSidebarOpen}
-            client={client}
-            providerId={props.providerId}
-            providerImage={props.providerImage}
-            providerName={props.providerName}
-            handleProcess={props.handleProcess}
-          />
-         
         </div>
       );
     }}
   </Query>
-);
+));

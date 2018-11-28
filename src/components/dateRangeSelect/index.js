@@ -3,14 +3,13 @@ import styled from "styled-components";
 import Icons from '../../atoms/icons'
 import {placeholder} from 'polished'
 import DatePicker from "react-datepicker";
+import Calendar from '../../atoms/calendar.png'
 require("react-datepicker/dist/react-datepicker-cssmodules.css");
 
 
 export default props => (
   <ItemDate>
-    <span>
-      <Icons.Calendar width="16" height="16" color="#b7bfc6" />
-    </span>
+    <SpanIcon style={{backgroundImage: `url(${Calendar})`}}/>
     <StartDate
       value={props.start}
       onChange={props.setFieldValue}
@@ -67,7 +66,15 @@ const StartDate = props => {
     );
   };
   
-
+  const SpanIcon = styled.span`
+  cursor: pointer;
+  margin-right: 8px;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  vertical-align: sub;
+`;
 const ItemDate = styled.div`
   background: transparent;
   border-color: #b7bfc6;
@@ -81,6 +88,7 @@ const ItemDate = styled.div`
   min-width: 1px;
   padding: 3px;
   padding-right: 10px;
+  margin-left: -3px;
   position: relative;
   transition: 0.2s box-shadow, 0.2s color;
   float: left;
@@ -88,7 +96,7 @@ const ItemDate = styled.div`
   cursor: pointer;
   margin-top: 4px;
   margin-left: 8px;
-  z-index: 999999999999999999;
+  z-index: 9999999999;
   &:hover {
     background-color: #f6f8f9;
     border-color: #646f79;
@@ -96,35 +104,7 @@ const ItemDate = styled.div`
     color: #222b37;
     fill: #222b37;
     cursor: pointer;
-    & span {
-      background-color: #f6f8f9;
-      border-color: #646f79;
-      border-style: solid;
-      color: #222b37;
-      fill: #222b37;
-    }
   }
-  & span {
-    box-sizing: border-box;
-    color: #848f99;
-    fill: #848f99;
-    flex: 0 0 auto;
-    font-size: 13px;
-    height: 30px;
-    line-height: 1;
-    transition: 200ms box-shadow, 200ms color, 200ms background, 200ms fill;
-    width: 30px;
-    background: #fff;
-    border: 1px solid #b7bfc6;
-    border-radius: 50%;
-    align-items: center;
-    border-style: dashed;
-    display: flex;
-    flex-shrink: 0;
-    justify-content: center;
-    transition: none;
-  }
-
   & > div {
     display: inline-block;
     margin-top: 2px;

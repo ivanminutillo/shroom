@@ -11,6 +11,9 @@ import Overview from '../../atoms/astronaut_y2.png'
 import Flail from '../../atoms/flail.png'
 import Requirement from '../../atoms/shining_star.png'
 import Process from '../../atoms/shooting_star.png'
+import Money from '../../atoms/moneybag.png'
+import Exchange from '../../atoms/handshake_hmn_y2.png'
+import Matched from '../../atoms/eyes.png'
 
 const getInbox = gql`
   query getInbox {
@@ -178,6 +181,18 @@ const Sidebar = props => {
                       Processes
                     </NavLink>
                   </Item>
+                  <Item>
+                      <NavLink to={'#'}>
+                        <SpanIcon style={{backgroundImage: `url(${Exchange})`}}/>
+                        Exchange
+                      </NavLink>
+                    </Item>
+                    <Item>
+                      <NavLink to={'#'}>
+                        <SpanIcon style={{backgroundImage: `url(${Money})`}}/>
+                        Wallet
+                      </NavLink>
+                    </Item>
                   {props.profile ? <Item>
                       <NavLink
                         isActive={(match, location) =>
@@ -197,9 +212,7 @@ const Sidebar = props => {
                           border: '1px solid rgba(221, 223, 226, 0.16)'
                         }}
                       >
-                        <SpanIcon>
-                          <Icons.Eye width="14" height="14" color="#333" />
-                        </SpanIcon>
+                        <SpanIcon style={{backgroundImage: `url(${Matched})`}}/>
                         Matched
                         <Query query={getMatched}>
                           {({ data: { matched } }) => {
@@ -269,9 +282,6 @@ const SpanIcon = styled.div`
 `;
 
 const List = styled.div`
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 16px;
-  // margin: 16px;
   & a {
     display: block;
   }
@@ -292,6 +302,7 @@ const Item = styled.h3`
     height: 30px;
     line-height: 30px;
     padding: 0 8px;
+    margin-left: -8px;
   }
 `;
 
