@@ -39,7 +39,6 @@ export default compose(
         type: props.type,
         id: props.inputs.length
       };
-      console.log(props.closeLogEvent)
       props.inputs.push(i);
       props.onInput(props.inputs);
       props.closeLogEvent();

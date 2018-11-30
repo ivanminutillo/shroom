@@ -5,6 +5,7 @@ import { compose, withState, withHandlers } from "recompose";
 import EditDueDate from "../editDueDate";
 import Timeline from "./timeline";
 import Crystal from '../../atoms/crystal_ball.png'
+import Plan from '../../atoms/dizzy.png'
 
 export default compose(
   withState("popup", "isOpen", false),
@@ -34,6 +35,7 @@ export default compose(
       <Infos>
         {data.processPlan ? (
           <ProcessContainer>
+            <ContainerTitle style={{backgroundImage: `url(${Plan})`}} />
             <Content>{data.processPlan.name}</Content>
           </ProcessContainer>
         ) : null}
@@ -68,7 +70,17 @@ export default compose(
   );
 });
 
-
+const ContainerTitle = styled.h3`
+  ${clearFix()};
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 30px;
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  vertical-align: middle;
+`;
 const SpanIcon = styled.span`
   ${clearFix()};
   cursor: pointer;
@@ -145,19 +157,26 @@ const FirstInfo = styled.div`
 const ProcessContainer = styled.div`
   ${clearFix()};
   background: #fffffff7;
-  height: 40px;
   padding: 0 8px;
 `;
 
 const Content = styled.div`
-  ${clearFix()};
-  display: inline-block;
-  color: ${props => props.theme.color.b100};
-  font-size: 13px;
-  margin-left: 4px;
-  border-bottom: 3px solid;
-  line-height: 26px;
-  margin-top: 4px;
+${clearFix()};
+display: inline-block;
+color: ${props => props.theme.color.b100};
+font-size: 13px;
+margin-left: 4px;
+line-height: 26px;
+margin-top: 4px;
+font-weight: 500;
+display: inline-block;
+color: #bcbec0;
+font-size: 12px;
+margin-left: 4px;
+line-height: 26px;
+margin-top: 4px;
+letter-spacing: .5px;
+text-transform: uppercase;
 `;
 
 const Sentence = styled.h3`

@@ -26,7 +26,8 @@ const LogEvent = ({
   touched,
   closeLogEvent,
   setFieldTouched,
-  menuSelected
+  menuSelected,
+  scopeId
 }) => (
     <ApolloConsumer>
       {client => (
@@ -115,7 +116,7 @@ const LogEvent = ({
                             { value: val.value, label: val.label }
                           )
                         }
-                        loadOptions={val => getAllResources(client, val)}
+                        loadOptions={val => getAllResources(client, scopeId, val)}
                       />
                     )}
                   />

@@ -41,7 +41,7 @@ export default compose(
       affectedResourceClassifiedAsId: Yup.object().required()
     }),
     handleSubmit: (values, { props, resetForm, setErrors, setSubmitting }) => {
-      console.log(props.note)
+      console.log(props.scopeId)
       let date = moment(values.due).format("YYYY-MM-DD");
       let start = moment(values.start).format("YYYY-MM-DD");
       setSubmitting(true);

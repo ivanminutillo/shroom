@@ -23,9 +23,9 @@ export default ({
   action,
   handleSubmit,
   avoidNote,
-  type
+  type,
+  scopeId
 }) => {
-  console.log(avoidNote);
   return (
     <ApolloConsumer>
       {client => (
@@ -72,7 +72,7 @@ export default ({
                       });
                     }}
                     loadOptions={val =>
-                      getResourcesByAction(client, action, val)
+                      getResourcesByAction(client, action, scopeId, val)
                     }
                   />
                 )}

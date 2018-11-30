@@ -150,7 +150,7 @@ export default compose(
             value={field.value}
             styles={customStyles}
             onChange={val => editSkills(val)}
-            loadOptions={val => getAllResources(client, val)}
+            loadOptions={val => getAllResources(client, providerId, val)}
           />
         )}
       />

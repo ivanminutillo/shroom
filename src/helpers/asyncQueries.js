@@ -2,6 +2,8 @@ import gql from "graphql-tag";
 import getResourcesQuery, {
   getRerourcesByAction
 } from "../queries/getResources";
+
+import getResourcesByContext, {getResourcesByContextByAction} from '../queries/getResourcesByContext'
 const agentRelationships = gql`
   query($token: String) {
     viewer(token: $token) {
@@ -18,17 +20,18 @@ const agentRelationships = gql`
   }
 `;
 
-export const getResourcesByAction = (client, action, val) => {
+export const getResourcesByAction = (client, action, id, val) => {
   return client
     .query({
-      query: getRerourcesByAction,
+      query: getResourcesByContextByAction,
       variables: {
         token: localStorage.getItem("oce_token"),
-        action: action.toUpperCase()
+        action: action.toLowerCase(),
+        id: id
       }
     })
     .then(res => {
-      let options = res.data.viewer.resourceClassificationsByAction.map(
+      let options = res.data.viewer.agent.agentDefinedResourceClassifications.map(
         resource => {
           return (
             {
@@ -48,14 +51,14 @@ export const getResourcesByAction = (client, action, val) => {
     });
 };
 
-export const getAllResources = (client, val) => {
+export const getAllResources = (client,id, val) => {
   return client
     .query({
-      query: getResourcesQuery,
-      variables: { token: localStorage.getItem("oce_token") }
+      query: getResourcesByContext,
+      variables: { token: localStorage.getItem("oce_token"), id: id}
     })
     .then(res => {
-      let options = res.data.viewer.allResourceClassifications.map(
+      let options = res.data.viewer.agent.agentDefinedResourceClassifications.map(
         resource => ({
           value: resource.id,
           label: resource.name
