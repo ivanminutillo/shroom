@@ -12,26 +12,16 @@ nd. Agent consumes data from 2 possible endpoints, both used in the faircoop eco
 ### Prerequisites
 
 You need `nodejs` and `npm` installed on your machine.
-The app heavily uses the [OCE KIT](https://github.com/opencooperativeecosystem/component-library) as design system and component library, the kit is not published as npm module yet (need some refinements and an acceptable testing coverage).
-If you want to have a local version of Agent app on your machine, you need to clone the kit repository, build it and `npm link` it on agent folder.
+
+### Run Shroom on your machine locally
+
+Shroom is an ejected version of CRA - Create react app - project.
+In order to have a local version of Shroom running on your machine you will need to follow these steps:
 
 ```
-git clone git@github.com:opencooperativeecosystem/kit.git
-cd kit
-npm run build
-npm link
-```
-
-### Run Agent on your machine locally
-
-Agent is an ejected version of CRA - Create react app - project.
-In order to have a local version of Agent running on your machine you will need to follow these steps:
-
-```
-git clone git@github.com:opencooperativeecosystem/agent.git
-cd agent
+git clone git@github.com:ivanminutillo/shroom.git
+cd shroom
 npm install
-npm link kit
 npm start
 ```
 
@@ -61,7 +51,7 @@ The fair.coop Agent version is deployed with [Zeit](zeti.co) <3
 
 * [React](https://github.com/facebook/react) - The web framework used
 * [Apollo](https://github.com/apollographql) - Both to manage graphql on the server and as local state management
-* [post-css](https://github.com/postcss/postcss) - Transforming styles with JS plugins // planned to move to styled-components
+* [styled-component](https://github.com/styled-components) - Visual primitives for the component age. Use the best bits of ES6 and CSS to style your apps without stress 💅
 * [webpack](https://github.com/webpack/webpack) - Javascript bundler
 
 ## Contributing
