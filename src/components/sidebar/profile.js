@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { clearFix } from "polished";
-import { Img, AvatarTitle } from "../../atoms/avatar";
+import { AvatarTitle } from "../../atoms/avatar";
 import Individual from "../../atoms/paw_print.png";
 import Group from "../../atoms/paws.png";
 
 const ProfileHeader = ({
-  providerImage,
   providerName,
   type,
 }) => (
@@ -49,13 +48,6 @@ const Type = styled.div`
 `;
 
 const Profile = styled.div``;
-
-const RoundedImg = styled(Img)`
-  border-radius: 100px;
-  height: 26px;
-  width: 26px;
-  background-color: #71757f;
-`;
 
 const Title = styled(AvatarTitle)`
   line-height: 26px;

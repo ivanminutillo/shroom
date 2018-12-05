@@ -3,8 +3,6 @@ import styled from "styled-components";
 import getReources from "../../queries/getInventory";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import { Query } from "react-apollo";
-import matchSorter from 'match-sorter'
-
 // Import React Table
 import ReactTable from "react-table";
 import "react-table/react-table.css";
@@ -77,6 +75,7 @@ const Inventory = props => {
           taxonomy: r.resourceClassifiedAs.category,
           processCategory: r.resourceClassifiedAs.processCategory
       }))
+      console.log(data)
       return (
         <Body>
           <ReactTable

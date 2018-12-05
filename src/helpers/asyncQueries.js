@@ -1,7 +1,4 @@
 import gql from "graphql-tag";
-import getResourcesQuery, {
-  getRerourcesByAction
-} from "../queries/getResources";
 
 import getResourcesByContext, {getResourcesByContextByAction} from '../queries/getResourcesByContext'
 const agentRelationships = gql`

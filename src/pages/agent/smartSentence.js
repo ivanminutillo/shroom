@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { compose, withState, withHandlers } from "recompose";
 import Input from '../../atoms/input'
 import Intent from '../../components/newCommitment'
-import NewProcess from '../../components/newProcessModal/newprocess'
+import NewProcess from '../../components/newProcess/newprocess'
 import Requirement from '../../atoms/shining_star.png'
 import Process from '../../atoms/shooting_star.png'
 import Money from '../../atoms/moneybag.png'

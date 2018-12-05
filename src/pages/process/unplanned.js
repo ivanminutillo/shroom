@@ -137,14 +137,7 @@ export default compose(
         touched={props.touched}
         setFieldValue={props.setFieldValue}
         setFieldTouched={props.setFieldTouched}
-        values={props.values}
         handleSubmit={props.handleSubmit}
-        // action={data.action}
-        // unit={data.committedQuantity.unit.name}
-        // unitId={data.committedQuantity.unit.id}
-        // resourceId={data.resourceClassifiedAs.id}
-        // resource={data.resourceClassifiedAs.name}
-        // closeLogEvent={handleAddEvent}
         />
     </WrapperLogEvent>
     {props.events.map((ev, i) => (

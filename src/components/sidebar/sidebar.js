@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import Icons  from '../../atoms/icons'
 import { NavLink } from "react-router-dom";
 import media from "styled-media-query";
 import { Query } from "react-apollo";
@@ -15,22 +14,6 @@ import Money from '../../atoms/moneybag.png'
 import Exchange from '../../atoms/handshake_hmn_y2.png'
 import Matched from '../../atoms/eyes.png'
 import Plan from '../../atoms/dizzy.png'
-
-const getInbox = gql`
-  query getInbox {
-    inbox @client
-  }
-`;
-const getCommitted = gql`
-  query getCommitted {
-    committed @client
-  }
-`;
-const getMatched = gql`
-  query getMatched {
-    matched @client
-  }
-`;
 
 const SidebarData = gql`
   query($token: String, $id: Int) {
@@ -223,11 +206,6 @@ const Sidebar = props => {
                       >
                         <SpanIcon style={{backgroundImage: `url(${Matched})`}}/>
                         Matched
-                        <Query query={getMatched}>
-                          {({ data: { matched } }) => {
-                            return <Total>{matched}</Total>;
-                          }}
-                        </Query>
                       </NavLink>
                     </Item> : null }
                   </List>
@@ -240,19 +218,7 @@ const Sidebar = props => {
   );
 };
 
-const Menu = styled.div`
-  // background: #36393F;
-  // border-bottom-left-radius: 2px;
-  // border-bottom-right-radius: 2px;
-`;
-
-const Total = styled.span`
-  float: right;
-  margin-top: 0px;
-  font-size: 13px;
-  color: #3497ff;
-  font-weight: 300;
-`;
+const Menu = styled.div``;
 
 const Wrapper = styled.div`
   display: flex;
@@ -264,10 +230,7 @@ const Wrapper = styled.div`
   overflow-y: hidden;
   overflow: hidden;
   transition: margin-left 0.5s ease;
-  // background: rgb(224, 226, 230);
-  // padding: 8px;
   border-radius: 4px;
-  // background: #3c4a58;
   padding: 8px;
   ${media.lessThan("medium")`
   margin-left: -270px

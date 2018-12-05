@@ -4,7 +4,6 @@ import media from "styled-media-query";
 import Header from "./header";
 import Output from "./outputs";
 import Actions from "./actions";
-import Agents from "./agents";
 import getProcess from "../../queries/getProcess";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import { Query } from "react-apollo";

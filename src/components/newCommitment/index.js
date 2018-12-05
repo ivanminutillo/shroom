@@ -11,8 +11,7 @@ import ProcessSelect from "./processSelect";
 import withNotif from "../notification";
 import CreateCommitment from "../../mutations/CreateCommitment";
 import getCommitments from "../../queries/getCommitments";
-// import GroupSelect from "../groupSelect";
-import { inputReqs } from "../newProcessModal/options";
+import { inputReqs } from "../../atoms/eventTypes";
 import Icons from '../../atoms/icons'
 import Select from "react-select";
 
@@ -92,8 +91,6 @@ export default compose(
     inputs,
     onInput,
     providerId,
-    isValidating,
-    isSubmitting,
     scopeId,
     errors,
     touched,
@@ -106,7 +103,6 @@ export default compose(
     handleSubmit,
     note
   }) => {
-    console.log(note)
     return (
       <div>
         <Wrapper>
@@ -187,16 +183,6 @@ const CommitmentWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
-
-
-const Title = styled.h3`
-  color: ${props => props.theme.color.p900};
-  letter-spacing: 0.5px;
-  margin-bottom: 16px;
-  margin-left: 10px;
-  margin-top: 20px;
-`;
-
 const Actions = styled.div`
   ${clearFix()};
 `;

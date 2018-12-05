@@ -1,6 +1,6 @@
 import React from "react";
 import s from "styled-components";
-import { Icons } from "oce-components";
+import Icons from '../../atoms/icons'
 import { Query } from "react-apollo";
 import InfoForm from "./infoForm";
 import gql from "graphql-tag";

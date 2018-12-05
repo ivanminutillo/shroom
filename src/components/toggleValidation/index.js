@@ -9,7 +9,6 @@ import DELETE_VALIDATION from "../../mutations/deleteValidation";
 import gql from "graphql-tag";
 
 import { Mutation } from "react-apollo";
-import GetEvent from "../../queries/getEvent";
 
 const ValidationFragment = gql`
   fragment myEvent on EconomicEvent {

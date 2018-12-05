@@ -5,7 +5,6 @@ import Textarea from "../../atoms/textarea";
 import { Mutation } from "react-apollo";
 import UPDATE_COMMITMENT from "../../mutations/updateCommitment";
 import withNotif from "../notification";
-import getComm from "../../queries/getCommitment";
 import { compose } from "react-apollo";
 import { withFormik, Field } from "formik";
 import * as Yup from "yup";

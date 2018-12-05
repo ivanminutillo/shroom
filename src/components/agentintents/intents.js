@@ -217,14 +217,6 @@ const B = styled.b`
   font-weight: 500;
   color: #32211B;
 `;
-
-const Span = styled.span`
-  font-weight: 300;
-  vertical-align: -webkit-baseline-middle;
-  cursor: pointer;
-  margin-right: 5px;
-  color: ${props => props.theme.color.p900};
-`;
 const ActionSpan = styled.div`
   font-weight: 500;
   color: #282b30;

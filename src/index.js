@@ -9,7 +9,7 @@ import { ApolloProvider } from "react-apollo";
 import { client } from "./store";
 import AppTemplate from "./templates/AppTemplate";
 import { PrivateRoute } from "./helpers/router";
-import { Notifications } from "oce-components/build";
+import Notifications from "./components/notificationTemplate";
 import getNotification from "./queries/getNotifications";
 import updateNotification from "./mutations/updateNotification";
 import deleteNotification from "./mutations/deleteNotification";
@@ -107,13 +107,6 @@ const GenericAlert = styled.div`
   right: 10px;
   z-index: 99999999999999999999999999999999;
 `;
-const NoMatch = ({ location }) => (
-  <div>
-    <h3>
-      No match for <code>{location.pathname}</code>
-    </h3>
-  </div>
-);
 
 const NotificationsTemplate = props => {
   return (

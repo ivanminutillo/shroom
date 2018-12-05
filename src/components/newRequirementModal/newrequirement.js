@@ -12,7 +12,7 @@ import withNotif from "../notification";
 import CreateCommitment from "../../mutations/CreateCommitment";
 import getCommitments from "../../queries/getCommitments";
 import GroupSelect from "../groupSelect";
-import { inputReqs } from "../newProcessModal/options";
+import { inputReqs } from "../../atoms/eventTypes";
 import Icons from '../../atoms/icons'
 import Select from "react-select";
 

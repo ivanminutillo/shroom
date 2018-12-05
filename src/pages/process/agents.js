@@ -1,6 +1,6 @@
 import React from "react";
-import styled, {css} from "styled-components";
-import {Icons} from 'oce-components/build'
+import styled from "styled-components";
+import Icons from '../../atoms/icons'
 
 export default props => (
     <Wrapper>

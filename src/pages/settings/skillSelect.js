@@ -1,9 +1,8 @@
 import React from "react";
-import { compose, withHandlers } from "recompose";
+import { compose } from "recompose";
 import { withFormik, Field } from "formik";
 import * as Yup from "yup";
 import AsyncSelect from "react-select/lib/Async";
-import getResourcesQuery from "../../queries/getResources";
 import addSkill from "../../mutations/addSkill";
 import removeSkill from "../../mutations/removeSkill";
 import { graphql } from "react-apollo";
@@ -82,16 +81,16 @@ export default compose(
   }) => {
     const editSkills = val => {
       let removed = values.agentSkills.filter(
-        o => !val.some(o2 => o.value == o2.value)
+        o => !val.some(o2 => o.value === o2.value)
       );
       let added = val.filter(
-        o => !values.agentSkills.some(o2 => o.value == o2.value)
+        o => !values.agentSkills.some(o2 => o.value === o2.value)
       );
       if (removed.length > 0) {
         let relToDelete = data.viewer.myAgent.agentSkillRelationships.filter(
-          r => r.resourceClassification.id == removed[0].value)
+          r => r.resourceClassification.id === removed[0].value)
         removed.map(r => {
-            removeSkillMutation({
+            return removeSkillMutation({
               variables: {
                 token: localStorage.getItem("oce_token"),
                 id: Number(relToDelete[0].id)
@@ -99,7 +98,8 @@ export default compose(
             })
             .then(res => {
                 setFieldValue("agentSkills", val);
-                onSuccess()}
+                return onSuccess()
+              }
             )
             .catch(err => onError());
         })

@@ -1,6 +1,8 @@
 import React from "react";
 import { graphql, compose } from "react-apollo";
-import { Icons, Button, Input } from "oce-components/build";
+import Icons from "../../atoms/icons";
+import Button from "../../atoms/button";
+import Input from "../../atoms/input";
 import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import Alert from "../../components/alert";

@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import { compose } from "recompose";
 import DELETE_COMMITMENT from "../../mutations/deleteCommitment";
 import getCommitments from '../../queries/getCommitments'
@@ -55,17 +54,3 @@ export default compose(
     )}
   </Mutation>
 ));
-
-
-const Button = styled.button`
-  width: 100%;
-  height: 30px;
-  background: #ff5630;
-  border: none;
-  border-radius: 4px;
-  color: #f0f0f0;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  letter-spacing: 0.5px;
-`

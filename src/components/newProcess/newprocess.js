@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { clearFix, placeholder } from "polished";
 import LogEvent from "../createReqInProcess/";
 import Select from "react-select";
@@ -10,16 +10,13 @@ import moment from "moment";
 import { graphql } from "react-apollo";
 import Input from "../../atoms/input";
 import Alert from "../alert";
-import { outputReqs, inputReqs } from "./options";
+import { inputReqs } from "../../atoms/eventTypes";
 import Button from "../../atoms/button";
 import withNotif from "../notification";
 import CreateProcess from "../../mutations/createProcess";
 import CreateCommitment from "../../mutations/CreateCommitment";
 import DateRangeSelect from "../dateRangeSelect";
-import GroupSelect from "../groupSelect";
-import AddNote from "../addNote";
-import Icons from '../../atoms/icons'
-import Timeline from "./timeline";
+// import Timeline from "./timeline";
 import Requirement from '../../atoms/shining_star.png'
 import Process from '../../atoms/shooting_star.png'
 
@@ -30,16 +27,13 @@ class NewProcess extends React.Component {
       scopeId,
       errors,
       touched,
-      deleteReq,
       setFieldValue,
       inputs,
       onInput,
       values,
-      note,
       toggleModal,
       addIntent
     } = this.props;
-    console.log(note)
     return (
       <Form>
         <PlanWrapper>
@@ -104,13 +98,14 @@ class NewProcess extends React.Component {
                 </Actions>
               ) : null}
               {inputs.length > 0 ? (
-                <Timeline
-                  onInput={onInput}
-                  start={values.start}
-                  end={values.due}
-                  deleteReq={deleteReq}
-                  inputs={inputs}
-                />
+                null
+                // <Timeline
+                //   onInput={onInput}
+                //   start={values.start}
+                //   end={values.due}
+                //   deleteReq={deleteReq}
+                //   inputs={inputs}
+                // />
               ) : null}
             </Actions>
         </Wrapper>

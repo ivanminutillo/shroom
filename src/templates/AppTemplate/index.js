@@ -6,13 +6,10 @@ import { LoadingMini, ErrorMini } from "../../components/loading";
 import Header from "./header";
 import { Query } from "react-apollo";
 import ValidationModal from "../../components/modalValidation";
-import NewRequirementModal from "../../components/newRequirementModal";
 import Home from "../../pages/home";
 import { PropsRoute } from "../../helpers/router";
 import Agent from "../../pages/agent/agent";
 import { Switch } from "react-router-dom";
-import NewProcessModal from '../../components/newProcessModal'
-import ProcessModal from "../../pages/process/wrapper";
 
 const Surface = styled.div`
   height: 100%;
@@ -48,15 +45,6 @@ const AppTemplate = props => {
             />
           <Surface>
             <Switch>
-              {/* <PropsRoute
-                component={Process}
-                path={"/process/:id"}
-                location={props.location}
-                providerId={data.viewer.myAgent.id}
-                providerImage={data.viewer.myAgent.image}
-                providerName={data.viewer.myAgent.name}
-                toggleModal={props.handleProcess}
-              /> */}
               <PropsRoute
                 component={Agent}
                 location={props.location}
@@ -64,14 +52,8 @@ const AppTemplate = props => {
                 providerImage={data.viewer.myAgent.image}
                 client={client}
                 providerId={data.viewer.myAgent.id}
-                providerImage={data.viewer.myAgent.image}
                 providerName={data.viewer.myAgent.name}
                 toggleValidationModal={props.toggleValidationModal}
-                isCommittedOpen={props.isCommittedOpen}
-                handleCommittedOpen={props.handleCommittedOpen}
-                isCompletedOpen={props.isCompletedOpen}
-                handleCompletedOpen={props.handleCompletedOpen}
-                handleProcess={props.handleProcess}
                 handleProcess={props.handleProcess}
                 processModalIsOpen={props.processModalIsOpen}
               />
@@ -84,10 +66,6 @@ const AppTemplate = props => {
                 providerImage={data.viewer.myAgent.image}
                 providerName={data.viewer.myAgent.name}
                 toggleValidationModal={props.toggleValidationModal}
-                isCommittedOpen={props.isCommittedOpen}
-                handleCommittedOpen={props.handleCommittedOpen}
-                isCompletedOpen={props.isCompletedOpen}
-                handleCompletedOpen={props.handleCompletedOpen}
                 handleProcess={props.handleProcess}
                 processModalIsOpen={props.processModalIsOpen}
               />
@@ -98,20 +76,6 @@ const AppTemplate = props => {
               contributionId={props.validationModalId}
               myId={data.viewer.myAgent.id}
             />
-            <NewRequirementModal
-              modalIsOpen={props.newRequirementModalIsOpen}
-              toggleModal={props.togglenewRequirementModal}
-            />
-            <NewProcessModal
-              modalIsOpen={props.newProcessModalIsOpen}
-              history={props.history}
-              toggleModal={props.togglenewProcessModal}
-            />
-            {/* <ProcessModal
-              modalIsOpen={props.processModalIsOpen}
-              history={props.history}
-              toggleModal={props.handleProcess}
-            /> */}
           </Surface>
           </Whole>
         );
@@ -140,24 +104,9 @@ const agentRelationships = gql`
 `;
 
 export default compose(
-  withState(
-    "newRequirementModalIsOpen",
-    "togglenewRequirementModalIsOpen",
-    false
-  ),
-  withState(
-    "newProcessModalIsOpen",
-    "togglenewProcessIsOpen",
-    false
-  ),
   withState("validationModalIsOpen", "toggleValidationModalIsOpen", false),
   withState("processModalIsOpen", "toggleProcessModalIsOpen", false),
   withState("validationModalId", "selectValidationModalId", null),
-  withState("intentModalIsOpen", "toggleIntentModalIsOpen", false),
-  withState("intentModal", "selectIntentModal", null),
-  withState("isCommittedOpen", "onCommittedOpen", true),
-  withState("isCompletedOpen", "onCompletedOpen", false),
-
   withHandlers({
     handleProcess: props => (id) => {
       if (props.processModalIsOpen) {
@@ -167,20 +116,6 @@ export default compose(
         props.history.push('/processes/' + id)
         props.toggleProcessModalIsOpen(true)
       }
-    },
-    handleCommittedOpen: props => () =>
-      props.onCommittedOpen(!props.isCommittedOpen),
-    handleCompletedOpen: props => () =>
-      props.onCompletedOpen(!props.isCompletedOpen),
-    toggleIntentModal: props => contributionId => {
-      props.selectIntentModal(contributionId);
-      props.toggleIntentModalIsOpen(!props.intentModalIsOpen);
-    },
-    togglenewRequirementModal: props => () => {
-      props.togglenewRequirementModalIsOpen(!props.newRequirementModalIsOpen);
-    },
-    togglenewProcessModal: props => () => {
-      props.togglenewProcessIsOpen(!props.newProcessModalIsOpen);
     },
     toggleValidationModal: props => contributionId => {
       props.selectValidationModalId(contributionId);

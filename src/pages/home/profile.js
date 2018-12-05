@@ -1,6 +1,5 @@
 import React from "react";
 import getFeed from "../../queries/getFeed";
-import { Calendar } from "@nivo/calendar";
 import Feed from "../../components/FeedItem";
 import moment from "moment";
 import { clearFix } from "polished";
@@ -24,35 +23,8 @@ export default props => (
           <ErrorMini refetch={refetch} message={`Error! ${error.message}`} />
         );
       let feed = data.viewer.agent.agentEconomicEvents;
-      let filteredIntents = [];
-      if (props.event !== "all") {
-        filteredIntents = feed.filter(i => i.action === props.event);
-      } else {
-        filteredIntents = feed;
-      }
-      let feedChart = feed.map(f => ({
-        day: f.start,
-        value: 1
-      }));
-
       return (
         <Contribution>
-          {/* <h3>{feed.length} contributions during this year</h3>
-          <CalendarWrapper>
-            <Calendar
-              width={600}
-              height={180}
-              margin={{
-                top: 40,
-                right: 10,
-                bottom: 10,
-                left: 40
-              }}
-              from="2018-01-01"
-              to={new Date()}
-              data={feedChart}
-            />
-          </CalendarWrapper> */}
           <Tagline><Span style={{backgroundImage: `url(${Beer})`}}/>Activities</Tagline>
           <Events>
             {feed.map((ev, i) => (
@@ -115,16 +87,6 @@ const Contribution = styled.div`
   padding: 8px;
   margin: 8px;
   border: 1px solid #e6ecf0;
-  // & h3 {
-  //   font-weight: 400;
-  //   letter-spacing: 1px;
-  //   color: #36393f59;
-  //   letter-spacing: 1px;
-  //   margin: 0;
-  //   margin-top: 10px;
-  //   font-weight: 500;
-  //   text-transform: uppercase;
-  // }
 `;
 
 const FeedItem = styled.div`
@@ -137,24 +99,10 @@ const B = styled.b`
   color: #32211B;
 `;
 
-const CalendarWrapper = styled.div`
-height: 300px;
-border: 1px solid #14141430;
-height: 150px;
-border-radius: 3px;
-width: 620px;
-margin: 0 auto;
-margin-top: 8px;
-`;
-
 const Tagline = styled.h3`
 color: #36393f;
--webkit-letter-spacing: 1px;
--moz-letter-spacing: 1px;
--ms-letter-spacing: 1px;
 letter-spacing: 1px;
 margin: 0;
-/* margin-top: 10px; */
 font-size: 12px;
 font-weight: 600;
 text-transform: uppercase;

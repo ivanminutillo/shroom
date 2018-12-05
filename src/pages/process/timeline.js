@@ -1,6 +1,5 @@
 import React from "react";
 import Timeline from "react-visjs-timeline";
-import styled from "styled-components";
 import 'vis/dist/vis.min.css'
 
 const options = {
@@ -12,13 +11,6 @@ const options = {
     }
   }
 };
-// const items = [
-//   {
-//     start: new Date(2010, 7, 15),
-//     end: new Date(2010, 8, 2), // end is optional
-//     content: "Trajectory A"
-//   }
-// ];
 
 export default ({inputs}) => {
     let items = inputs.map((i, j) => ({

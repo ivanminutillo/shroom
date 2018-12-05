@@ -1,6 +1,8 @@
 import React from "react";
 import Log from "../logEvent/styled";
-import { Icons, Input, Button, Textarea } from "oce-components/build";
+import Button from "../../atoms/button";
+import Textarea from "../../atoms/textarea";
+import Input from "../../atoms/input";
 import Select from "react-select";
 import CreatableSelect from "react-select/lib/Creatable";
 import styled from "styled-components";
@@ -8,10 +10,8 @@ import { clearFix, placeholder } from "polished";
 import { withFormik, Form, Field } from "formik";
 import Alert from "../../components/alert";
 import * as Yup from "yup";
-import { compose, withHandlers, withState } from "recompose";
+import { compose } from "recompose";
 import media from "styled-media-query";
-// import BoxHeader from "../smartSentence/boxHeader";
-import postTx, { newTx } from "../../xhr/socialwallet";
 import axios from 'axios'
 
 const customStyles = {

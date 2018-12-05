@@ -1,5 +1,6 @@
 import React from "react";
-import { Icons, Feed } from "oce-components/build";
+import Icons from "../../atoms/icons";
+import Feed from '../../components/FeedItem'
 import Transfer from "../../components/transferAssets";
 import styled from "styled-components";
 import { clearFix } from "polished";

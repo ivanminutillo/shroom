@@ -56,7 +56,7 @@ export default compose(
             </Navigation>
           </LeftHeader>
           <Title>
-            <NavLink to={'/'}><span role='img'>🍄</span></NavLink>
+            <NavLink to={'/'}><span role='img' aria-label='shroom'>🍄</span></NavLink>
           </Title>
           <WrapperNew>
             <Img

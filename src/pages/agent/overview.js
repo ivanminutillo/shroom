@@ -1,16 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import media from "styled-media-query";
 import Feed from "../../components/FeedItem";
 import moment from "moment";
 import { clearFix } from "polished";
 import { Query } from "react-apollo";
 import { LoadingMini, ErrorMini } from "../../components/loading";
 import getFeed from "../../queries/getFeed";
-import { Calendar } from "@nivo/calendar";
 import Beer from '../../atoms/beers.png'
 
-export default props => (
+export default props => {
+  return (
   <Query
     query={getFeed}
     variables={{
@@ -18,42 +17,15 @@ export default props => (
       id: props.param
     }}
   >
-    {({ loading, error, data, client, refetch }) => {
+    {({ loading, error, data, refetch }) => {
       if (loading) return <LoadingMini />;
       if (error)
         return (
           <ErrorMini refetch={refetch} message={`Error! ${error.message}`} />
         );
       let feed = data.viewer.agent.agentEconomicEvents;
-      let filteredIntents = [];
-      if (props.event !== "all") {
-        filteredIntents = feed.filter(i => i.action === props.event);
-      } else {
-        filteredIntents = feed;
-      }
-      let feedChart = feed.map(f => ({
-        day: f.start,
-        value: 1
-      }));
-
       return (
         <Contribution>
-          {/* <h3>{feed.length} contributions during this year</h3>
-          <CalendarWrapper>
-            <Calendar
-              width={600}
-              height={180}
-              margin={{
-                top: 40,
-                right: 10,
-                bottom: 10,
-                left: 10
-              }}
-              from="2018-01-01"
-              to={new Date()}
-              data={feedChart}
-            />
-          </CalendarWrapper> */}
           <Tagline><Span style={{backgroundImage: `url(${Beer})`}}/>Activities</Tagline>
           <Events>
             {feed.map((ev, i) => (
@@ -94,7 +66,7 @@ export default props => (
       );
     }}
   </Query>
-);
+)};
 
 const Tagline = styled.h3`
 letter-spacing: 1px;
@@ -132,7 +104,6 @@ const Events = styled.div`
   position: relative;
 `;
 const Contribution = styled.div`
-  // display: inline-block;
   background: #fff;
   padding: 8px;
   margin: 8px;
@@ -151,30 +122,4 @@ const FeedItem = styled.div`
 const B = styled.b`
   font-weight: 500;
   color: #32211b;
-`;
-
-const CalendarWrapper = styled.div`
-  height: 300px;
-  border: 1px solid #14141430;
-  height: 150px;
-  border-radius: 3px;
-  width: 620px;
-  margin: 0 auto;
-  margin-top: 8px;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  position: relative;
-  flex: 1;
-  margin-top: 8px;
-  margin-left: 8px;
-  overflow-y: overlay;
-  min-height: 100vh;
-  margin-bottom: -20px;
-  ${media.lessThan("medium")`
-    display: ${props => (props.isopen ? "none" : "flex")}
-  `};
 `;

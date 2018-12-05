@@ -50,7 +50,7 @@ const Content = styled.div`
 
 class Modal extends React.Component  {
   render() {
-  const { isOpen, toggleModal, content, children } = this.props
+  const { isOpen, toggleModal, children } = this.props
   return isOpen ? (
     <div>
       <Background onClick={toggleModal} />

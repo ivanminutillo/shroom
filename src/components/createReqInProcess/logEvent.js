@@ -4,7 +4,7 @@ import Icons from '../../atoms/icons'
 import Button from "../../atoms/button";
 import Input from "../../atoms/input";
 import Textarea from "../../atoms/textarea";
-import { Form, Field } from "formik";
+import { Field } from "formik";
 import { ApolloConsumer } from "react-apollo";
 import styled from "styled-components";
 import AsyncSelect from "react-select/lib/Async";
@@ -18,12 +18,9 @@ export default ({
   setFieldValue,
   errors,
   touched,
-  setFieldTouched,
-  closeLogEvent,
   action,
   handleSubmit,
   avoidNote,
-  type,
   scopeId
 }) => {
   return (
