@@ -5,7 +5,7 @@ import media from "styled-media-query";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import Profile from "./profile";
-import { LoadingMini, ErrorMini } from "../loading";
+import { LoadingMini, ErrorMini } from "../loading/index.tsx";
 import Overview from '../../atoms/astronaut_y2.png'
 import Flail from '../../atoms/flail.png'
 import Requirement from '../../atoms/shining_star.png'

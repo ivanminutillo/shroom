@@ -5,7 +5,7 @@ import Header from "./header";
 import Output from "./outputs";
 import Actions from "./actions";
 import getProcess from "../../queries/getProcess";
-import { LoadingMini, ErrorMini } from "../../components/loading";
+import { LoadingMini, ErrorMini } from "../../components/loading/index.tsx";
 import { Query } from "react-apollo";
 import moment from "moment";
 const Process = props => (

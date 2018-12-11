@@ -8,7 +8,7 @@ import { withFormik, Field, Form } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
 import { graphql } from "react-apollo";
-import Input from "../../atoms/input";
+import Input from "../../atoms/input.tsx";
 import Alert from "../alert";
 import { inputReqs } from "../../atoms/eventTypes";
 import Button from "../../atoms/button";

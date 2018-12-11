@@ -1,5 +1,5 @@
 import React from "react";
-import Icons from '../../atoms/icons'
+import Icons from '../../atoms/icons.tsx'
 import styled from "styled-components";
 import { clearFix } from "polished";
 

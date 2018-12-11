@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {SFC} from 'react'
 import styled, {css} from 'styled-components'
 import {placeholder} from 'polished'
 
@@ -32,7 +32,15 @@ const InputCont = styled.input`
     `}
 `
 
-const Input = ({ onChange, type, name, placeholder, value }) => (
+interface InputProps {
+  onChange: any;
+  type: string;
+  name: string;
+  placeholder: string;
+  value: string;
+}
+
+const Input: SFC<InputProps> = ({ onChange, type, name, placeholder, value }) => (
   <InputCont onChange={onChange} type={type} name={name} placeholder={placeholder} value={value} />
 )
 

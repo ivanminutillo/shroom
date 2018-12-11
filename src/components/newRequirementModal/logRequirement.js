@@ -7,7 +7,7 @@ import createEvent from "../../mutations/createEvent";
 import updateNotification from "../../mutations/updateNotification";
 import deleteNotification from "../../mutations/deleteNotification";
 import React from "react";
-import Icons from '../../atoms/icons'
+import Icons from '../../atoms/icons.tsx'
 import { graphql } from "react-apollo";
 import queryEvents from "../../queries/getFeed";
 import getComm from "../../queries/getCommitment";

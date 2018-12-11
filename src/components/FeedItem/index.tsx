@@ -1,14 +1,29 @@
-import React from "react";
+import React, {SFC} from "react";
 import styled from "styled-components";
 import  Icons from '../../atoms/icons'
 import { clearFix } from "polished";
 import DeleteEvent from "../deleteEvent";
 
-export default function({
+interface Props {
+  image: string;
+  id: string;
+  primary: string;
+  commitmentId: string;
+  validations: Array<any>;
+  openValidationModal: any;
+  secondary: string;
+  date: string;
+  scopeId: string;
+  withValidation: boolean;
+  withDelete: boolean;
+  providerId: string;
+  loggedUserId: string;
+}
+
+const Feed: SFC<Props> = ({
   image,
   id,
   primary,
-  light,
   commitmentId,
   validations,
   openValidationModal,
@@ -19,8 +34,7 @@ export default function({
   withDelete,
   providerId,
   loggedUserId
-}) {
-  return (
+}) =>  (
     <FeedItem>
       <Member>
         <MemberItem>
@@ -30,11 +44,11 @@ export default function({
       <Desc>
         <Primary>
           {primary}
-          <Secondary light={light}>{secondary}</Secondary>
+          <Secondary>{secondary}</Secondary>
         </Primary>
         <Validations>
           {validations.map((a, i) => (
-            <Icons.Check key={i} with="20" height="20" color="green" />
+            <Icons.Check key={i} width="20" height="20" color="green" />
           ))}
         </Validations>
         <Sub>
@@ -51,7 +65,7 @@ export default function({
             <span>
               <Action onClick={() => openValidationModal(id)}>
                 <Span>
-                  <Icons.Star width="14" color="#989ba0" />
+                  <Icons.Star width="14" height='14' color="#989ba0" />
                 </Span>
                 <ActionTitle>Validate</ActionTitle>
               </Action>
@@ -64,7 +78,9 @@ export default function({
       </Desc>
     </FeedItem>
   );
-}
+
+
+export default Feed
 
 const FeedItem = styled.div`
   min-height: 30px;
@@ -191,7 +207,7 @@ const Action = styled.div`
 
 const Span = styled.span`
   vertical-align: sub;
-  margin-right: ${props => (props.withText ? "8px" : 0)}
+  margin-right: 0;
   float: left;
   height: 30px;
   line-height: 30px;

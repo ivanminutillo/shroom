@@ -2,7 +2,7 @@ import React from "react";
 import s from "styled-components";
 import { NavLink } from "react-router-dom";
 import { clearFix, ellipsis } from "polished";
-import Icons from "../../atoms/icons";
+import {Left,ArrowRight } from "../../atoms/icons.tsx";
 import { compose, withState, withHandlers } from "recompose";
 import OutsideClickHandler from "react-outside-click-handler";
 import SkillsModal from "../../components/skillsModal";
@@ -48,10 +48,10 @@ export default compose(
           <LeftHeader>
             <Navigation>
               <button onClick={() => history.goBack()}>
-                <Icons.Left width="18" height="18" color="#f0f0f0" />
+                <Left width="18" height="18" color="#f0f0f0" />
               </button>
               <button onClick={() => history.goForward()}>
-                <Icons.ArrowRight width="18" height="18" color="#f0f0f0" />
+                <ArrowRight width="18" height="18" color="#f0f0f0" />
               </button>
             </Navigation>
           </LeftHeader>

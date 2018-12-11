@@ -1,4 +1,5 @@
-import React from "react";
+import * as React from "react";
+import {SFC} from 'react'
 import styled from "styled-components";
 import { clearFix } from "polished";
 import LogEvent from "../createReqInProcess/logEvent";
@@ -11,91 +12,16 @@ import ProcessSelect from "./processSelect";
 import withNotif from "../notification";
 import CreateCommitment from "../../mutations/CreateCommitment";
 import getCommitments from "../../queries/getCommitments";
-import GroupSelect from "../groupSelect";
+import GroupSelect from "../groupSelect.tsx";
 import { inputReqs } from "../../atoms/eventTypes";
-import Icons from '../../atoms/icons'
+import Icons from '../../atoms/icons.tsx'
 import Select from "react-select";
 
-export default compose(
-  withNotif("Commitment is successfully created", "Commitment is not created"),
-  graphql(CreateCommitment, { name: "createCommitment" }),
-  withState("inputs", "onInput", []),
-  withFormik({
-    mapPropsToValues: props => ({
-      scope: null,
-      process: "",
-      action: null,
-      note: "",
-      numericValue: "00.00" || "",
-      unit: "",
-      start: moment(),
-      due: moment(),
-      affectedResourceClassifiedAsId: ""
-    }),
-    validationSchema: Yup.object().shape({
-      action: Yup.string().required(),
-      scope: Yup.object().required(),
-      note: Yup.string(),
-      numericValue: Yup.number().required(),
-      unit: Yup.object(),
-      start: Yup.string().required(),
-      due: Yup.string().required(),
-      affectedResourceClassifiedAsId: Yup.object().required()
-    }),
-    handleSubmit: (values, { props, resetForm, setErrors, setSubmitting }) => {
 
-      let date = moment(values.due).format("YYYY-MM-DD");
-      let start = moment(values.start).format("YYYY-MM-DD");
-      setSubmitting(true);
-      let MutationVariables = {
-        token: localStorage.getItem("oce_token"),
-        action: values.action.toLowerCase(),
-        start: start,
-        due: date,
-        note: values.note,
-        committedResourceClassifiedAsId:
-          values.affectedResourceClassifiedAsId.value,
-        committedUnitId: values.unit.value,
-        committedNumericValue: values.numericValue,
-        inputOfId: values.process ? values.process.value : null,
-        outputOfId: values.process ? values.process.value : null,
-        scopeId: values.scope.value
-      };
-      return props
-        .createCommitment({
-          variables: MutationVariables,
-          update: (store, { data }) => {
-            let comm = store.readQuery({
-              query: getCommitments,
-              variables: {
-                token: localStorage.getItem("oce_token"),
-                id: values.scope.value
-              }
-            });
-            comm.viewer.agent.agentCommitments.push(
-              data.createCommitment.commitment
-            );
-            store.writeQuery({
-              query: getCommitments,
-              data: comm,
-              variables: {
-                token: localStorage.getItem("oce_token"),
-                id: props.scopeId
-              }
-            });
-          }
-        })
-        .then(res => props.onSuccess())
-        .catch(err => props.onError());
-    }
-  })
-)(
-  ({
+const NewRequirement = ({
     inputs,
     onInput,
     providerId,
-    isValidating,
-    isSubmitting,
     scopeId,
     errors,
     touched,
@@ -177,8 +103,81 @@ export default compose(
       </div>
     );
   }
-);
 
+  export default compose(
+    withNotif("Commitment is successfully created", "Commitment is not created"),
+    graphql(CreateCommitment, { name: "createCommitment" }),
+    withState("inputs", "onInput", []),
+    withFormik({
+      mapPropsToValues: props => ({
+        scope: null,
+        process: "",
+        action: null,
+        note: "",
+        numericValue: "00.00" || "",
+        unit: "",
+        start: moment(),
+        due: moment(),
+        affectedResourceClassifiedAsId: ""
+      }),
+      validationSchema: Yup.object().shape({
+        action: Yup.string().required(),
+        scope: Yup.object().required(),
+        note: Yup.string(),
+        numericValue: Yup.number().required(),
+        unit: Yup.object(),
+        start: Yup.string().required(),
+        due: Yup.string().required(),
+        affectedResourceClassifiedAsId: Yup.object().required()
+      }),
+      handleSubmit: (values, { props, resetForm, setErrors, setSubmitting }) => {
+  
+        let date = moment(values.due).format("YYYY-MM-DD");
+        let start = moment(values.start).format("YYYY-MM-DD");
+        setSubmitting(true);
+        let MutationVariables = {
+          token: localStorage.getItem("oce_token"),
+          action: values.action.toLowerCase(),
+          start: start,
+          due: date,
+          note: values.note,
+          committedResourceClassifiedAsId:
+            values.affectedResourceClassifiedAsId.value,
+          committedUnitId: values.unit.value,
+          committedNumericValue: values.numericValue,
+          inputOfId: values.process ? values.process.value : null,
+          outputOfId: values.process ? values.process.value : null,
+          scopeId: values.scope.value
+        };
+        return props
+          .createCommitment({
+            variables: MutationVariables,
+            update: (store, { data }) => {
+              let comm = store.readQuery({
+                query: getCommitments,
+                variables: {
+                  token: localStorage.getItem("oce_token"),
+                  id: values.scope.value
+                }
+              });
+              comm.viewer.agent.agentCommitments.push(
+                data.createCommitment.commitment
+              );
+              store.writeQuery({
+                query: getCommitments,
+                data: comm,
+                variables: {
+                  token: localStorage.getItem("oce_token"),
+                  id: props.scopeId
+                }
+              });
+            }
+          })
+          .then(res => props.onSuccess())
+          .catch(err => props.onError());
+      }
+    })
+  )(NewRequirement)
 
 const SelectInput = styled.div`
   flex: 1;

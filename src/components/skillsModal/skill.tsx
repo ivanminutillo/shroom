@@ -1,9 +1,10 @@
-import React from "react";
+import * as React from "react";
+import {SFC} from 'react'
 import s from "styled-components";
 import  Icons  from "../../atoms/icons";
-import gql from "graphql-tag";
+import gql from "graphql-tag"
 import { Query } from "react-apollo";
-import { LoadingMini, ErrorMini } from "../loading";
+import { LoadingMini, ErrorMini } from "../loading/index";
 import SkillSelect from "../../pages/settings/skillSelect";
 
 const GET_SKILLS = gql`
@@ -27,7 +28,12 @@ const GET_SKILLS = gql`
   }
 `;
 
-export default ({ toggleSkills, providerId }) => (
+interface Props {
+  toggleSkills: any;
+  providerId: number;
+}
+
+const Skills: SFC<Props> = ({ toggleSkills, providerId }) => (
   <Wrapper>
     <Header>
       <Span onClick={toggleSkills}>
@@ -65,7 +71,7 @@ export default ({ toggleSkills, providerId }) => (
     </Body>
   </Wrapper>
 );
-
+export default Skills
 
 const Body = s.div`
   

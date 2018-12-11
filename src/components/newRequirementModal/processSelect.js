@@ -1,6 +1,6 @@
 import React from "react";
 import getProcessesByAgent from "../../queries/getProcessesByAgent";
-import { LoadingMini, ErrorMini } from "../loading";
+import { LoadingMini, ErrorMini } from "../loading/index.tsx";
 import { Query } from "react-apollo";
 import Select from "react-select";
 

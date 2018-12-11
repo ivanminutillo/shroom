@@ -1,13 +1,13 @@
 import React from "react";
-import Icons from "../../atoms/icons";
-import Feed from '../../components/FeedItem'
+import Icons from "../../atoms/icons.tsx";
+import Feed from '../../components/FeedItem/index.tsx'
 import Transfer from "../../components/transferAssets";
 import styled from "styled-components";
 import { clearFix } from "polished";
 import getRelationship from "../../queries/getRelationships";
 import { graphql } from "react-apollo";
 import { compose, withHandlers,lifecycle, withState } from "recompose";
-import { LoadingMini, ErrorMini } from "../../components/loading";
+import { LoadingMini, ErrorMini } from "../../components/loading/index.tsx";
 import media from "styled-media-query";
 import getList, { getTxs, balance } from "../../xhr/socialwallet";
 import getTxss from "../../queries/getTxs";

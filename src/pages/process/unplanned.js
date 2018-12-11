@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import moment from "moment";
-import Feed from "../../components/FeedItem";
+import Feed from "../../components/FeedItem/index.tsx";
 import LogEvent from '../../components/logEvent/logEvent';
 import { compose } from "recompose";
 import { withFormik } from "formik";

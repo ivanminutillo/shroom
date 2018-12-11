@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import getReources from "../../queries/getInventory";
-import { LoadingMini, ErrorMini } from "../../components/loading";
+import { LoadingMini, ErrorMini } from "../../components/loading/index.tsx";
 import { Query } from "react-apollo";
 // Import React Table
 import ReactTable from "react-table";

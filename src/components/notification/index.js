@@ -1,4 +1,4 @@
-import Icons from '../../atoms/icons'
+import Icons from '../../atoms/icons.tsx'
 import updateNotification from "../../mutations/updateNotification";
 import deleteNotification from "../../mutations/deleteNotification";
 import React, { createFactory } from "react";

@@ -1,13 +1,25 @@
-import React from "react";
+import * as React from "react";
+import {SFC} from 'react'
 import { getRelationships } from "../../helpers/asyncQueries";
 import AsyncSelect from "react-select/lib/Async";
-import { ApolloConsumer, graphql } from "react-apollo";
+import { ApolloConsumer } from "react-apollo";
 import Icons from '../../atoms/icons'
-import { Field } from "formik";
+import { Field, FieldProps } from "formik";
 import styled from 'styled-components'
 
+interface Props {
+  setFieldValue: any
+}
 
-export default props => (
+interface MyFormValues {
+  scope: {
+    value: string,
+    label: string
+  }
+}
+
+
+const GroupSelect: SFC<Props> = ({setFieldValue}) => (
   <GroupWrapper>
     <Span>
       <Icons.Card width="16" height="16" color="#b7bfc6" />
@@ -16,7 +28,7 @@ export default props => (
       {client => (
         <Field
           name="scope"
-          render={({ field }) => (
+          render={({ field }): FieldProps<MyFormValues> => (
             <AsyncSelect
               placeholder={"Select a group..."}
               defaultOptions
@@ -24,7 +36,7 @@ export default props => (
               styles={customStyles}
               value={field.label}
               onChange={val =>
-                props.setFieldValue("scope", {
+                setFieldValue("scope", {
                   value: val.value,
                   label: val.label
                 })
@@ -37,6 +49,8 @@ export default props => (
     </ApolloConsumer>
   </GroupWrapper>
 );
+
+export default GroupSelect 
 
 const GroupWrapper = styled.div`
   background: transparent;

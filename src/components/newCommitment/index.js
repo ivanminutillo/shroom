@@ -12,7 +12,7 @@ import withNotif from "../notification";
 import CreateCommitment from "../../mutations/CreateCommitment";
 import getCommitments from "../../queries/getCommitments";
 import { inputReqs } from "../../atoms/eventTypes";
-import Icons from '../../atoms/icons'
+import Icons from '../../atoms/icons.tsx'
 import Select from "react-select";
 
 export default compose(

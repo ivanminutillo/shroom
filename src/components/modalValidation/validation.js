@@ -1,9 +1,9 @@
 import React from "react";
-import Icons from '../../atoms/icons'
+import Icons from '../../atoms/icons.tsx'
 import moment from "moment";
 import styled from "styled-components";
 import { Query } from "react-apollo";
-import { LoadingMini, ErrorMini } from "../loading";
+import { LoadingMini, ErrorMini } from "../loading/index.tsx";
 import GetEvent from "../../queries/getEvent";
 import { NavLink } from "react-router-dom";
 import { clearFix } from "polished";
@@ -11,7 +11,7 @@ import CreateValidation, {DeleteValidation} from '../toggleValidation'
 import { compose } from "recompose";
 import { Field, withFormik } from "formik";
 import * as Yup from "yup";
-import Textarea from '../../atoms/textarea'
+import Textarea from '../../atoms/textarea.tsx'
 export default compose(
   withFormik({
     mapPropsToValues: props => ({

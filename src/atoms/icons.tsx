@@ -1,12 +1,14 @@
 import * as React from "react";
-const browser = typeof window !== "undefined";
+import {SFC} from 'react'
 
-const nullServerComponent = () => <span />;
-
+interface Props  {
+width: string;
+height: string;
+color: string;
+strokeWidth?: string
+}
 // ACTIVITIES
-export const Activity = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Activity: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -25,9 +27,7 @@ export const Activity = !browser
     );
 
 // SIDEBAR
-export const Sidebar = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Sidebar: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -54,7 +54,7 @@ export const Sidebar = !browser
             id="sidebar"
             transform="translate(9.000000, 9.000000) scale(-1, 1) translate(-9.000000, -9.000000) translate(1.000000, 1.000000)"
             stroke={color}
-            strokeWidth="2"
+            strokeWidth={strokeWidth}
           >
             <rect
               id="Rectangle-path"
@@ -71,9 +71,7 @@ export const Sidebar = !browser
     );
 
 // GRID
-export const Grid = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Grid: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -100,7 +98,7 @@ export const Grid = !browser
             id="grid"
             transform="translate(1.000000, 1.000000)"
             stroke={color}
-            strokeWidth="2"
+            strokeWidth={strokeWidth}
           >
             <rect id="Rectangle-path" x="0" y="0" width="7" height="7" />
             <rect id="Rectangle-path" x="11" y="0" width="7" height="7" />
@@ -112,9 +110,7 @@ export const Grid = !browser
     );
 
 // SIDEBAR
-export const Diary = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Diary: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -134,9 +130,7 @@ export const Diary = !browser
     );
 
 // CALENDAR
-export const Calendar = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Calendar: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -158,9 +152,7 @@ export const Calendar = !browser
     );
 
 // LINK
-export const Link = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Link: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -180,9 +172,7 @@ export const Link = !browser
     );
 
 // EYE
-export const Eye = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Eye: SFC<Props> = ({ width, height, strokeWidth, color }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -202,9 +192,7 @@ export const Eye = !browser
     );
 
 // INVENTORY
-export const Inventory = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Inventory: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -224,9 +212,7 @@ export const Inventory = !browser
     );
 
 // GLOBE
-export const Globe = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Globe: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -247,9 +233,7 @@ export const Globe = !browser
     );
 
 // HOME
-export const Home = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Home: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -269,9 +253,7 @@ export const Home = !browser
     );
 
 // WORK
-export const Work = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Work: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -292,9 +274,7 @@ export const Work = !browser
     );
 
 // Search
-export const Search = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Search: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -314,9 +294,7 @@ export const Search = !browser
     );
 
 // VALIDATE
-export const Validate = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Validate: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -338,9 +316,7 @@ export const Validate = !browser
     );
 
 // BELL
-export const Bell = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Bell: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -359,9 +335,7 @@ export const Bell = !browser
     );
 
 // User
-export const User = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const User: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -380,9 +354,7 @@ export const User = !browser
       </svg>
     );
 // Settings
-export const Settings = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Settings: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -408,9 +380,7 @@ export const Settings = !browser
       </svg>
     );
 // Power
-export const Power = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Power: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -429,9 +399,7 @@ export const Power = !browser
       </svg>
     );
 // Preferites
-export const Preferites = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Preferites: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -450,9 +418,7 @@ export const Preferites = !browser
     );
 
 // MENU
-export const Menu = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Menu: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -473,18 +439,16 @@ export const Menu = !browser
     );
 
 // CARD
-export const Card = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Card: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
         width={width}
-        height={width}
+        height={height}
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-clipboard"
@@ -495,9 +459,7 @@ export const Card = !browser
     );
 
 // LEFT
-export const Left = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Left: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -506,7 +468,7 @@ export const Left = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-clipboard"
@@ -516,9 +478,7 @@ export const Left = !browser
       </svg>
     );
 // ArrowUP
-export const Arrowup = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Arrowup: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -527,7 +487,7 @@ export const Arrowup = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-clipboard"
@@ -538,9 +498,7 @@ export const Arrowup = !browser
     );
 
 // RIGHT
-export const ArrowRight = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const ArrowRight: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -549,7 +507,7 @@ export const ArrowRight = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-clipboard"
@@ -560,9 +518,7 @@ export const ArrowRight = !browser
     );
 
 // CLOCK
-export const Clock = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Clock: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -571,7 +527,7 @@ export const Clock = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-clipboard"
@@ -582,9 +538,7 @@ export const Clock = !browser
     );
 
 // TEXT
-export const Text = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Text: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -593,7 +547,7 @@ export const Text = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-align-left"
@@ -606,9 +560,7 @@ export const Text = !browser
     );
 
 // MESSAGE
-export const Message = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Message: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -617,7 +569,7 @@ export const Message = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-message-square"
@@ -627,14 +579,11 @@ export const Message = !browser
     );
 
 // CROSS
-export const Cross = !browser
-  ? nullServerComponent
-  : ({
+export const Cross: SFC<Props> = ({
       width = 24,
       height = 24,
       strokeWidth = 2,
       color = "#333",
-      stroke = 2
     }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -644,7 +593,7 @@ export const Cross = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke={color}
-        strokeWidth={stroke}
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-x"
@@ -655,9 +604,7 @@ export const Cross = !browser
     );
 
 // USERS
-export const Users = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Users: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -666,7 +613,7 @@ export const Users = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -679,9 +626,7 @@ export const Users = !browser
     );
 
 // CHECK
-export const Check = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Check: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -690,7 +635,7 @@ export const Check = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -700,9 +645,7 @@ export const Check = !browser
     );
 
 // SHIELD
-export const Shield = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Shield: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -711,7 +654,7 @@ export const Shield = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -721,9 +664,7 @@ export const Shield = !browser
     );
 
 // PLUS
-export const Plus = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Plus: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -732,7 +673,7 @@ export const Plus = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -743,9 +684,7 @@ export const Plus = !browser
     );
 
 // Inbox
-export const Inbox = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Inbox: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -754,7 +693,7 @@ export const Inbox = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -765,9 +704,7 @@ export const Inbox = !browser
     );
 
 // MORE
-export const More = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const More: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -776,7 +713,7 @@ export const More = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -788,9 +725,7 @@ export const More = !browser
     );
 
 // EDIT
-export const Edit = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Edit: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -799,7 +734,7 @@ export const Edit = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -809,9 +744,7 @@ export const Edit = !browser
     );
 
 // SEND
-export const Send = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Send: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -820,7 +753,7 @@ export const Send = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -831,9 +764,7 @@ export const Send = !browser
     );
 
 // Reply
-export const Reply = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Reply: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -842,7 +773,7 @@ export const Reply = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -853,9 +784,7 @@ export const Reply = !browser
     );
 
 // Reply
-export const Right = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Right: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -864,7 +793,7 @@ export const Right = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -874,9 +803,7 @@ export const Right = !browser
     );
 
 // Down
-export const Down = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Down: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -885,7 +812,7 @@ export const Down = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -895,9 +822,7 @@ export const Down = !browser
     );
 
 // Share
-export const Share = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Share: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -906,7 +831,7 @@ export const Share = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -919,9 +844,7 @@ export const Share = !browser
     );
 
 // Share
-export const UpRight = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const UpRight: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -930,7 +853,7 @@ export const UpRight = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -941,9 +864,7 @@ export const UpRight = !browser
     );
 
 // Share
-export const UpLeft = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const UpLeft: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -952,7 +873,7 @@ export const UpLeft = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -963,9 +884,7 @@ export const UpLeft = !browser
     );
 
 // EDIT-2
-export const Edit2 = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Edit2: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -974,7 +893,7 @@ export const Edit2 = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -985,9 +904,7 @@ export const Edit2 = !browser
     );
 
 // TRASH
-export const Trash = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Trash: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -996,7 +913,7 @@ export const Trash = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -1009,9 +926,7 @@ export const Trash = !browser
     );
 
 // FOLDER
-export const Folder = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Folder: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -1020,7 +935,7 @@ export const Folder = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -1029,9 +944,7 @@ export const Folder = !browser
       </svg>
     );
 // UP
-export const Up = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Up: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -1040,7 +953,7 @@ export const Up = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -1050,9 +963,7 @@ export const Up = !browser
     );
 
 // NEWFILE
-export const NewFile = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const NewFile: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -1061,7 +972,7 @@ export const NewFile = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -1074,9 +985,7 @@ export const NewFile = !browser
     );
 
 // STAR
-export const Star = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Star: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -1085,7 +994,7 @@ export const Star = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -1095,9 +1004,7 @@ export const Star = !browser
     );
 
 // TYPE
-export const Type = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Type: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -1106,7 +1013,7 @@ export const Type = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -1118,9 +1025,7 @@ export const Type = !browser
     );
 
 // Dollar
-export const Dollar = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Dollar: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -1129,7 +1034,7 @@ export const Dollar = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -1140,9 +1045,7 @@ export const Dollar = !browser
     );
 
 // LOCK
-export const Lock = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Lock: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -1151,7 +1054,7 @@ export const Lock = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -1162,9 +1065,7 @@ export const Lock = !browser
     );
 
 // COPY
-export const Copy = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+const Copy: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -1173,7 +1074,7 @@ export const Copy = !browser
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -1184,9 +1085,7 @@ export const Copy = !browser
     );
 
 // LOADING
-export const Loading = !browser
-  ? nullServerComponent
-  : ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
+export const Loading: SFC<Props> = ({ width = 24, height = 24, strokeWidth = 2, color = "#333" }) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={color}
@@ -1195,7 +1094,7 @@ export const Loading = !browser
         viewBox="0 0 38 38"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
         className="feather feather-users"
@@ -1213,7 +1112,7 @@ export const Loading = !browser
               d="M36 18c0-9.94-8.06-18-18-18"
               id="Oval-2"
               stroke="url(#a)"
-              strokeWidth="2"
+              strokeWidth={strokeWidth}
             >
               <animateTransform
                 attributeName="transform"

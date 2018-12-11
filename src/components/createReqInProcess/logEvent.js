@@ -1,9 +1,9 @@
 import DateRangeSelect from "../dateRangeSelect";
 import React from "react";
-import Icons from '../../atoms/icons'
+import Icons from '../../atoms/icons.tsx'
 import Button from "../../atoms/button";
-import Input from "../../atoms/input";
-import Textarea from "../../atoms/textarea";
+import Input from "../../atoms/input.tsx";
+import Textarea from "../../atoms/textarea.tsx";
 import { Field } from "formik";
 import { ApolloConsumer } from "react-apollo";
 import styled from "styled-components";

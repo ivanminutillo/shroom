@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Icons from '../../atoms/icons'
+import Icons from '../../atoms/icons.tsx'
 
 export default props => (
     <Wrapper>

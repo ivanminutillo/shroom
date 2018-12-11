@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { clearFix, animation } from "polished";
-import Icons from "../../atoms/icons";
+import Icons from "../../atoms/icons.tsx";
 
 const Wrapper = styled.div`
   background-color: #0052CC;

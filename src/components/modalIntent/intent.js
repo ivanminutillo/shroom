@@ -2,13 +2,13 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { clearFix } from "polished";
 import moment from "moment";
-import Icons from '../../atoms/icons'
+import Icons from '../../atoms/icons.tsx'
 import { NavLink } from "react-router-dom";
 import LogEvent from "../logEvent/index";
-import Feed from "../../components/FeedItem";
+import Feed from "../../components/FeedItem/index.tsx";
 import AddProvider, { DeleteProvider } from "../addProvider";
 import { Query } from "react-apollo";
-import { LoadingMini, ErrorMini } from "../../components/loading";
+import { LoadingMini, ErrorMini } from "../../components/loading/index.tsx";
 import getComm from "../../queries/getCommitment";
 import CommitmentStatus from "../commitmentStatus";
 import EditDueDate from "../editDueDate";

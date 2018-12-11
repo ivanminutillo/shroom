@@ -2,7 +2,7 @@ import * as React from "react";
 import gql from "graphql-tag";
 import { compose, withHandlers, withState } from "recompose";
 import styled from "styled-components";
-import { LoadingMini, ErrorMini } from "../../components/loading";
+import { LoadingMini, ErrorMini } from "../../components/loading/index.tsx";
 import Header from "./header";
 import { Query } from "react-apollo";
 import ValidationModal from "../../components/modalValidation";

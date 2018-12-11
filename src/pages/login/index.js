@@ -1,8 +1,8 @@
 import React from "react";
 import { graphql, compose } from "react-apollo";
-import Icons from "../../atoms/icons";
+import Icons from "../../atoms/icons.tsx";
 import Button from "../../atoms/button";
-import Input from "../../atoms/input";
+import Input from "../../atoms/input.tsx";
 import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import Alert from "../../components/alert";

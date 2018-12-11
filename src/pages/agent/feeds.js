@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import moment from "moment";
-import Feed from "../../components/FeedItem";
-import { LoadingMini, ErrorMini } from "../../components/loading";
+import Feed from "../../components/FeedItem/index.tsx";
+import { LoadingMini, ErrorMini } from "../../components/loading/index.tsx";
 import getFeed from "../../queries/getFeed";
 import { Query } from "react-apollo";
 

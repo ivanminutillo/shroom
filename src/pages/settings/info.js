@@ -1,10 +1,10 @@
 import React from "react";
 import s from "styled-components";
-import Icons from '../../atoms/icons'
+import Icons from '../../atoms/icons.tsx'
 import { Query } from "react-apollo";
 import InfoForm from "./infoForm";
 import gql from "graphql-tag";
-import { LoadingMini, ErrorMini } from "../../components/loading";
+import { LoadingMini, ErrorMini } from "../../components/loading/index.tsx";
 
 const GET_AGENT = gql`
   query($token: String) {

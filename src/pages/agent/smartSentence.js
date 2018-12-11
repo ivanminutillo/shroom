@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { compose, withState, withHandlers } from "recompose";
-import Input from '../../atoms/input'
+import Input from '../../atoms/input.tsx'
 import Intent from '../../components/newCommitment'
 import NewProcess from '../../components/newProcess/newprocess'
 import Requirement from '../../atoms/shining_star.png'

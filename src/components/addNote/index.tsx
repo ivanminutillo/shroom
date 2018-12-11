@@ -1,18 +1,28 @@
-import React from "react";
+import * as React from "react";
+import  {SFC} from 'react'
 import styled from "styled-components";
 import Textarea from '../../atoms/textarea'
 import Icons from '../../atoms/icons'
 import { clearFix, placeholder } from "polished";
-import { Field } from "formik";
+import { Field, FieldProps } from 'formik';
 
-export default props => (
+interface MyFormValues {
+  note: string
+}
+
+interface Field {
+  name: string,
+  value: string,
+  onChange: any
+}
+const Comp : SFC<{}> = () => (
   <Note>
     <NoteIcon>
       <Icons.Text width="16" height="16" color="#b7bfc6" />
     </NoteIcon>
     <Field
       name="note"
-      render={({ field }) => (
+      render={( field ): FieldProps<MyFormValues> => (
         <Textarea
           name={field.name}
           value={field.value}
@@ -24,6 +34,7 @@ export default props => (
   </Note>
 );
 
+export default Comp
 
 const NoteIcon = styled.div`
   position: absolute;

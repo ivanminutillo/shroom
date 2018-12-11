@@ -1,8 +1,8 @@
 import React from "react";
-import Icons from '../../atoms/icons'
+import Icons from '../../atoms/icons.tsx'
 import Button from '../../atoms/button'
-import Input from '../../atoms/input'
-import Textarea from '../../atoms/textarea'
+import Input from '../../atoms/input.tsx'
+import Textarea from '../../atoms/textarea.tsx'
 import DatePicker from "react-datepicker";
 import { Form, Field } from "formik";
 import { ApolloConsumer } from "react-apollo";

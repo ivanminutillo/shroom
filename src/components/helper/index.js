@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { clearFix, transitions } from "polished";
-import Icons from '../../atoms/icons'
+import Icons from '../../atoms/icons.tsx'
 import Select from 'react-select'
 import media from "styled-media-query";
 

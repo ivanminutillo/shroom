@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import Feed from "../../components/FeedItem";
+import Feed from "../../components/FeedItem/index.tsx";
 import moment from "moment";
 import { clearFix } from "polished";
 import { Query } from "react-apollo";
-import { LoadingMini, ErrorMini } from "../../components/loading";
+import { LoadingMini, ErrorMini } from "../../components/loading/index.tsx";
 import getFeed from "../../queries/getFeed";
 import Beer from '../../atoms/beers.png'
 

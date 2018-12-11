@@ -5,7 +5,7 @@ import media from "styled-media-query";
 import HeaderTitle from "../../components/agentSectionHeader";
 import Intent from "../../components/agentintents/intents";
 import { Query } from "react-apollo";
-import { LoadingMini, ErrorMini } from "../../components/loading";
+import { LoadingMini, ErrorMini } from "../../components/loading/index.tsx";
 import getSkillsCommitments from "../../queries/getSkillsCommitments";
 import Sidebar from "../../components/sidebar/sidebar";
 import setMatched from "../../mutations/setMatched";

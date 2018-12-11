@@ -1,6 +1,6 @@
-import React from 'react'
+import * as React from 'react'
 import Icons from '../../atoms/icons'
-import  Button from '../../atoms/button'
+import Button from '../../atoms/button'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
@@ -26,14 +26,16 @@ font-weight: 500;
 `
 
 
-export const LoadingMini = () => (
+export const LoadingMini = () => {
+  console.log(Icons.Loading)
+    return (
     <Wrapper>
       <div>
         <LoaderIcon><Icons.Loading width="24" height="24" color='#606984' /></LoaderIcon>
         <h1>Loading...</h1>
       </div>
     </Wrapper>
-)
+)}
 
 
 export const ErrorMini = ({message, loading, refetch}) => (

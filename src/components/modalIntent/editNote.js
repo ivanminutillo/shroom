@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "../../atoms/button";
-import Textarea from "../../atoms/textarea";
+import Textarea from "../../atoms/textarea.tsx";
 import { Mutation } from "react-apollo";
 import UPDATE_COMMITMENT from "../../mutations/updateCommitment";
 import withNotif from "../notification";

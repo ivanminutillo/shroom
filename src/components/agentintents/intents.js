@@ -1,9 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { clearFix } from "polished";
-import Icons from '../../atoms/icons'
+import Icons from '../../atoms/icons.tsx'
 import moment from "moment";
-import Feed from "../../components/FeedItem";
+import Feed from "../../components/FeedItem/index.tsx";
 import LogEvent from "../../components/logEvent/index";
 import CommitmentStatus from "../../components/commitmentStatus";
 import AddProvider, { DeleteProvider } from "../../components/addProvider";
@@ -42,7 +42,6 @@ export default compose(
   ({
     data,
     handleAddEvent,
-    addEvent,
     handlePopup,
     handleNoteOpen,
     isNoteOpen,
@@ -55,7 +54,6 @@ export default compose(
     scopeId,
     myId,
     client,
-    providerImage
   }) => {
     return (
       <Intent isFinished={data.isFinished}>

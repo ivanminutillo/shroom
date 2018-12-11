@@ -1,6 +1,6 @@
 import React from "react";
 import { Query } from "react-apollo";
-import { LoadingMini, ErrorMini } from "../../components/loading";
+import { LoadingMini, ErrorMini } from "../../components/loading/index.tsx";
 import getCommitments from "../../queries/getCommitments";
 import Todo from "../../components/todo";
 import { PropsRoute } from "../../helpers/router";

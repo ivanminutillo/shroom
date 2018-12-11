@@ -3,9 +3,9 @@ import styled from "styled-components";
 import Button from "../../atoms/button";
 import { Form, Field } from "formik";
 import Alert from "../../components/alert";
-import Textarea from "../../atoms/textarea";
-import  Icons  from "../../atoms/icons";
-import Input from "../../atoms/input";
+import Textarea from "../../atoms/textarea.tsx";
+import  Icons  from "../../atoms/icons.tsx";
+import Input from "../../atoms/input.tsx";
 import { clearFix, placeholder } from "polished";
 import moment from "moment";
 import { compose, withState, withHandlers } from "recompose";
@@ -16,7 +16,7 @@ import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import withNotif from "../../components/notification";
 import createResource from "../../mutations/createResource";
-import Feed from "../../components/FeedItem";
+import Feed from "../../components/FeedItem/index.tsx";
 
 export default compose(
   withNotif(
